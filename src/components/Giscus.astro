@@ -1,0 +1,48 @@
+---
+import { GISCUS } from '../consts';
+const enabled = Boolean(GISCUS.repo && GISCUS.repoId && GISCUS.categoryId);
+---
+
+{
+	enabled ? (
+		<section class="comments">
+			<script
+				is:inline
+				src="https://giscus.app/client.js"
+				data-repo={GISCUS.repo}
+				data-repo-id={GISCUS.repoId}
+				data-category={GISCUS.category}
+				data-category-id={GISCUS.categoryId}
+				data-mapping={GISCUS.mapping}
+				data-strict="0"
+				data-reactions-enabled={GISCUS.reactionsEnabled}
+				data-emit-metadata={GISCUS.emitMetadata}
+				data-input-position={GISCUS.inputPosition}
+				data-theme={GISCUS.theme}
+				data-lang={GISCUS.lang}
+				data-loading="lazy"
+				crossorigin="anonymous"
+				async
+			/>
+		</section>
+	) : import.meta.env.DEV ? (
+		<section class="comments comments--placeholder">
+			<p>
+				💬 댓글(giscus)이 아직 설정되지 않았습니다. <code>site.config.mjs</code> 의 <code>GISCUS</code> 를
+				채우면 여기에 댓글창이 나타납니다. (이 안내는 개발 서버에서만 보입니다)
+			</p>
+		</section>
+	) : null
+}
+
+<style>
+	.comments {
+		margin-top: 4rem;
+		padding-top: 2rem;
+		border-top: 1px solid rgb(var(--gray-light));
+	}
+	.comments--placeholder {
+		font-size: 0.85em;
+		color: rgb(var(--gray));
+	}
+</style>

@@ -1,0 +1,37 @@
+---
+import { SITE } from '../consts';
+const today = new Date();
+const base = import.meta.env.BASE_URL;
+---
+
+<footer>
+	&copy; {today.getFullYear()} {SITE.author}. All rights reserved.
+	<div class="links">
+		<a href={`${base}rss.xml`}>RSS</a>
+		{SITE.github && <a href={SITE.github} target="_blank">GitHub</a>}
+		{SITE.email && <a href={`mailto:${SITE.email}`}>Email</a>}
+		<span>Built with <a href="https://astro.build" target="_blank">Astro</a></span>
+	</div>
+</footer>
+<style>
+	footer {
+		padding: 2em 1em 6em 1em;
+		background: linear-gradient(var(--gray-gradient)) no-repeat;
+		color: rgb(var(--gray));
+		text-align: center;
+		font-size: 0.9em;
+	}
+	.links {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 1em;
+		margin-top: 0.5em;
+	}
+	.links a {
+		color: rgb(var(--gray));
+	}
+	.links a:hover {
+		color: rgb(var(--gray-dark));
+	}
+</style>

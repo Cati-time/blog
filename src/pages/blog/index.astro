@@ -1,0 +1,36 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import PostList from '../../components/PostList.astro';
+import { SITE } from '../../consts';
+import { getPosts } from '../../lib/posts';
+
+const posts = await getPosts();
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+	<head>
+		<BaseHead title="전체 글" description={SITE.description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>전체 글 <small>({posts.length})</small></h1>
+			<PostList posts={posts} />
+		</main>
+		<Footer />
+	</body>
+</html>
+<style>
+	h1 {
+		font-size: 2em;
+		margin-bottom: 0.5em;
+	}
+	h1 small {
+		font-size: 0.5em;
+		color: rgb(var(--gray));
+		font-weight: normal;
+	}
+</style>

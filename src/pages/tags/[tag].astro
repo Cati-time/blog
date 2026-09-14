@@ -1,0 +1,50 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import PostList from '../../components/PostList.astro';
+import { SITE } from '../../consts';
+import { getPosts, getTagCounts } from '../../lib/posts';
+
+export async function getStaticPaths() {
+	const tags = await getTagCounts();
+	const posts = await getPosts();
+	return tags.map(([tag]) => ({
+		params: { tag },
+		props: { tag, posts: posts.filter((p) => p.data.tags.includes(tag)) },
+	}));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+	<head>
+		<BaseHead title={`#${tag}`} description={`${tag} 태그가 달린 글 ${posts.length}개`} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<p class="crumb"><a href={`${import.meta.env.BASE_URL}tags/`}>← 모든 태그</a></p>
+			<h1>#{tag} <small>({posts.length})</small></h1>
+			<PostList posts={posts} />
+		</main>
+		<Footer />
+	</body>
+</html>
+<style>
+	h1 {
+		font-size: 2em;
+		margin-bottom: 0.5em;
+	}
+	h1 small {
+		font-size: 0.5em;
+		color: rgb(var(--gray));
+		font-weight: normal;
+	}
+	.crumb {
+		margin: 0;
+		font-size: 0.9em;
+	}
+</style>
