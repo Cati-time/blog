@@ -25,14 +25,14 @@ npm run new "제목" slug --tags a,b   # 새 글
 
 ### 2. GitHub 저장소 + Pages
 
-1. GitHub 에서 저장소 생성 (`<아이디>.github.io` 권장, Public)
+1. GitHub 에서 저장소 생성 (`Cati-time.github.io`, **Public 필수**(Free 플랜 Organization 은 비공개 저장소에서 Pages 를 쓸 수 없음))
 2. 이 폴더를 push
    ```bash
-   git remote add origin git@github.com:<아이디>/<아이디>.github.io.git
+   git remote add origin git@github.com:Cati-time/Cati-time.github.io.git
    git push -u origin main
    ```
 3. 저장소 **Settings → Pages → Build and deployment → Source** 를 **GitHub Actions** 로 변경
-4. Actions 탭에서 배포가 끝나면 `https://<아이디>.github.io` 접속
+4. Actions 탭에서 배포가 끝나면 `https://cati-time.github.io` 접속
 
 ### 3. 댓글 (giscus)
 

@@ -3,17 +3,17 @@
  */
 export const SITE = {
 	// GitHub Pages 주소. 저장소 이름이 <아이디>.github.io 이면 그대로 두고 아이디만 바꾸세요.
-	url: 'https://YOUR_GITHUB_ID.github.io',
+	url: 'https://cati-time.github.io',
 	// 저장소 이름이 <아이디>.github.io 가 아니면 '/저장소이름' 으로 바꾸세요. (예: '/blog')
 	base: '/',
 
-	title: 'Dev Blog',
+	title: 'Cati time Tech Blog',
 	description: '개발하면서 배우고 삽질한 것들을 기록합니다.',
-	author: 'Your Name',
+	author: 'Cati time',
 	lang: 'ko',
 
 	// 헤더/푸터 링크
-	github: 'https://github.com/YOUR_GITHUB_ID',
+	github: 'https://github.com/Cati-time',
 	email: '',
 
 	// 홈 화면에 보여줄 최근 글 개수
@@ -28,7 +28,7 @@ export const SITE = {
  * repo 가 비어 있으면 댓글 영역이 렌더링되지 않습니다.
  */
 export const GISCUS = {
-	repo: '', // 예: 'YOUR_GITHUB_ID/YOUR_GITHUB_ID.github.io'
+	repo: 'Cati-time/Cati-time.github.io',
 	repoId: '',
 	category: 'Announcements',
 	categoryId: '',
