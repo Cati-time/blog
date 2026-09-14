@@ -2,9 +2,9 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "blog-preview",
+      "name": "blog-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "preview", "--", "--port", "4321"],
+      "runtimeArgs": ["run", "dev", "--", "--port", "4321"],
       "port": 4321
     }
   ]
