@@ -9,7 +9,10 @@ import Header from '../components/Header.astro';
 import Tags from '../components/Tags.astro';
 import { SITE } from '../consts';
 
-type Props = CollectionEntry<'blog'>['data'] & {
+// 글 이외의 페이지(소개 등)도 이 레이아웃을 쓰므로 tags·draft 는 선택으로 둔다
+type Props = Omit<CollectionEntry<'blog'>['data'], 'tags' | 'draft'> & {
+	tags?: string[];
+	draft?: boolean;
 	minutesRead?: string;
 	showComments?: boolean;
 };

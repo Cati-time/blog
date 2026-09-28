@@ -28,7 +28,7 @@ Consult these guides before working on related tasks:
 - 저장소: `Cati-time/blog`, 사이트: `https://cati-time.github.io/blog/` (`site.config.mjs` 의 `base: '/blog'`). 링크는 항상 `import.meta.env.BASE_URL` 기준으로 만든다.
 - 글: `npm run new "제목" slug --tags a,b [--draft]` → `src/content/blog/<slug>/index.md`, 주소는 `/posts/<slug>/`.
 - **push 는 하지 않는다.** 전역 hook 이 막고, main push 는 곧 공개 배포다. 커밋까지 하고 "push 하면 배포됩니다" 라고 알린다.
-- 커밋 전 반드시 `npm run build` 통과를 확인한다.
+- 커밋 전 반드시 `npm run build` 통과를 확인한다. build 는 `astro check`(타입 검사) 후 빌드하므로 GitHub Actions 배포도 타입 오류가 있으면 멈춘다.
 - 커밋 메시지 접두어: `post:` 새 글·발행, `edit:` 글 수정, `fix:` 버그, `style:` 디자인, `config:` 설정, `chore:` 의존성·도구.
 - 새 글은 기본 `draft: true` 로 만들고, 사용자가 "발행" 이라고 할 때만 `draft: false` 로 바꾼다.
 - `gh api` 로 저장소 설정(Pages, Discussions 등)을 바꾸는 작업은 실행 전에 사용자에게 확인한다. 조회(`gh run list`, graphql 읽기)는 바로 해도 된다.

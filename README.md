@@ -9,7 +9,8 @@ Astro + GitHub Pages 기술 블로그. 댓글은 giscus, 피드는 RSS.
 ```bash
 npm install
 npm run dev        # http://localhost:4321
-npm run build      # dist/ 에 정적 파일 생성
+npm run check      # 타입 검사만 (astro check)
+npm run build      # 타입 검사 후 dist/ 에 정적 파일 생성
 npm run preview    # 빌드 결과 미리보기
 npm run new "제목" slug --tags a,b   # 새 글
 ```
