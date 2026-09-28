@@ -6,7 +6,7 @@
 npm run new "글 제목" my-post-slug --tags astro,blog
 ```
 
-- `my-post-slug` 는 URL 이 됩니다 → `/blog/my-post-slug/`. 영문 소문자·숫자·하이픈만 쓰세요.
+- `my-post-slug` 는 URL 이 됩니다 → `/posts/my-post-slug/` (사이트 기준 `https://cati-time.github.io/blog/posts/my-post-slug/`). 영문 소문자·숫자·하이픈만 쓰세요.
 - 한글 제목만 넣고 slug 를 생략하면 `2026-09-14-1130` 같은 날짜 slug 가 자동 생성됩니다.
 - `--draft` 를 붙이면 초안으로 생성됩니다. 초안은 개발 서버에서만 보이고 배포에는 포함되지 않습니다.
 

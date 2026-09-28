@@ -25,14 +25,14 @@ npm run new "제목" slug --tags a,b   # 새 글
 
 ### 2. GitHub 저장소 + Pages
 
-1. GitHub 에서 저장소 생성 (`Cati-time.github.io`, **Public 필수**(Free 플랜 Organization 은 비공개 저장소에서 Pages 를 쓸 수 없음))
+1. GitHub 저장소: `Cati-time/blog` (**Public 필수** — Free 플랜 Organization 은 비공개 저장소에서 Pages 를 쓸 수 없음)
 2. 이 폴더를 push
    ```bash
-   git remote add origin git@github.com:Cati-time/Cati-time.github.io.git
+   git remote add origin https://github.com/Cati-time/blog.git
    git push -u origin main
    ```
 3. 저장소 **Settings → Pages → Build and deployment → Source** 를 **GitHub Actions** 로 변경
-4. Actions 탭에서 배포가 끝나면 `https://cati-time.github.io` 접속
+4. Actions 탭에서 배포가 끝나면 `https://cati-time.github.io/blog/` 접속
 
 ### 3. 댓글 (giscus)
 
@@ -49,7 +49,7 @@ site.config.mjs          ← 블로그 설정 (여기만 고치면 됨)
 src/content/blog/        ← 글 (폴더 하나 = 글 하나)
   hello-world/index.md
 scripts/new-post.mjs     ← npm run new
-src/pages/               ← 홈 / 글 목록 / 태그 / 소개 / rss.xml
+src/pages/               ← 홈 / posts(글 목록·상세) / 태그 / 소개 / rss.xml
 src/layouts/BlogPost.astro
 src/components/          ← Header, Footer, PostList, Tags, Giscus
 .github/workflows/deploy.yml  ← main push 시 자동 배포

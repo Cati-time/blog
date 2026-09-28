@@ -71,5 +71,5 @@ const frontmatter = [
 mkdirSync(dir, { recursive: true });
 writeFileSync(file, frontmatter, 'utf8');
 console.log(`✔ 생성됨: ${file}`);
-console.log(`  주소: /blog/${slug}/`);
+console.log(`  주소: /posts/${slug}/`);
 if (flags.draft) console.log('  draft: true → 배포에서는 제외됩니다. 발행하려면 draft 를 지우거나 false 로.');

@@ -19,7 +19,7 @@ export async function getTagCounts(): Promise<[string, number][]> {
 }
 
 export function postUrl(post: Post): string {
-	return `${import.meta.env.BASE_URL}blog/${post.id}/`;
+	return `${import.meta.env.BASE_URL}posts/${post.id}/`;
 }
 
 export function tagUrl(tag: string): string {

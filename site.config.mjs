@@ -5,7 +5,7 @@ export const SITE = {
 	// GitHub Pages 주소. 저장소 이름이 <아이디>.github.io 이면 그대로 두고 아이디만 바꾸세요.
 	url: 'https://cati-time.github.io',
 	// 저장소 이름이 <아이디>.github.io 가 아니면 '/저장소이름' 으로 바꾸세요. (예: '/blog')
-	base: '/',
+	base: '/blog',
 
 	title: 'Cati time Tech Blog',
 	description: '개발하면서 배우고 삽질한 것들을 기록합니다.',
@@ -28,7 +28,7 @@ export const SITE = {
  * repo 가 비어 있으면 댓글 영역이 렌더링되지 않습니다.
  */
 export const GISCUS = {
-	repo: 'Cati-time/Cati-time.github.io',
+	repo: 'Cati-time/blog',
 	repoId: '',
 	category: 'Announcements',
 	categoryId: '',
