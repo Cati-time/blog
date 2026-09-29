@@ -187,7 +187,7 @@ curl -s -o /dev/null -w '%{http_code}\n' https://cati-time.github.io/blog/
 
 ## 4. 일상 운영 — 이렇게 말하면 됩니다
 
-글 작성·옮기기·다듬기·발행 준비는 저장소 스킬 `blog-write` 가 절차를 정한다 (`/blog-write`, 사용법은 WRITING_GUIDE.md §8).
+사용자가 준 Markdown·HTML 문서를 글로 옮기는 일은 저장소 스킬 `blog-write` 가 절차를 정한다 — 스타일만 빼고 내용은 그대로 (`/blog-write`, 사용법은 WRITING_GUIDE.md §8).
 
 | 요청 예시 | Claude가 하는 일 | push |
 | --- | --- | --- |

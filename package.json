@@ -14,7 +14,8 @@
 		"new": "node scripts/new-post.mjs",
 		"astro": "astro",
 		"check:tokens": "node scripts/check-tokens.mjs",
-		"check:posts": "node scripts/check-posts.mjs"
+		"check:posts": "node scripts/check-posts.mjs",
+		"import": "node scripts/import-doc.mjs"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^8.0.1",
@@ -28,7 +29,11 @@
 	},
 	"devDependencies": {
 		"@astrojs/check": "^0.9.10",
+		"@astrojs/markdown-satteri": "^0.4.1",
+		"@mixmark-io/domino": "^2.2.0",
 		"reading-time": "^1.5.0",
+		"turndown": "^7.2.4",
+		"turndown-plugin-gfm": "^1.0.2",
 		"typescript": "^6.0.3"
 	}
 }

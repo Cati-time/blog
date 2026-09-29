@@ -10,10 +10,12 @@
  *   P2 금지 HTML (script·iframe·style·form·object·embed, on* 이벤트, javascript: 링크)
  *   P3 인라인 style 속성 (디자인 토큰을 우회한다)
  *   P4 이미지 설명(alt) 없음, 글 폴더에 없는 로컬 이미지
+ *   P5 HTML <img> 로 쓴 글 폴더 이미지 — 빌드가 파일을 배포하지 않아 깨진다. ![설명](./파일) 로 써야 한다
  *  경고
  *   W1 description 비어 있음      W2 코드 블록에 언어 없음      W3 본문에 # (h1) 사용
  *   W4 사설 IP·내부 호스트명      W5 이메일 주소                W6 class 속성
  *   W7 base 없는 절대 링크(/posts/…) — 사이트는 /blog/ 아래에 있다
+ *   W8 문장부호로 끝나는 강조 뒤에 글자가 붙음 (**"인용"**은) — 강조가 풀려 별표가 보인다
  */
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
@@ -109,12 +111,16 @@ for (const file of files) {
 		for (const m of line.matchAll(/<img\b[^>]*>/gi)) {
 			const alt = m[0].match(/\salt\s*=\s*["']([^"']*)["']/i);
 			if (!alt || !alt[1].trim()) add('error', n, 'P4', 'HTML <img> 에 alt 설명이 없습니다');
+			if (/\ssrc\s*=\s*["']?\.{0,2}\/?(?!https?:|\/\/|data:)[^"'\s>]+/i.test(m[0]) && !/\ssrc\s*=\s*["']?(https?:|\/\/|data:)/i.test(m[0]))
+				add('error', n, 'P5', 'HTML <img> 로 쓴 글 폴더 이미지는 블로그에 표시되지 않습니다 — ![설명](./파일) 로 쓰세요');
 		}
 
 		if (/^#\s/.test(line)) add('warn', n, 'W3', '본문 제목은 ## 부터 씁니다 (# 은 글 제목 자리)');
 		if (PRIVATE_IP.test(line)) add('warn', n, 'W4', `사설 IP '${line.match(PRIVATE_IP)[0]}' — 실제 사내 주소라면 지우세요`);
 		if (INTERNAL_HOST.test(line)) add('warn', n, 'W4', `내부 호스트명 '${line.match(INTERNAL_HOST)[0]}' — 실제 사내 주소라면 지우세요`);
 		if (EMAIL.test(line)) add('warn', n, 'W5', `이메일 주소 '${line.match(EMAIL)[0]}' — 개인정보라면 지우세요`);
+		if (/(\*\*|__)(?=\S)[^*_]*?[\p{P}\p{S}]\1(?=[\p{L}\p{N}])/u.test(line) || /(?<![*\w])\*(?=\S)[^*]*?[\p{P}\p{S}]\*(?=[\p{L}\p{N}])/u.test(line))
+			add('warn', n, 'W8', '문장부호로 끝나는 강조 뒤에 글자가 붙어 강조가 풀립니다 — <strong>…</strong> 로 쓰거나 띄어 쓰세요');
 		if (/\]\(\/(posts|tags|ax|architecture)\//.test(line) || /href=["']\/(posts|tags)\//.test(line))
 			add('warn', n, 'W7', '절대 링크에 /blog 가 빠졌습니다 — 다른 글은 ../slug/ 처럼 상대 경로로');
 	});
