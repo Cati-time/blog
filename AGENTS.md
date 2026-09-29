@@ -33,4 +33,4 @@ Consult these guides before working on related tasks:
 - 새 글은 기본 `draft: true` 로 만들고, 사용자가 "발행" 이라고 할 때만 `draft: false` 로 바꾼다.
 - `gh api` 로 저장소 설정(Pages, Discussions 등)을 바꾸는 작업은 실행 전에 사용자에게 확인한다. 조회(`gh run list`, graphql 읽기)는 바로 해도 된다.
 - 토큰·비밀값은 파일이나 채팅에 남기지 않는다.
-- **스타일은 디자인 토큰으로만 쓴다.** 정본 `src/styles/tokens.css`, 정의서 [docs/design-tokens.md](docs/design-tokens.md) (두 파일은 같은 커밋에서 수정). 컴포넌트에 색상 값·원시 토큰(`--p-*`)·정의 안 된 토큰을 쓰면 `npm run check:tokens` 가 빌드를 막는다. 스타일을 바꾸면 라이트·다크 둘 다 확인한다.
+- **스타일은 디자인 토큰으로만 쓴다.** 정본 `src/styles/tokens.css`, 정의서 [docs/design-tokens.md](docs/design-tokens.md) (두 파일은 같은 커밋에서 수정). 컴포넌트에 색상 값·원시 토큰(`--p-*`)·정의 안 된 토큰을 쓰면 `npm run check:tokens` 가 빌드를 막는다. **다크 모드는 지원하지 않는다**(사용자 결정 2026-09-29) — 다크 테마·토글을 다시 넣지 않는다.

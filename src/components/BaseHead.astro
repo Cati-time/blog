@@ -17,30 +17,6 @@ const fullTitle = title === SITE.title ? title : `${title} · ${SITE.title}`;
 const base = import.meta.env.BASE_URL;
 ---
 
-<!-- 테마: 첫 페인트 전에 html[data-theme] 를 정해 깜빡임을 막는다 -->
-<script is:inline>
-	(() => {
-		const KEY = 'theme';
-		const read = () => {
-			try {
-				return localStorage.getItem(KEY);
-			} catch {
-				return null;
-			}
-		};
-		const mq = window.matchMedia('(prefers-color-scheme: dark)');
-		const stored = read();
-		const theme = stored === 'light' || stored === 'dark' ? stored : mq.matches ? 'dark' : 'light';
-		document.documentElement.dataset.theme = theme;
-		mq.addEventListener('change', (e) => {
-			if (read()) return; // 사용자가 직접 고른 값이 있으면 시스템 변경을 따르지 않는다
-			const next = e.matches ? 'dark' : 'light';
-			document.documentElement.dataset.theme = next;
-			document.dispatchEvent(new CustomEvent('themechange', { detail: next }));
-		});
-	})();
-</script>
-
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />

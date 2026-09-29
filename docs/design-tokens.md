@@ -4,7 +4,8 @@
 정본은 [`src/styles/tokens.css`](../src/styles/tokens.css) 하나이고, 이 문서는 그 파일의 설명서다.
 **두 파일은 같은 커밋에서 함께 고친다.**
 
-- 디자인 방향: 넉넉한 여백, 색은 브랜드 초록 하나만, 한글 본문 가독성 우선, 라이트·다크 동등 지원
+- 디자인 방향: 넉넉한 여백, 색은 브랜드 초록 하나만, 한글 본문 가독성 우선
+- **라이트 단일 테마.** 다크 모드는 지원하지 않는다 (사용자 결정 2026-09-29). 다크 테마·토글을 다시 넣지 않는다.
 - 참고한 테마: AstroPaper, Astro Theme Pure, Astro Cactus (2026-09 기준 Astro 인기 블로그 테마)
 - 브랜드 색: Cati-time 조직 로고의 초록 계열
 
@@ -15,15 +16,14 @@
 | 층 | 접두어 | 역할 | 컴포넌트에서 사용 |
 | --- | --- | --- | --- |
 | Primitive | `--p-*` | 원시 팔레트. 색 이름 + 명도 | ❌ 금지 |
-| Semantic | `--color-*` | 역할 이름. **라이트/다크에서 값이 바뀌는 유일한 층** | ✅ |
+| Semantic | `--color-*` | 역할 이름. 컴포넌트가 쓰는 색은 전부 이 층 | ✅ |
 | Scale | `--font-*` `--text-*` `--leading-*` `--weight-*` `--tracking-*` `--space-*` `--radius-*` `--shadow-*` `--duration-*` `--ease-*` `--size-*` `--z-*` | 테마와 무관한 치수 | ✅ |
 
 ```
 --p-green-700  ──▶  --color-accent  ──▶  a { color: var(--color-accent) }
- (원시 값)          (역할, 테마별 매핑)      (컴포넌트)
+ (원시 값)          (역할)      (컴포넌트)
 ```
 
-테마 전환은 `html[data-theme="light" | "dark"]` 로 한다. 첫 방문은 OS 설정을 따르고, 헤더의 해/달 버튼으로 바꾸면 `localStorage.theme` 에 저장된다.
 
 ---
 
@@ -47,44 +47,44 @@
 | `--p-gray-900` | `#111318` | | `--p-amber-800` | `#92400e` |
 | `--p-gray-950` | `#0b0d10` | | `--p-amber-950` | `#2b1d05` |
 
-### 2-2. Semantic 색상 (라이트 / 다크)
+### 2-2. Semantic 색상
 
-| 토큰 | 용도 | Light | Dark |
-| --- | --- | --- | --- |
-| `--color-bg` | 페이지 배경 | gray-0 | gray-950 |
-| `--color-bg-subtle` | 인용·표 머리 등 옅은 면 | gray-50 | gray-900 |
-| `--color-surface` | 카드 면 | gray-0 | gray-900 |
-| `--color-surface-hover` | 목록·버튼 hover 면 | gray-50 | gray-850 |
-| `--color-header-bg` | 반투명 헤더(블러) | white 80% | gray-950 80% |
-| `--color-border` | 기본 구분선 | gray-200 | gray-800 |
-| `--color-border-strong` | 강조 구분선 | gray-300 | gray-700 |
-| `--color-text` | 본문·제목 | gray-900 | gray-100 |
-| `--color-text-muted` | 설명·부제 | gray-600 | gray-400 |
-| `--color-text-subtle` | 날짜·메타 **(본문 금지)** | gray-500 | gray-500 |
-| `--color-accent` | 링크·활성·포인트 | green-700 | green-400 |
-| `--color-accent-hover` | 링크 hover | green-800 | green-300 |
-| `--color-accent-contrast` | accent 면 위 글자 | gray-0 | gray-950 |
-| `--color-accent-soft` | 태그·활성 메뉴 면 | green-50 | green-400 12% |
-| `--color-accent-soft-text` | soft 면 위 글자 | green-800 | green-300 |
-| `--color-code-bg` | 코드 블록 면 | gray-50 | gray-900 |
-| `--color-code-border` | 코드 블록 테두리 | gray-200 | gray-800 |
-| `--color-inline-code-bg` | 인라인 코드 면 | gray-100 | gray-800 |
-| `--color-inline-code-text` | 인라인 코드 글자 | gray-800 | gray-100 |
-| `--color-draft-bg` | 초안 배지 면 | amber-100 | amber-950 |
-| `--color-draft-text` | 초안 배지 글자 | amber-800 | amber-300 |
-| `--color-selection` | 텍스트 선택 | green-100 | green-400 25% |
-| `--color-focus-ring` | 키보드 포커스 링 | green-600 | green-400 |
+| 토큰 | 용도 | 값 |
+| --- | --- | --- |
+| `--color-bg` | 페이지 배경 | gray-0 |
+| `--color-bg-subtle` | 인용·표 머리 등 옅은 면 | gray-50 |
+| `--color-surface` | 카드 면 | gray-0 |
+| `--color-surface-hover` | 목록·버튼 hover 면 | gray-50 |
+| `--color-header-bg` | 반투명 헤더(블러) | white 80% |
+| `--color-border` | 기본 구분선 | gray-200 |
+| `--color-border-strong` | 강조 구분선 | gray-300 |
+| `--color-text` | 본문·제목 | gray-900 |
+| `--color-text-muted` | 설명·부제 | gray-600 |
+| `--color-text-subtle` | 날짜·메타 **(본문 금지)** | gray-500 |
+| `--color-accent` | 링크·활성·포인트 | green-700 |
+| `--color-accent-hover` | 링크 hover | green-800 |
+| `--color-accent-contrast` | accent 면 위 글자 | gray-0 |
+| `--color-accent-soft` | 태그·활성 메뉴 면 | green-50 |
+| `--color-accent-soft-text` | soft 면 위 글자 | green-800 |
+| `--color-code-bg` | 코드 블록 면 | gray-50 |
+| `--color-code-border` | 코드 블록 테두리 | gray-200 |
+| `--color-inline-code-bg` | 인라인 코드 면 | gray-100 |
+| `--color-inline-code-text` | 인라인 코드 글자 | gray-800 |
+| `--color-draft-bg` | 초안 배지 면 | amber-100 |
+| `--color-draft-text` | 초안 배지 글자 | amber-800 |
+| `--color-selection` | 텍스트 선택 | green-100 |
+| `--color-focus-ring` | 키보드 포커스 링 | green-600 |
 
 ### 2-3. 대비 기준 (WCAG)
 
-| 조합 | Light | Dark | 기준 |
-| --- | --- | --- | --- |
-| text / bg | 18.6:1 | 17.5:1 | AAA |
-| text-muted / bg | 7.6:1 | 7.7:1 | AAA |
-| text-subtle / bg | 4.8:1 | 4.0:1 | 메타 전용(작은 보조 정보) |
-| accent / bg | 5.5:1 | 10.1:1 | AA 이상 |
+| 조합 | 대비 | 기준 |
+| --- | --- | --- |
+| text / bg | 18.6:1 | AAA |
+| text-muted / bg | 7.6:1 | AAA |
+| text-subtle / bg | 4.8:1 | AA |
+| accent / bg | 5.5:1 | AA |
 
-`--color-text-subtle` 은 다크에서 AA(4.5:1)에 조금 못 미친다. 그래서 **날짜·개수·캡션 같은 보조 정보에만** 쓰고 읽어야 하는 문장에는 `--color-text-muted` 를 쓴다.
+`--color-text-subtle` 은 **날짜·개수·캡션 같은 보조 정보에만** 쓰고, 읽어야 하는 문장에는 `--color-text-muted` 를 쓴다.
 
 ---
 
@@ -153,17 +153,17 @@ Pretendard 는 jsDelivr 의 dynamic subset 으로 불러와 필요한 글자 범
 
 ### 그림자
 
-| 토큰 | Light | Dark |
-| --- | --- | --- |
-| `--shadow-sm` | 0 1px 2px / 6% | 0 1px 2px / 40% |
-| `--shadow-md` | 0 4px 16px / 8% | 0 4px 16px / 50% |
+| 토큰 | 값 |
+| --- | --- |
+| `--shadow-sm` | 0 1px 2px / 6% |
+| `--shadow-md` | 0 4px 16px / 8% |
 
 ### 움직임
 
 | 토큰 | 값 | 용도 |
 | --- | --- | --- |
 | `--duration-fast` | 120ms | hover |
-| `--duration-base` | 200ms | 테마 전환 |
+| `--duration-base` | 200ms | 예비 (큰 전환) |
 | `--ease-standard` | cubic-bezier(0.2, 0, 0, 1) | 전부 |
 
 `prefers-reduced-motion: reduce` 이면 전환 시간을 0으로 만든다.
@@ -196,24 +196,24 @@ CSS 변수는 미디어쿼리 안에서 쓸 수 없어 **값으로 고정**한�
 | --- | --- | --- |
 | **R1** | `tokens.css` 밖의 스타일에서 색상 값을 직접 쓰지 않는다 (`#hex`, `rgb()`, `hsl()`, `oklch()` …) | ❌ `color: #047857` → ✅ `color: var(--color-accent)` |
 | **R2** | 원시 토큰 `--p-*` 를 컴포넌트에서 참조하지 않는다 | ❌ `var(--p-gray-200)` → ✅ `var(--color-border)` |
-| **R3** | 정의되지 않은 토큰을 참조하지 않는다 (같은 파일에서 선언한 지역 변수, Shiki 의 `--shiki-*` 는 예외) | ❌ `var(--space-7)` |
+| **R3** | 정의되지 않은 토큰을 참조하지 않는다 (같은 파일에서 선언한 지역 변수는 예외) | ❌ `var(--space-7)` |
 
 검사 대상은 `src/` 아래 `.css` 파일과 `.astro` 의 `<style>` 블록, `style=""` 속성이다.
 
 검사가 잡지 않지만 지키는 것:
 
 - 간격·글자 크기·모서리는 **스케일 토큰으로** 쓴다. 1px 테두리, 3px 점처럼 토큰보다 작은 장식 치수만 예외다.
-- 새 색이 필요하면 **Semantic 토큰을 먼저 추가**하고 라이트·다크 값을 둘 다 정한다. 한쪽만 정의하지 않는다.
+- 새 색이 필요하면 **Semantic 토큰을 먼저 추가**하고 원시 팔레트에 매핑한다.
 - 같은 역할이 두 번 이상 나오면 토큰으로 올린다. 한 번만 쓰는 값은 컴포넌트 안에 둔다.
 
 ---
 
 ## 6. 토큰 바꾸는 절차
 
-1. `src/styles/tokens.css` 수정 (Semantic 은 라이트·다크 블록 둘 다)
+1. `src/styles/tokens.css` 수정
 2. 이 문서의 해당 표 수정 — 같은 커밋
 3. `npm run build` 통과 확인 (토큰 검사 → 타입 검사 → 빌드)
-4. `npm run dev` 로 라이트·다크 둘 다 눈으로 확인
+4. `npm run dev` 로 화면 확인
 5. 커밋 접두어 `style:`
 
 브랜드 색을 바꾸려면 `--p-green-*` 대신 새 팔레트를 추가하고 `--color-accent*`, `--color-selection`, `--color-focus-ring` 의 매핑만 바꾸면 된다. 컴포넌트는 고치지 않는다.

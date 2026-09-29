@@ -4,7 +4,8 @@
  *
  * 3단 구조
  *   1) Primitive  --p-*      : 원시 값(색상 팔레트 등). 컴포넌트에서 직접 쓰지 않는다.
- *   2) Semantic   --color-*  : 역할 이름. 라이트/다크에서 값이 바뀌는 것은 이 층뿐이다.
+ *   2) Semantic   --color-*  : 역할 이름. 컴포넌트가 참조하는 색은 전부 이 층이다.
+ *                                (라이트 단일 테마 — 다크 모드는 지원하지 않는다)
  *   3) Scale      --font-* --text-* --leading-* --weight-* --tracking-*
  *                 --space-* --radius-* --shadow-* --duration-* --ease-* --size-* --z-*
  *                 : 테마와 무관한 치수. 컴포넌트는 2)·3)만 참조한다.
@@ -105,7 +106,7 @@
 	--size-header: 3.75rem; /* 헤더 높이 60px */
 	--z-header: 10;
 
-	/* ── 2. Semantic: Light (기본) ──────────────────────── */
+	/* ── 2. Semantic ─────────────────────────────────────── */
 	color-scheme: light;
 	--color-bg: var(--p-gray-0);
 	--color-bg-subtle: var(--p-gray-50);
@@ -140,38 +141,3 @@
 	--shadow-md: 0 4px 16px rgb(17 19 24 / 0.08);
 }
 
-/* ── 2. Semantic: Dark (헤더의 토글이 html[data-theme] 를 정한다) ── */
-:root[data-theme='dark'] {
-	color-scheme: dark;
-	--color-bg: var(--p-gray-950);
-	--color-bg-subtle: var(--p-gray-900);
-	--color-surface: var(--p-gray-900);
-	--color-surface-hover: var(--p-gray-850);
-	--color-header-bg: rgb(11 13 16 / 0.8);
-	--color-border: var(--p-gray-800);
-	--color-border-strong: var(--p-gray-700);
-
-	--color-text: var(--p-gray-100);
-	--color-text-muted: var(--p-gray-400);
-	--color-text-subtle: var(--p-gray-500);
-
-	--color-accent: var(--p-green-400);
-	--color-accent-hover: var(--p-green-300);
-	--color-accent-contrast: var(--p-gray-950);
-	--color-accent-soft: rgb(52 211 153 / 0.12);
-	--color-accent-soft-text: var(--p-green-300);
-
-	--color-code-bg: var(--p-gray-900);
-	--color-code-border: var(--p-gray-800);
-	--color-inline-code-bg: var(--p-gray-800);
-	--color-inline-code-text: var(--p-gray-100);
-
-	--color-draft-bg: var(--p-amber-950);
-	--color-draft-text: var(--p-amber-300);
-
-	--color-selection: rgb(52 211 153 / 0.25);
-	--color-focus-ring: var(--p-green-400);
-
-	--shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
-	--shadow-md: 0 4px 16px rgb(0 0 0 / 0.5);
-}

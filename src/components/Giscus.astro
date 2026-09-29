@@ -7,7 +7,6 @@ const enabled = Boolean(GISCUS.repo && GISCUS.repoId && GISCUS.categoryId);
 	enabled ? (
 		<section class="comments" aria-label="댓글">
 			<script is:inline define:vars={{ cfg: GISCUS }}>
-				const pick = (t) => (t === 'dark' ? cfg.darkTheme : cfg.lightTheme);
 				const s = document.createElement('script');
 				s.src = 'https://giscus.app/client.js';
 				const attrs = {
@@ -20,7 +19,7 @@ const enabled = Boolean(GISCUS.repo && GISCUS.repoId && GISCUS.categoryId);
 					'reactions-enabled': cfg.reactionsEnabled,
 					'emit-metadata': cfg.emitMetadata,
 					'input-position': cfg.inputPosition,
-					theme: pick(document.documentElement.dataset.theme),
+					theme: cfg.theme,
 					lang: cfg.lang,
 					loading: 'lazy',
 				};
@@ -28,11 +27,6 @@ const enabled = Boolean(GISCUS.repo && GISCUS.repoId && GISCUS.categoryId);
 				s.crossOrigin = 'anonymous';
 				s.async = true;
 				document.currentScript.parentElement.appendChild(s);
-				// 사이트 테마 전환 시 댓글창도 따라간다
-				document.addEventListener('themechange', (e) => {
-					const frame = document.querySelector('iframe.giscus-frame');
-					frame?.contentWindow?.postMessage({ giscus: { setConfig: { theme: pick(e.detail) } } }, 'https://giscus.app');
-				});
 			</script>
 		</section>
 	) : import.meta.env.DEV ? (
