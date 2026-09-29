@@ -26,7 +26,8 @@ Consult these guides before working on related tasks:
 설정·절차 전체는 [docs/claude-management.md](docs/claude-management.md) 참고.
 
 - 저장소: `Cati-time/blog`, 사이트: `https://cati-time.github.io/blog/` (`site.config.mjs` 의 `base: '/blog'`). 링크는 항상 `import.meta.env.BASE_URL` 기준으로 만든다.
-- 글: `npm run new "제목" slug --tags a,b [--draft]` → `src/content/blog/<slug>/index.md`, 주소는 `/posts/<slug>/`.
+- 글: `npm run new "제목" slug --category <ax|architecture> --platform <android|ios|spring|web|back-office> --tags a,b [--draft]` → `src/content/blog/<slug>/index.md`, 주소는 `/posts/<slug>/`.
+- 메뉴: 상단 대분류 2개(AX, Architecture) × 하위 플랫폼 5개. 목록의 정본은 `site.config.mjs` 의 `CATEGORIES`·`PLATFORMS` 이고 스키마·메뉴·페이지·새 글 스크립트가 모두 여기서 읽는다. 글의 분류가 애매하면 사용자에게 묻는다.
 - **push 는 하지 않는다.** 전역 hook 이 막고, main push 는 곧 공개 배포다. 커밋까지 하고 "push 하면 배포됩니다" 라고 알린다.
 - 커밋 전 반드시 `npm run build` 통과를 확인한다. build 는 `astro check`(타입 검사) 후 빌드하므로 GitHub Actions 배포도 타입 오류가 있으면 멈춘다.
 - 커밋 메시지 접두어: `post:` 새 글·발행, `edit:` 글 수정, `fix:` 버그, `style:` 디자인, `config:` 설정, `chore:` 의존성·도구.

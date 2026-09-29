@@ -8,11 +8,14 @@ import Giscus from '../components/Giscus.astro';
 import Header from '../components/Header.astro';
 import Tags from '../components/Tags.astro';
 import { SITE } from '../consts';
+import { categoryUrl, getCategory, getPlatform } from '../lib/posts';
 
 // 글 이외의 페이지(소개 등)도 이 레이아웃을 쓰므로 tags·draft 는 선택으로 둔다
-type Props = Omit<CollectionEntry<'blog'>['data'], 'tags' | 'draft'> & {
+type Props = Omit<CollectionEntry<'blog'>['data'], 'tags' | 'draft' | 'category' | 'platform'> & {
 	tags?: string[];
 	draft?: boolean;
+	category?: string;
+	platform?: string;
 	minutesRead?: string;
 	showComments?: boolean;
 	showMeta?: boolean;
@@ -26,11 +29,14 @@ const {
 	heroImage,
 	tags = [],
 	draft = false,
+	category,
+	platform,
 	minutesRead,
 	showComments = true,
 	showMeta = true,
 } = Astro.props;
-const base = import.meta.env.BASE_URL;
+const cat = category ? getCategory(category) : undefined;
+const plat = platform ? getPlatform(platform) : undefined;
 ---
 
 <html lang={SITE.lang}>
@@ -43,10 +49,12 @@ const base = import.meta.env.BASE_URL;
 		<main>
 			<article>
 				{
-					showMeta && (
-						<a class="back" href={`${base}posts/`}>
-							← 전체 글
-						</a>
+					cat && (
+						<nav class="crumbs" aria-label="분류">
+							<a href={categoryUrl(cat.id)}>{cat.label}</a>
+							{plat && <span aria-hidden="true">›</span>}
+							{plat && <a href={categoryUrl(cat.id, plat.id)}>{plat.label}</a>}
+						</nav>
 					)
 				}
 				<header class="post-header">
@@ -88,14 +96,20 @@ const base = import.meta.env.BASE_URL;
 </html>
 
 <style>
-	.back {
-		display: inline-block;
-		margin-bottom: var(--space-6);
+	.crumbs {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
+		margin-bottom: var(--space-4);
 		color: var(--color-text-subtle);
 		font-size: var(--text-sm);
+		font-weight: var(--weight-medium);
 	}
-	.back:hover {
+	.crumbs a {
 		color: var(--color-accent);
+	}
+	.crumbs a:hover {
+		color: var(--color-accent-hover);
 	}
 	.post-header {
 		padding-bottom: var(--space-8);

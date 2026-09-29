@@ -1,14 +1,40 @@
 ---
 import { SITE } from '../consts';
+import { CATEGORIES, PLATFORMS, categoryUrl } from '../lib/posts';
 import HeaderLink from './HeaderLink.astro';
 const base = import.meta.env.BASE_URL;
 ---
 
 <header class="site-header">
-	<nav class="nav">
+	<nav class="nav" aria-label="주 메뉴">
 		<a class="brand" href={base}>{SITE.title}</a>
-		<div class="links">
-			<HeaderLink href={`${base}posts/`}>글</HeaderLink>
+		<ul class="menus">
+			{
+				CATEGORIES.map((c) => (
+					<li class="menu">
+						<HeaderLink href={categoryUrl(c.id)} class="menu-trigger">
+							{c.label}
+							<svg class="caret" viewBox="0 0 12 12" width="10" height="10" aria-hidden="true">
+								<path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+							</svg>
+						</HeaderLink>
+						<div class="menu-panel">
+							<ul>
+								<li>
+									<a href={categoryUrl(c.id)}>전체 보기</a>
+								</li>
+								{PLATFORMS.map((p) => (
+									<li>
+										<a href={categoryUrl(c.id, p.id)}>{p.label}</a>
+									</li>
+								))}
+							</ul>
+						</div>
+					</li>
+				))
+			}
+		</ul>
+		<div class="secondary">
 			<HeaderLink href={`${base}tags/`}>태그</HeaderLink>
 			<HeaderLink href={`${base}about/`}>소개</HeaderLink>
 		</div>
@@ -71,10 +97,78 @@ const base = import.meta.env.BASE_URL;
 	.brand:hover {
 		color: var(--color-accent);
 	}
-	.links {
+	.menus {
 		display: flex;
 		gap: var(--space-1);
-		margin-right: auto;
+		margin: 0 auto 0 0;
+		padding: 0;
+		list-style: none;
+	}
+	.menu {
+		position: relative;
+	}
+	.menu :global(.menu-trigger) {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-1);
+		font-size: var(--text-base);
+		font-weight: var(--weight-semibold);
+	}
+	.caret {
+		transition: transform var(--duration-fast) var(--ease-standard);
+	}
+	/* 드롭다운: hover·키보드 포커스로 열린다. 위쪽 여백은 마우스가 건너갈 다리 */
+	.menu-panel {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		padding-top: var(--space-2);
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(calc(var(--space-1) * -1));
+		transition:
+			opacity var(--duration-fast) var(--ease-standard),
+			transform var(--duration-fast) var(--ease-standard),
+			visibility var(--duration-fast);
+	}
+	.menu:hover .menu-panel,
+	.menu:focus-within .menu-panel {
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+	}
+	.menu:hover .caret,
+	.menu:focus-within .caret {
+		transform: rotate(180deg);
+	}
+	.menu-panel ul {
+		min-width: 11rem;
+		margin: 0;
+		padding: var(--space-2);
+		list-style: none;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-md);
+	}
+	.menu-panel a {
+		display: block;
+		padding: var(--space-2) var(--space-3);
+		border-radius: var(--radius-md);
+		color: var(--color-text);
+		font-size: var(--text-sm);
+		white-space: nowrap;
+	}
+	.menu-panel a:hover {
+		background: var(--color-surface-hover);
+		color: var(--color-accent);
+	}
+	.menu-panel li:first-child a {
+		color: var(--color-text-muted);
+	}
+	.secondary {
+		display: flex;
+		gap: var(--space-1);
 	}
 	.actions {
 		display: flex;
@@ -97,16 +191,23 @@ const base = import.meta.env.BASE_URL;
 		background: var(--color-surface-hover);
 		color: var(--color-text);
 	}
+	/* 모바일: 드롭다운 대신 카테고리 페이지의 하위 메뉴를 쓴다 */
 	@media (max-width: 40rem) {
 		.nav {
-			gap: var(--space-3);
+			gap: var(--space-2);
 			padding: 0 var(--space-4);
 		}
 		.brand {
 			font-size: var(--text-sm);
 		}
-		.icon-btn {
+		.menu-panel,
+		.caret,
+		.secondary,
+		.actions {
 			display: none;
+		}
+		.menu :global(.menu-trigger) {
+			font-size: var(--text-sm);
 		}
 	}
 </style>

@@ -8,6 +8,9 @@ const base = import.meta.env.BASE_URL;
 	<div class="inner">
 		<p>&copy; {today.getFullYear()} {SITE.author}</p>
 		<nav class="links">
+			<a href={`${base}posts/`}>전체 글</a>
+			<a href={`${base}tags/`}>태그</a>
+			<a href={`${base}about/`}>소개</a>
 			<a href={`${base}rss.xml`}>RSS</a>
 			{
 				SITE.github && (

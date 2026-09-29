@@ -1,0 +1,82 @@
+---
+// 카테고리 페이지의 하위 메뉴(플랫폼) — 글 개수와 함께
+import { PLATFORMS, categoryUrl, filterPosts, type Post } from '../lib/posts';
+
+interface Props {
+	category: string;
+	active?: string;
+	posts: Post[];
+}
+const { category, active, posts } = Astro.props;
+const total = filterPosts(posts, category).length;
+const items = [
+	{ id: undefined, label: '전체', count: total },
+	...PLATFORMS.map((p) => ({ id: p.id, label: p.label, count: filterPosts(posts, category, p.id).length })),
+];
+---
+
+<nav class="sub-nav" aria-label="플랫폼">
+	<ul>
+		{
+			items.map((item) => (
+				<li>
+					<a
+						href={categoryUrl(category, item.id)}
+						class:list={{ active: item.id === active }}
+						aria-current={item.id === active ? 'page' : undefined}
+					>
+						{item.label}
+						<span class="n">{item.count}</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>
+
+<style>
+	.sub-nav {
+		margin-bottom: var(--space-8);
+		padding-bottom: var(--space-4);
+		border-bottom: 1px solid var(--color-border);
+	}
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	a {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
+		padding: var(--space-1) var(--space-3);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-full);
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+		font-weight: var(--weight-medium);
+		transition:
+			border-color var(--duration-fast) var(--ease-standard),
+			color var(--duration-fast) var(--ease-standard),
+			background-color var(--duration-fast) var(--ease-standard);
+	}
+	a:hover {
+		border-color: var(--color-border-strong);
+		color: var(--color-text);
+	}
+	a.active {
+		border-color: var(--color-accent);
+		background: var(--color-accent-soft);
+		color: var(--color-accent-soft-text);
+	}
+	.n {
+		color: var(--color-text-subtle);
+		font-size: var(--text-xs);
+	}
+	a.active .n {
+		color: inherit;
+	}
+</style>

@@ -3,8 +3,11 @@
 ## 1. 새 글 만들기
 
 ```bash
-npm run new "글 제목" my-post-slug --tags astro,blog
+npm run new "글 제목" my-post-slug --category architecture --platform android --tags compose,state
 ```
+
+- `--category` (필수): `ax` 또는 `architecture` — 상단 메뉴
+- `--platform` (필수): `android` · `ios` · `spring` · `web` · `back-office` — 하위 메뉴
 
 - `my-post-slug` 는 URL 이 됩니다 → `/posts/my-post-slug/` (사이트 기준 `https://cati-time.github.io/blog/posts/my-post-slug/`). 영문 소문자·숫자·하이픈만 쓰세요.
 - 한글 제목만 넣고 slug 를 생략하면 `2026-09-14-1130` 같은 날짜 slug 가 자동 생성됩니다.
@@ -19,6 +22,8 @@ npm run new "글 제목" my-post-slug --tags astro,blog
 title: '글 제목'                 # 필수
 description: '한 줄 요약'         # 목록·RSS·검색엔진에 표시. 꼭 채우세요.
 pubDate: 2026-09-14              # 필수. YYYY-MM-DD
+category: architecture           # 필수. ax | architecture
+platform: android                # 필수. android | ios | spring | web | back-office
 updatedDate: 2026-09-20          # 선택. 수정일
 tags: ['astro', 'blog']          # 선택. 태그 페이지가 자동 생성됩니다
 draft: false                     # true 면 배포 제외
@@ -56,6 +61,7 @@ git push
 | 하고 싶은 것 | 방법 |
 | --- | --- |
 | 블로그 제목·설명·GitHub 링크 변경 | `site.config.mjs` |
+| 메뉴(분류·플랫폼) 추가·이름 변경 | `site.config.mjs` 의 `CATEGORIES` · `PLATFORMS` |
 | 댓글(giscus) 연결 | `site.config.mjs` 의 `GISCUS` 채우기 (`README.md` 참고) |
 | 소개 페이지 수정 | `src/pages/about.astro` |
 | 홈에 보이는 최근 글 개수 | `site.config.mjs` 의 `recentPostsCount` |

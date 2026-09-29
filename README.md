@@ -13,7 +13,7 @@ npm run dev        # http://localhost:4321
 npm run check      # 토큰 검사 + 타입 검사 (빌드 없이)
 npm run build      # 토큰 검사 → 타입 검사 → dist/ 에 정적 파일 생성
 npm run preview    # 빌드 결과 미리보기
-npm run new "제목" slug --tags a,b   # 새 글
+npm run new "제목" slug --category ax --platform android --tags a,b   # 새 글
 ```
 
 ## 처음 한 번만 하는 설정
@@ -51,7 +51,7 @@ site.config.mjs          ← 블로그 설정 (여기만 고치면 됨)
 src/content/blog/        ← 글 (폴더 하나 = 글 하나)
   hello-world/index.md
 scripts/new-post.mjs     ← npm run new
-src/pages/               ← 홈 / posts(글 목록·상세) / 태그 / 소개 / rss.xml
+src/pages/               ← 홈 / [category]/[...platform](메뉴) / posts(글) / 태그 / 소개 / rss.xml
 src/layouts/BlogPost.astro
 src/components/          ← Header, Footer, PostList, Tags, Giscus
 .github/workflows/deploy.yml  ← main push 시 자동 배포

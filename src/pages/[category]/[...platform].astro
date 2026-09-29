@@ -1,0 +1,57 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import CategoryNav from '../../components/CategoryNav.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import PostList from '../../components/PostList.astro';
+import { SITE } from '../../consts';
+import { CATEGORIES, PLATFORMS, filterPosts, getPosts, type Category, type Platform } from '../../lib/posts';
+
+// 글이 없는 조합도 페이지를 만든다 — 메뉴 링크가 404 가 되지 않게
+export async function getStaticPaths() {
+	return CATEGORIES.flatMap((category) => [
+		{ params: { category: category.id, platform: undefined }, props: { category, platform: undefined } },
+		...PLATFORMS.map((platform) => ({
+			params: { category: category.id, platform: platform.id },
+			props: { category, platform },
+		})),
+	]);
+}
+
+interface Props {
+	category: Category;
+	platform?: Platform;
+}
+const { category, platform } = Astro.props;
+const all = await getPosts();
+const posts = filterPosts(all, category.id, platform?.id);
+const title = platform ? `${category.label} · ${platform.label}` : category.title;
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+	<head>
+		<BaseHead title={title} description={category.description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<p class="eyebrow">{category.label}</p>
+			<h1 class="page-title">{platform ? platform.label : category.title}<span class="count">{posts.length}</span></h1>
+			<p class="page-desc">{category.description}</p>
+			<CategoryNav category={category.id} active={platform?.id} posts={all} />
+			<PostList posts={posts} showCategory={false} />
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.eyebrow {
+		margin-bottom: var(--space-2);
+		color: var(--color-accent);
+		font-family: var(--font-mono);
+		font-size: var(--text-sm);
+		font-weight: var(--weight-medium);
+	}
+</style>

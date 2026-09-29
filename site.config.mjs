@@ -21,6 +21,34 @@ export const SITE = {
 };
 
 /**
+ * 메뉴 구조 — 대분류(카테고리) × 플랫폼
+ * 글의 frontmatter 에 category·platform 을 이 id 로 적는다. 여기 없는 값은 빌드에서 막힌다.
+ * 주소: /<category>/  ·  /<category>/<platform>/
+ */
+export const CATEGORIES = [
+	{
+		id: 'ax',
+		label: 'AX',
+		title: 'AX · AI Transformation',
+		description: 'AI 로 개발과 업무 방식을 바꾼 기록 — 도구, 자동화, 에이전트, 실험.',
+	},
+	{
+		id: 'architecture',
+		label: 'Architecture',
+		title: 'Architecture',
+		description: '구조와 설계에 대한 기록 — 플랫폼별 아키텍처, 패턴, 의사결정.',
+	},
+];
+
+export const PLATFORMS = [
+	{ id: 'android', label: 'Android' },
+	{ id: 'ios', label: 'iOS' },
+	{ id: 'spring', label: 'Spring' },
+	{ id: 'web', label: 'Web' },
+	{ id: 'back-office', label: 'Back-office' },
+];
+
+/**
  * giscus 댓글 설정 (GitHub Discussions 기반)
  * 1) 저장소 Settings → General → Features → Discussions 체크
  * 2) https://github.com/apps/giscus 에서 저장소에 앱 설치

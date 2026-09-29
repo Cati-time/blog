@@ -4,7 +4,7 @@ import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import PostList from '../components/PostList.astro';
 import { SITE } from '../consts';
-import { getPosts } from '../lib/posts';
+import { CATEGORIES, PLATFORMS, categoryUrl, filterPosts, getPosts } from '../lib/posts';
 
 const posts = await getPosts();
 const recent = posts.slice(0, SITE.recentPostsCount);
@@ -24,6 +24,28 @@ const base = import.meta.env.BASE_URL;
 				<h1>{SITE.title}</h1>
 				<p class="lead">{SITE.description}</p>
 			</section>
+
+			<section class="cats" aria-label="분류">
+				{
+					CATEGORIES.map((c) => (
+						<article class="cat">
+							<a class="cat-head" href={categoryUrl(c.id)}>
+								<h2>{c.label}</h2>
+								<span class="n">{filterPosts(posts, c.id).length}편</span>
+							</a>
+							<p class="cat-desc">{c.description}</p>
+							<ul class="cat-subs">
+								{PLATFORMS.map((p) => (
+									<li>
+										<a href={categoryUrl(c.id, p.id)}>{p.label}</a>
+									</li>
+								))}
+							</ul>
+						</article>
+					))
+				}
+			</section>
+
 			<section>
 				<div class="section-head">
 					<h2>최근 글</h2>
@@ -38,7 +60,7 @@ const base = import.meta.env.BASE_URL;
 
 <style>
 	.hero {
-		padding: var(--space-8) 0 var(--space-12);
+		padding: var(--space-8) 0 var(--space-10);
 	}
 	.eyebrow {
 		margin-bottom: var(--space-3);
@@ -56,6 +78,66 @@ const base = import.meta.env.BASE_URL;
 		color: var(--color-text-muted);
 		font-size: var(--text-lg);
 		line-height: var(--leading-normal);
+	}
+	.cats {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--space-4);
+		margin-bottom: var(--space-12);
+	}
+	.cat {
+		display: flex;
+		flex-direction: column;
+		padding: var(--space-5);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		background: var(--color-surface);
+		transition:
+			border-color var(--duration-fast) var(--ease-standard),
+			box-shadow var(--duration-fast) var(--ease-standard);
+	}
+	.cat:hover {
+		border-color: var(--color-border-strong);
+		box-shadow: var(--shadow-sm);
+	}
+	.cat-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		color: var(--color-text);
+	}
+	.cat-head h2 {
+		font-size: var(--text-xl);
+		transition: color var(--duration-fast) var(--ease-standard);
+	}
+	.cat-head:hover h2 {
+		color: var(--color-accent);
+	}
+	.cat-head .n {
+		color: var(--color-text-subtle);
+		font-size: var(--text-sm);
+	}
+	.cat-desc {
+		flex: 1;
+		margin-top: var(--space-2);
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+	}
+	.cat-subs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-1) var(--space-3);
+		margin: var(--space-4) 0 0;
+		padding: var(--space-3) 0 0;
+		border-top: 1px solid var(--color-border);
+		list-style: none;
+	}
+	.cat-subs a {
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+	}
+	.cat-subs a:hover {
+		color: var(--color-accent);
 	}
 	.section-head {
 		display: flex;
@@ -83,6 +165,9 @@ const base = import.meta.env.BASE_URL;
 		}
 		.lead {
 			font-size: var(--text-base);
+		}
+		.cats {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>

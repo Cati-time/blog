@@ -2,6 +2,8 @@
 title: '블로그를 시작합니다'
 description: 'Astro + GitHub Pages 로 만든 기술 블로그의 첫 글. 글쓰기 방법과 지원하는 문법을 정리했습니다.'
 pubDate: 2026-09-14
+category: architecture
+platform: web
 tags: ['blog', 'astro']
 draft: false
 ---
@@ -13,7 +15,7 @@ Astro 와 GitHub Pages 로 만든 기술 블로그입니다. 이 글은 **글쓰
 터미널에서 한 줄이면 됩니다.
 
 ```bash
-npm run new "글 제목" my-post-slug --tags astro,blog
+npm run new "글 제목" my-post-slug --category architecture --platform web --tags astro,blog
 ```
 
 그러면 `src/content/blog/my-post-slug/index.md` 가 생기고, 그 안의 frontmatter 만 채운 뒤 본문을 쓰면 됩니다.

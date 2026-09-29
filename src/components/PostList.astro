@@ -1,11 +1,13 @@
 ---
 import FormattedDate from './FormattedDate.astro';
 import Tags from './Tags.astro';
-import { postUrl, type Post } from '../lib/posts';
+import { categoryUrl, getCategory, getPlatform, postUrl, type Post } from '../lib/posts';
 interface Props {
 	posts: Post[];
+	/** 카테고리 페이지에서는 이미 분류가 보이므로 false */
+	showCategory?: boolean;
 }
-const { posts } = Astro.props;
+const { posts, showCategory = true } = Astro.props;
 ---
 
 {
@@ -23,6 +25,12 @@ const { posts } = Astro.props;
 						{post.data.description && <p class="post-desc">{post.data.description}</p>}
 					</a>
 					<div class="post-meta">
+						{showCategory && (
+							<a class="where" href={categoryUrl(post.data.category, post.data.platform)}>
+								{getCategory(post.data.category).label} · {getPlatform(post.data.platform).label}
+							</a>
+						)}
+						{!showCategory && <span class="where">{getPlatform(post.data.platform).label}</span>}
 						<FormattedDate date={post.data.pubDate} />
 						<Tags tags={post.data.tags} />
 					</div>
@@ -77,6 +85,13 @@ const { posts } = Astro.props;
 		margin-top: var(--space-3);
 		color: var(--color-text-subtle);
 		font-size: var(--text-sm);
+	}
+	.where {
+		color: var(--color-text-muted);
+		font-weight: var(--weight-medium);
+	}
+	a.where:hover {
+		color: var(--color-accent);
 	}
 	.draft {
 		margin-left: var(--space-2);
