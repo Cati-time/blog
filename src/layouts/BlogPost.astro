@@ -15,6 +15,7 @@ type Props = Omit<CollectionEntry<'blog'>['data'], 'tags' | 'draft'> & {
 	draft?: boolean;
 	minutesRead?: string;
 	showComments?: boolean;
+	showMeta?: boolean;
 };
 
 const {
@@ -27,139 +28,133 @@ const {
 	draft = false,
 	minutesRead,
 	showComments = true,
+	showMeta = true,
 } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
 
 <html lang={SITE.lang}>
 	<head>
 		<BaseHead title={title} description={description} image={heroImage} type="article" />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 760px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1.5em;
-				padding: 1em 0 0 0;
-				text-align: center;
-				line-height: 1.2;
-			}
-			.title h1 {
-				margin: 0 0 0.4em 0;
-				font-size: 2.4em;
-			}
-			.meta {
-				display: flex;
-				justify-content: center;
-				flex-wrap: wrap;
-				gap: 0.6em;
-				margin-bottom: 0.8em;
-				color: rgb(var(--gray));
-				font-size: 0.9em;
-			}
-			.meta .sep::before {
-				content: '·';
-			}
-			.draft-badge {
-				display: inline-block;
-				margin-bottom: 0.6em;
-				padding: 0.2em 0.8em;
-				border-radius: 4px;
-				background: #ffe8a3;
-				color: #7a5a00;
-				font-size: 0.8em;
-			}
-			.title :global(.tags) {
-				justify-content: center;
-			}
-			.prose :global(pre) {
-				font-size: 0.8em;
-				line-height: 1.5;
-				overflow-x: auto;
-			}
-			.prose :global(h2) {
-				margin-top: 2em;
-				font-size: 1.8em;
-			}
-			.prose :global(h3) {
-				margin-top: 1.5em;
-				font-size: 1.4em;
-			}
-			.prose :global(p) {
-				margin-bottom: 1.4em;
-			}
-			.prose :global(table) {
-				border-collapse: collapse;
-				font-size: 0.9em;
-				display: block;
-				overflow-x: auto;
-			}
-			.prose :global(th),
-			.prose :global(td) {
-				padding: 0.4em 0.8em;
-				border: 1px solid rgb(var(--gray-light));
-			}
-			.prose :global(th) {
-				background: rgba(var(--gray-light), 50%);
-			}
-			.prose :global(img) {
-				display: block;
-				margin: 1em auto;
-			}
-		</style>
 	</head>
 
 	<body>
 		<Header />
 		<main>
 			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						{draft && <div class="draft-badge">초안 — 배포에서 제외됨</div>}
-						<h1>{title}</h1>
-						<div class="meta">
-							<FormattedDate date={pubDate} />
-							{minutesRead && <span class="sep" />}
-							{minutesRead && <span>{minutesRead} 읽기</span>}
-							{
-								updatedDate && (
-									<>
-										<span class="sep" />
-										<span>
-											수정: <FormattedDate date={updatedDate} />
-										</span>
-									</>
-								)
-							}
+				{
+					showMeta && (
+						<a class="back" href={`${base}posts/`}>
+							← 전체 글
+						</a>
+					)
+				}
+				<header class="post-header">
+					{draft && <p class="draft-badge">초안 — 배포 목록에서 제외됨</p>}
+					<h1 class="post-title">{title}</h1>
+					{description && showMeta && <p class="post-desc">{description}</p>}
+					{
+						showMeta && (
+							<div class="meta">
+								<FormattedDate date={pubDate} />
+								{minutesRead && <span class="dot" aria-hidden="true" />}
+								{minutesRead && <span>{minutesRead} 읽기</span>}
+								{updatedDate && <span class="dot" aria-hidden="true" />}
+								{updatedDate && (
+									<span>
+										수정 <FormattedDate date={updatedDate} />
+									</span>
+								)}
+							</div>
+						)
+					}
+					<Tags tags={tags} class="post-tags" />
+				</header>
+				{
+					heroImage && (
+						<div class="hero">
+							<Image width={1020} height={510} src={heroImage} alt="" />
 						</div>
-						<Tags tags={tags} />
-						<hr />
-					</div>
+					)
+				}
+				<div class="prose">
 					<slot />
-					{showComments && <Giscus />}
 				</div>
+				{showComments && <Giscus />}
 			</article>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.back {
+		display: inline-block;
+		margin-bottom: var(--space-6);
+		color: var(--color-text-subtle);
+		font-size: var(--text-sm);
+	}
+	.back:hover {
+		color: var(--color-accent);
+	}
+	.post-header {
+		padding-bottom: var(--space-8);
+		margin-bottom: var(--space-10);
+		border-bottom: 1px solid var(--color-border);
+	}
+	.draft-badge {
+		display: inline-block;
+		margin-bottom: var(--space-3);
+		padding: var(--space-1) var(--space-3);
+		border-radius: var(--radius-sm);
+		background: var(--color-draft-bg);
+		color: var(--color-draft-text);
+		font-size: var(--text-xs);
+		font-weight: var(--weight-medium);
+	}
+	.post-title {
+		font-size: var(--text-3xl);
+		line-height: var(--leading-tight);
+	}
+	.post-desc {
+		margin-top: var(--space-3);
+		color: var(--color-text-muted);
+		font-size: var(--text-lg);
+		line-height: var(--leading-snug);
+	}
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-2);
+		margin-top: var(--space-5);
+		color: var(--color-text-subtle);
+		font-size: var(--text-sm);
+	}
+	.dot {
+		width: 3px;
+		height: 3px;
+		border-radius: var(--radius-full);
+		background: currentColor;
+	}
+	.post-header :global(.post-tags) {
+		margin-top: var(--space-4);
+	}
+	.hero {
+		margin-bottom: var(--space-10);
+	}
+	.hero :global(img) {
+		display: block;
+		width: 100%;
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--color-border);
+	}
+	@media (max-width: 40rem) {
+		.post-title {
+			font-size: var(--text-2xl);
+		}
+		.post-desc {
+			font-size: var(--text-base);
+		}
+	}
+</style>

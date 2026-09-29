@@ -1,0 +1,71 @@
+---
+// 라이트 ↔ 다크 전환. 선택은 localStorage('theme') 에 저장한다.
+---
+
+<button type="button" class="theme-toggle" data-theme-toggle aria-label="라이트/다크 테마 전환" title="테마 전환">
+	<svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+		<circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"></circle>
+		<path
+			d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"></path>
+	</svg>
+	<svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+		<path
+			d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linejoin="round"></path>
+	</svg>
+</button>
+
+<script>
+	document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((btn) => {
+		btn.addEventListener('click', () => {
+			const root = document.documentElement;
+			const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+			root.dataset.theme = next;
+			try {
+				localStorage.setItem('theme', next);
+			} catch {
+				/* 저장 불가 환경(시크릿 모드 등)에서는 이번 방문에만 적용 */
+			}
+			document.dispatchEvent(new CustomEvent('themechange', { detail: next }));
+		});
+	});
+</script>
+
+<style>
+	.theme-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: var(--space-10);
+		height: var(--space-10);
+		padding: 0;
+		border: none;
+		border-radius: var(--radius-md);
+		background: transparent;
+		color: var(--color-text-muted);
+		cursor: pointer;
+		transition:
+			background-color var(--duration-fast) var(--ease-standard),
+			color var(--duration-fast) var(--ease-standard);
+	}
+	.theme-toggle:hover {
+		background: var(--color-surface-hover);
+		color: var(--color-text);
+	}
+	.icon-moon {
+		display: none;
+	}
+	:global(:root[data-theme='dark']) .icon-sun {
+		display: none;
+	}
+	:global(:root[data-theme='dark']) .icon-moon {
+		display: block;
+	}
+</style>

@@ -16,7 +16,8 @@ const tags = await getTagCounts();
 	<body>
 		<Header />
 		<main>
-			<h1>태그</h1>
+			<h1 class="page-title">태그<span class="count">{tags.length}</span></h1>
+			<p class="page-desc">주제별로 글을 모아 봅니다.</p>
 			{
 				tags.length === 0 ? (
 					<p class="empty">아직 태그가 없습니다.</p>
@@ -25,7 +26,8 @@ const tags = await getTagCounts();
 						{tags.map(([tag, count]) => (
 							<li>
 								<a href={tagUrl(tag)}>
-									#{tag} <span class="count">{count}</span>
+									<span>#{tag}</span>
+									<span class="n">{count}</span>
 								</a>
 							</li>
 						))}
@@ -36,36 +38,41 @@ const tags = await getTagCounts();
 		<Footer />
 	</body>
 </html>
+
 <style>
-	h1 {
-		font-size: 2em;
-	}
 	.tag-cloud {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.6em;
-		list-style: none;
+		gap: var(--space-2);
 		margin: 0;
 		padding: 0;
+		list-style: none;
 	}
 	.tag-cloud a {
-		display: inline-block;
-		padding: 0.3em 0.9em;
-		border-radius: 999px;
-		background: rgb(var(--gray-light));
-		color: rgb(var(--gray-dark));
-		text-decoration: none;
-		transition: 0.15s ease;
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
+		padding: var(--space-2) var(--space-4);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-full);
+		color: var(--color-text);
+		font-size: var(--text-sm);
+		font-weight: var(--weight-medium);
+		transition:
+			border-color var(--duration-fast) var(--ease-standard),
+			color var(--duration-fast) var(--ease-standard),
+			background-color var(--duration-fast) var(--ease-standard);
 	}
 	.tag-cloud a:hover {
-		background: var(--accent);
-		color: white;
+		border-color: var(--color-accent);
+		background: var(--color-accent-soft);
+		color: var(--color-accent-soft-text);
 	}
-	.count {
-		opacity: 0.7;
-		font-size: 0.85em;
+	.n {
+		color: var(--color-text-subtle);
+		font-size: var(--text-xs);
 	}
 	.empty {
-		color: rgb(var(--gray));
+		color: var(--color-text-muted);
 	}
 </style>

@@ -3,14 +3,15 @@
 Astro + GitHub Pages 기술 블로그. 댓글은 giscus, 피드는 RSS.
 
 - 글쓰기 방법 → [POSTING.md](./POSTING.md)
+- 디자인 토큰 → [docs/design-tokens.md](./docs/design-tokens.md)
 
 ## 로컬 실행
 
 ```bash
 npm install
 npm run dev        # http://localhost:4321
-npm run check      # 타입 검사만 (astro check)
-npm run build      # 타입 검사 후 dist/ 에 정적 파일 생성
+npm run check      # 토큰 검사 + 타입 검사 (빌드 없이)
+npm run build      # 토큰 검사 → 타입 검사 → dist/ 에 정적 파일 생성
 npm run preview    # 빌드 결과 미리보기
 npm run new "제목" slug --tags a,b   # 새 글
 ```

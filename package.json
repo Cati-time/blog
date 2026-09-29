@@ -8,11 +8,12 @@
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
-		"build": "astro check && astro build",
+		"build": "npm run check && astro build",
 		"preview": "astro preview",
-		"check": "astro check",
+		"check": "node scripts/check-tokens.mjs && astro check",
 		"new": "node scripts/new-post.mjs",
-		"astro": "astro"
+		"astro": "astro",
+		"check:tokens": "node scripts/check-tokens.mjs"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^8.0.1",

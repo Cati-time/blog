@@ -11,16 +11,27 @@ const target = strip(String(href ?? ''));
 const isActive = target === '' ? current === '' : current === target || current.startsWith(target + '/');
 ---
 
-<a href={href} class:list={[className, { active: isActive }]} {...props}>
+<a href={href} class:list={[className, { active: isActive }]} aria-current={isActive ? 'page' : undefined} {...props}>
 	<slot />
 </a>
+
 <style>
 	a {
-		display: inline-block;
-		text-decoration: none;
+		padding: var(--space-2) var(--space-3);
+		border-radius: var(--radius-md);
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+		font-weight: var(--weight-medium);
+		transition:
+			background-color var(--duration-fast) var(--ease-standard),
+			color var(--duration-fast) var(--ease-standard);
+	}
+	a:hover {
+		background: var(--color-surface-hover);
+		color: var(--color-text);
 	}
 	a.active {
-		font-weight: bolder;
-		text-decoration: underline;
+		color: var(--color-accent);
+		background: var(--color-accent-soft);
 	}
 </style>

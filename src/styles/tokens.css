@@ -1,0 +1,177 @@
+/*
+ * Design Tokens — Cati time Tech Blog
+ * 정의서: docs/design-tokens.md  (이 파일과 문서는 같은 변경에서 함께 고친다)
+ *
+ * 3단 구조
+ *   1) Primitive  --p-*      : 원시 값(색상 팔레트 등). 컴포넌트에서 직접 쓰지 않는다.
+ *   2) Semantic   --color-*  : 역할 이름. 라이트/다크에서 값이 바뀌는 것은 이 층뿐이다.
+ *   3) Scale      --font-* --text-* --leading-* --weight-* --tracking-*
+ *                 --space-* --radius-* --shadow-* --duration-* --ease-* --size-* --z-*
+ *                 : 테마와 무관한 치수. 컴포넌트는 2)·3)만 참조한다.
+ *
+ * 브레이크포인트는 CSS 변수로 미디어쿼리에 쓸 수 없어 값으로 고정한다:
+ *   --bp-sm 40rem(640px) · --bp-md 48rem(768px)  → @media (max-width: 40rem) 처럼 숫자로 쓴다.
+ */
+
+:root {
+	/* ── 1. Primitive: Neutral ─────────────────────────── */
+	--p-gray-0: #ffffff;
+	--p-gray-50: #f8f9fa;
+	--p-gray-100: #f1f3f5;
+	--p-gray-200: #e5e7eb;
+	--p-gray-300: #d1d5db;
+	--p-gray-400: #9ca3af;
+	--p-gray-500: #6b7280;
+	--p-gray-600: #4b5563;
+	--p-gray-700: #374151;
+	--p-gray-800: #1f2937;
+	--p-gray-850: #171b22;
+	--p-gray-900: #111318;
+	--p-gray-950: #0b0d10;
+
+	/* ── 1. Primitive: Brand (Green — Cati-time 로고색 계열) ── */
+	--p-green-50: #ecfdf5;
+	--p-green-100: #d1fae5;
+	--p-green-300: #6ee7b7;
+	--p-green-400: #34d399;
+	--p-green-500: #10b981;
+	--p-green-600: #059669;
+	--p-green-700: #047857;
+	--p-green-800: #065f46;
+	--p-green-900: #064e3b;
+
+	/* ── 1. Primitive: Status ───────────────────────────── */
+	--p-amber-100: #fef3c7;
+	--p-amber-300: #fcd34d;
+	--p-amber-800: #92400e;
+	--p-amber-950: #2b1d05;
+
+	/* ── 3. Typography ──────────────────────────────────── */
+	--font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+		'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono', D2Coding, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+	--text-xs: 0.75rem; /* 12px  태그·캡션 */
+	--text-sm: 0.875rem; /* 14px  메타·보조 */
+	--text-base: 1rem; /* 16px  UI 기본 */
+	--text-md: 1.0625rem; /* 17px  본문(prose) */
+	--text-lg: 1.25rem; /* 20px  목록 제목·h4 */
+	--text-xl: 1.5rem; /* 24px  h3 */
+	--text-2xl: 1.875rem; /* 30px  h2 */
+	--text-3xl: 2.25rem; /* 36px  글 제목 */
+	--text-4xl: 3rem; /* 48px  홈 히어로 */
+
+	--leading-tight: 1.25;
+	--leading-snug: 1.4;
+	--leading-normal: 1.6;
+	--leading-relaxed: 1.8; /* 한글 본문 */
+
+	--weight-regular: 400;
+	--weight-medium: 500;
+	--weight-semibold: 600;
+	--weight-bold: 700;
+
+	--tracking-tight: -0.02em;
+	--tracking-normal: 0;
+
+	/* ── 3. Space (4px 그리드) ──────────────────────────── */
+	--space-0: 0;
+	--space-1: 0.25rem; /* 4 */
+	--space-2: 0.5rem; /* 8 */
+	--space-3: 0.75rem; /* 12 */
+	--space-4: 1rem; /* 16 */
+	--space-5: 1.25rem; /* 20 */
+	--space-6: 1.5rem; /* 24 */
+	--space-8: 2rem; /* 32 */
+	--space-10: 2.5rem; /* 40 */
+	--space-12: 3rem; /* 48 */
+	--space-16: 4rem; /* 64 */
+	--space-20: 5rem; /* 80 */
+
+	/* ── 3. Radius ──────────────────────────────────────── */
+	--radius-sm: 0.25rem;
+	--radius-md: 0.5rem;
+	--radius-lg: 0.75rem;
+	--radius-full: 999px;
+
+	/* ── 3. Motion ──────────────────────────────────────── */
+	--duration-fast: 120ms;
+	--duration-base: 200ms;
+	--ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+	/* ── 3. Layout ──────────────────────────────────────── */
+	--size-content: 44rem; /* 본문 폭 704px ≈ 한글 38~40자 */
+	--size-page: 60rem; /* 헤더·목록 최대 폭 960px */
+	--size-header: 3.75rem; /* 헤더 높이 60px */
+	--z-header: 10;
+
+	/* ── 2. Semantic: Light (기본) ──────────────────────── */
+	color-scheme: light;
+	--color-bg: var(--p-gray-0);
+	--color-bg-subtle: var(--p-gray-50);
+	--color-surface: var(--p-gray-0);
+	--color-surface-hover: var(--p-gray-50);
+	--color-header-bg: rgb(255 255 255 / 0.8);
+	--color-border: var(--p-gray-200);
+	--color-border-strong: var(--p-gray-300);
+
+	--color-text: var(--p-gray-900);
+	--color-text-muted: var(--p-gray-600);
+	--color-text-subtle: var(--p-gray-500);
+
+	--color-accent: var(--p-green-700);
+	--color-accent-hover: var(--p-green-800);
+	--color-accent-contrast: var(--p-gray-0);
+	--color-accent-soft: var(--p-green-50);
+	--color-accent-soft-text: var(--p-green-800);
+
+	--color-code-bg: var(--p-gray-50);
+	--color-code-border: var(--p-gray-200);
+	--color-inline-code-bg: var(--p-gray-100);
+	--color-inline-code-text: var(--p-gray-800);
+
+	--color-draft-bg: var(--p-amber-100);
+	--color-draft-text: var(--p-amber-800);
+
+	--color-selection: var(--p-green-100);
+	--color-focus-ring: var(--p-green-600);
+
+	--shadow-sm: 0 1px 2px rgb(17 19 24 / 0.06);
+	--shadow-md: 0 4px 16px rgb(17 19 24 / 0.08);
+}
+
+/* ── 2. Semantic: Dark (헤더의 토글이 html[data-theme] 를 정한다) ── */
+:root[data-theme='dark'] {
+	color-scheme: dark;
+	--color-bg: var(--p-gray-950);
+	--color-bg-subtle: var(--p-gray-900);
+	--color-surface: var(--p-gray-900);
+	--color-surface-hover: var(--p-gray-850);
+	--color-header-bg: rgb(11 13 16 / 0.8);
+	--color-border: var(--p-gray-800);
+	--color-border-strong: var(--p-gray-700);
+
+	--color-text: var(--p-gray-100);
+	--color-text-muted: var(--p-gray-400);
+	--color-text-subtle: var(--p-gray-500);
+
+	--color-accent: var(--p-green-400);
+	--color-accent-hover: var(--p-green-300);
+	--color-accent-contrast: var(--p-gray-950);
+	--color-accent-soft: rgb(52 211 153 / 0.12);
+	--color-accent-soft-text: var(--p-green-300);
+
+	--color-code-bg: var(--p-gray-900);
+	--color-code-border: var(--p-gray-800);
+	--color-inline-code-bg: var(--p-gray-800);
+	--color-inline-code-text: var(--p-gray-100);
+
+	--color-draft-bg: var(--p-amber-950);
+	--color-draft-text: var(--p-amber-300);
+
+	--color-selection: rgb(52 211 153 / 0.25);
+	--color-focus-ring: var(--p-green-400);
+
+	--shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+	--shadow-md: 0 4px 16px rgb(0 0 0 / 0.5);
+}

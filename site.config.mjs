@@ -36,6 +36,8 @@ export const GISCUS = {
 	reactionsEnabled: '1',
 	emitMetadata: '0',
 	inputPosition: 'top',
-	theme: 'light',
+	// 사이트 테마 토글에 맞춰 자동 전환
+	lightTheme: 'light',
+	darkTheme: 'dark_dimmed',
 	lang: 'ko',
 };

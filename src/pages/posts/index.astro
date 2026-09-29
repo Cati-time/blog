@@ -17,20 +17,10 @@ const posts = await getPosts();
 	<body>
 		<Header />
 		<main>
-			<h1>전체 글 <small>({posts.length})</small></h1>
+			<h1 class="page-title">전체 글<span class="count">{posts.length}</span></h1>
+			<p class="page-desc">{SITE.description}</p>
 			<PostList posts={posts} />
 		</main>
 		<Footer />
 	</body>
 </html>
-<style>
-	h1 {
-		font-size: 2em;
-		margin-bottom: 0.5em;
-	}
-	h1 small {
-		font-size: 0.5em;
-		color: rgb(var(--gray));
-		font-weight: normal;
-	}
-</style>

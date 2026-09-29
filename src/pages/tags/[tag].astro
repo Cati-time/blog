@@ -26,25 +26,23 @@ const { tag, posts } = Astro.props;
 	<body>
 		<Header />
 		<main>
-			<p class="crumb"><a href={`${import.meta.env.BASE_URL}tags/`}>← 모든 태그</a></p>
-			<h1>#{tag} <small>({posts.length})</small></h1>
+			<a class="back" href={`${import.meta.env.BASE_URL}tags/`}>← 모든 태그</a>
+			<h1 class="page-title">#{tag}<span class="count">{posts.length}</span></h1>
+			<p class="page-desc">{tag} 태그가 달린 글입니다.</p>
 			<PostList posts={posts} />
 		</main>
 		<Footer />
 	</body>
 </html>
+
 <style>
-	h1 {
-		font-size: 2em;
-		margin-bottom: 0.5em;
+	.back {
+		display: inline-block;
+		margin-bottom: var(--space-4);
+		color: var(--color-text-subtle);
+		font-size: var(--text-sm);
 	}
-	h1 small {
-		font-size: 0.5em;
-		color: rgb(var(--gray));
-		font-weight: normal;
-	}
-	.crumb {
-		margin: 0;
-		font-size: 0.9em;
+	.back:hover {
+		color: var(--color-accent);
 	}
 </style>

@@ -23,23 +23,26 @@ const { tags, class: className } = Astro.props;
 	.tags {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.4em;
-		list-style: none;
+		gap: var(--space-2);
 		margin: 0;
 		padding: 0;
+		list-style: none;
 	}
 	.tags a {
 		display: inline-block;
-		padding: 0.1em 0.6em;
-		border-radius: 999px;
-		background: rgb(var(--gray-light));
-		color: rgb(var(--gray-dark));
-		font-size: 0.8em;
-		text-decoration: none;
-		transition: 0.15s ease;
+		padding: var(--space-0) var(--space-2);
+		border-radius: var(--radius-full);
+		background: var(--color-accent-soft);
+		color: var(--color-accent-soft-text);
+		font-size: var(--text-xs);
+		font-weight: var(--weight-medium);
+		line-height: var(--leading-normal);
+		transition:
+			background-color var(--duration-fast) var(--ease-standard),
+			color var(--duration-fast) var(--ease-standard);
 	}
 	.tags a:hover {
-		background: var(--accent);
-		color: white;
+		background: var(--color-accent);
+		color: var(--color-accent-contrast);
 	}
 </style>

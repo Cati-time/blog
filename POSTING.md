@@ -61,4 +61,4 @@ git push
 | 홈에 보이는 최근 글 개수 | `site.config.mjs` 의 `recentPostsCount` |
 | 글 삭제 | 글 폴더 삭제 |
 | 글 URL 변경 | 폴더 이름 변경 (기존 링크는 깨집니다) |
-| 색상·글꼴 | `src/styles/global.css` |
+| 색상·글꼴·간격 | `src/styles/tokens.css` (설명: `docs/design-tokens.md`) |
