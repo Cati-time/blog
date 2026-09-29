@@ -1,0 +1,22 @@
+name: Check (PR)
+
+# PR 을 올리면 머지 전에 빌드가 되는지 자동으로 확인한다. 배포는 하지 않는다.
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install
+        run: npm ci --no-audit --no-fund
+      - name: Build (토큰 검사 → 타입 검사 → 빌드)
+        run: npm run build

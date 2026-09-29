@@ -23,7 +23,7 @@ Consult these guides before working on related tasks:
 
 ## 블로그 운영 규칙 (Claude)
 
-설정·절차 전체는 [docs/claude-management.md](docs/claude-management.md) 참고.
+설정·절차 전체는 [docs/claude-management.md](docs/claude-management.md) 참고. 팀원용 글쓰기 안내의 정본은 [WRITING_GUIDE.md](WRITING_GUIDE.md) — 글쓰기 규칙(분류 기준, frontmatter, 공개 금지 정보, 발행 절차)을 바꾸면 이 문서도 같은 커밋에서 고친다.
 
 - 저장소: `Cati-time/blog`, 사이트: `https://cati-time.github.io/blog/` (`site.config.mjs` 의 `base: '/blog'`). 링크는 항상 `import.meta.env.BASE_URL` 기준으로 만든다.
 - 글: `npm run new "제목" slug --category <ax|architecture> --platform <android|ios|spring|web|back-office> --tags a,b [--draft]` → `src/content/blog/<slug>/index.md`, 주소는 `/posts/<slug>/`.
