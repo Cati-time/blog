@@ -7,6 +7,7 @@ Cati time 팀의 기술 블로그입니다. AI 전환(AX)과 아키텍처 경험
 | 문서 | 내용 |
 | --- | --- |
 | 📝 **[블로그 작성 가이드](WRITING_GUIDE.md)** | 설치, 로컬 미리보기, 글쓰기, 발행까지 — **팀원은 여기부터** |
+| 🤖 [Claude Code 로 포스팅하기](WRITING_GUIDE.md#9-claude-code-로-포스팅하기) | 설치부터 PR 까지 — 말로 문서를 옮기고, 검사·미리보기·커밋 |
 | 📥 [문서 가져오기](WRITING_GUIDE.md#8-문서-가져오기--노션구글-문서markdown-을-그대로) | 노션·구글 문서·Markdown 을 스타일만 빼고 그대로 — `npm run import` 또는 Claude Code `/blog-write` |
 | 🎨 [디자인 토큰 정의서](docs/design-tokens.md) | 색·글꼴·간격 규칙 |
 | ⚙️ [Claude Code 로 관리하기](docs/claude-management.md) | 저장소 설정, Claude 운영 규칙 |

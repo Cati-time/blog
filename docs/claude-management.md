@@ -105,27 +105,33 @@ gh auth login --with-token
 {
   "permissions": {
     "allow": [
+      "Bash(npm run import *)",
+      "Bash(npm run check*)",
       "Bash(npm run build)",
       "Bash(npm run dev*)",
       "Bash(npm run new *)",
+      "Bash(astro dev *)",
       "Bash(npx astro *)",
       "Bash(git status*)",
       "Bash(git log*)",
       "Bash(git diff*)",
+      "Bash(git switch -c post/*)",
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(gh run list*)",
-      "Bash(gh run view*)",
-      "Bash(gh api repos/Cati-time/blog*)",
-      "Bash(gh api graphql*)"
+      "Bash(gh run view*)"
     ],
     "deny": [
-      "Bash(gh repo delete*)",
-      "Bash(git push --force*)"
+      "Bash(git push*)",
+      "Bash(gh repo delete*)"
     ]
   }
 }
 ```
+
+- 허용 목록은 **글 작업에 필요한 명령**만 담았다. `gh api` 는 저장소 설정을 바꿀 수 있어 넣지 않는다 (규칙상 실행 전에 확인받는다).
+- `git push` 는 Claude 가 하지 않는 일이라 거부 목록에 둔다. 사람이 GitHub Desktop·터미널에서 push 하는 것에는 영향이 없다.
+- 이 파일을 커밋하면 저장소를 받은 **팀원 모두에게** 적용된다.
 
 ---
 
