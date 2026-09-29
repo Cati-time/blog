@@ -7,8 +7,9 @@ Cati time 팀의 기술 블로그입니다. AI 전환(AX)과 아키텍처 경험
 | 문서 | 내용 |
 | --- | --- |
 | 📝 **[블로그 작성 가이드](WRITING_GUIDE.md)** | 설치, 로컬 미리보기, 글쓰기, 발행까지 — **팀원은 여기부터** |
+| 🤖 [Claude 와 함께 쓰기](WRITING_GUIDE.md#8-claude-와-함께-쓰기) | Claude Code 에서 `/blog-write` — 초안 작성, HTML·Markdown 문서 옮기기, 발행 준비 |
 | 🎨 [디자인 토큰 정의서](docs/design-tokens.md) | 색·글꼴·간격 규칙 |
-| 🤖 [Claude Code 로 관리하기](docs/claude-management.md) | Claude 에게 초안·점검 맡기기, 저장소 설정 |
+| ⚙️ [Claude Code 로 관리하기](docs/claude-management.md) | 저장소 설정, Claude 운영 규칙 |
 
 ## 3분 시작
 
@@ -45,7 +46,7 @@ npm run new "Compose 상태 관리 정리" compose-state --category architecture
 | --- | --- |
 | 사이트 생성 | [Astro](https://astro.build) 7, 마크다운 |
 | 호스팅 | GitHub Pages (`main` 에 머지되면 GitHub Actions 가 자동 배포) |
-| PR 검사 | GitHub Actions — 디자인 토큰 검사 → 타입 검사 → 빌드 |
+| PR 검사 | GitHub Actions — 디자인 토큰 검사 → 글 검사(비밀값·금지 HTML) → 타입 검사 → 빌드 |
 | 댓글 | giscus (GitHub Discussions) — 설정 방법은 [관리 문서](docs/claude-management.md) |
 | 피드 | `/blog/rss.xml`, 사이트맵 |
 

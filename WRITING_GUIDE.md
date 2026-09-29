@@ -16,8 +16,9 @@ Cati time Tech Blog 에 글을 쓰는 팀원을 위한 안내서입니다. 처�
 5. [본문 쓰는 법](#5-본문-쓰는-법)
 6. [좋은 글을 위한 약속](#6-좋은-글을-위한-약속)
 7. [발행하기](#7-발행하기)
-8. [자주 만나는 문제](#8-자주-만나는-문제)
-9. [참고](#9-참고)
+8. [Claude 와 함께 쓰기](#8-claude-와-함께-쓰기)
+9. [자주 만나는 문제](#9-자주-만나는-문제)
+10. [참고](#10-참고)
 
 ---
 
@@ -33,6 +34,7 @@ Cati time Tech Blog 에 글을 쓰는 팀원을 위한 안내서입니다. 처�
 | 새 글 | `npm run new "제목" slug --category … --platform …` | 몇 초 |
 | 미리보기 | `npm run dev` → http://localhost:4321/blog/ | 저장하면 바로 반영 |
 | 발행 | PR 올리기 → 리뷰 → 머지 | 머지 후 1~2분 뒤 사이트 반영 |
+| (선택) Claude 와 함께 | Claude Code 에서 `/blog-write` | [8장](#8-claude-와-함께-쓰기) |
 
 ---
 
@@ -232,6 +234,33 @@ val state by viewModel.uiState.collectAsStateWithLifecycle()
 
 같은 블로그의 다른 글은 `../다른-글-slug/` 처럼 **상대 경로**로 겁니다.
 
+### HTML 블록
+
+마크다운으로 안 되는 것만 HTML 로 씁니다. 글 파일은 그대로 `index.md` 입니다.
+
+```md
+<details>
+<summary>전체 로그 보기</summary>
+
+접힌 안쪽에도 **마크다운**을 쓸 수 있습니다. 앞뒤 빈 줄이 필요합니다.
+
+</details>
+
+<figure>
+  <img src="./architecture.png" alt="서비스 구성도" />
+  <figcaption>그림 1. 서비스 구성도</figcaption>
+</figure>
+
+저장은 <kbd>Cmd</kbd> + <kbd>S</kbd>
+```
+
+| 구분 | 태그·속성 |
+| --- | --- |
+| ✅ 쓸 수 있음 | `details` `summary` `figure` `figcaption` `kbd` `sub` `sup` `mark` `abbr`, 병합 셀이 필요한 `table` |
+| ✖ 빌드 실패 | `style` 속성, `script` `iframe` `style` `form` `object` `embed` 태그, `on…=` 이벤트 속성, `javascript:` 링크 |
+
+공개 블로그라 스크립트와 임베드는 막혀 있습니다. `style` 은 블로그 디자인을 깨뜨려서 막았습니다. `class` 는 효과가 없으니 쓰지 않아도 됩니다.
+
 ### 컴포넌트가 필요할 때
 
 파일 이름을 `index.mdx` 로 바꾸면 본문 안에 컴포넌트를 넣을 수 있습니다. 대부분의 글은 `.md` 로 충분합니다.
@@ -281,6 +310,7 @@ val state by viewModel.uiState.collectAsStateWithLifecycle()
 - [ ] `title`, `description`, `category`, `platform` 채움
 - [ ] `draft: false` 로 바꿈 (또는 줄 삭제)
 - [ ] 로컬에서 글 화면 확인 (`npm run dev`)
+- [ ] `npm run check:posts -- <slug>` 오류 0 (비밀값·금지 HTML·이미지 설명을 검사합니다)
 - [ ] `npm run build` 통과
 - [ ] 비밀값·내부 주소·개인정보 없음 ([6장](#-공개-저장소입니다--이것만은-꼭))
 - [ ] 이미지에 설명(alt) 있음
@@ -318,7 +348,41 @@ git add src/content/blog/compose-state && git commit -m "post: Compose 상태 �
 
 ---
 
-## 8. 자주 만나는 문제
+## 8. Claude 와 함께 쓰기
+
+이 저장소에는 글쓰기용 **Claude Code 스킬**(`blog-write`)이 들어 있습니다. 저장소를 받으면 따로 설치할 것이 없습니다.
+
+### 준비
+
+1. Claude Code 설치: 데스크톱 앱, VS Code 확장, 터미널(`claude`) 중 편한 것
+2. 이 저장소 폴더를 Claude Code 로 엽니다
+3. 채팅에 `/blog-write` 를 입력하거나, 평소 말로 부탁합니다
+
+### 이렇게 말하면 됩니다
+
+| 하고 싶은 것 | 예시 |
+| --- | --- |
+| 메모로 새 글 | "지난주 Compose 리컴포지션 문제 해결한 거 블로그 글로 써줘. 메모는 이거야: …" |
+| 문서 옮기기 (Markdown) | "`~/Desktop/회고.md` 를 블로그 글로 옮겨줘. Architecture › Spring 으로" |
+| 문서 옮기기 (HTML) | "노션에서 내보낸 `export.html` 을 블로그 글로 바꿔줘" |
+| 다듬기 | "`compose-state` 글 읽고 고칠 점 알려줘" |
+| 발행 준비 | "`compose-state` 발행 준비해줘" → 체크리스트 확인 후, "발행" 이라고 하면 초안 해제 |
+
+### Claude 가 하는 것과 하지 않는 것
+
+| 한다 | 하지 않는다 |
+| --- | --- |
+| 분류·slug 제안, 부족한 정보 질문 | **사실을 지어내기** — 모르는 곳은 `[확인 필요]` 로 표시하고 묻습니다 |
+| 개요 제안 → 합의 → 초안 작성 | 사용자가 "발행" 이라고 하기 전에 `draft` 해제 |
+| HTML·Markdown 문서를 블로그 형식으로 변환 | 비밀값·사내 주소·개인정보 옮기기 — 빼고 무엇을 뺐는지 알려 줍니다 |
+| 글 검사, 빌드, 로컬 미리보기, 커밋 | push · PR — 올리는 것은 직접 합니다 ([7-2](#7-2-커밋하고-pr-올리기)) |
+| | 디자인·메뉴 변경 |
+
+**글의 내용과 최종 확인은 작성자의 몫입니다.** Claude 가 쓴 초안도 반드시 직접 읽고 사실과 코드를 확인한 뒤 PR 을 올리세요.
+
+---
+
+## 9. 자주 만나는 문제
 
 | 증상 | 원인 | 해결 |
 | --- | --- | --- |
@@ -328,6 +392,10 @@ git add src/content/blog/compose-state && git commit -m "post: Compose 상태 �
 | 빌드 에러 `category: Invalid option` | 분류 오타 | `ax` / `architecture` 중 하나로 |
 | 빌드 에러 `platform: Invalid option` | 플랫폼 오타 | `android` `ios` `spring` `web` `back-office` 중 하나로 |
 | 빌드 에러 `check-tokens: … 위반` | 스타일 파일에 색상 값을 직접 씀 | 글 작성과는 무관합니다. 디자인 수정 시 [디자인 토큰 정의서](docs/design-tokens.md) 참고 |
+| `check-posts: … 오류` · `P1` | 비밀값으로 보이는 문자열 | 지우거나 `****` 같은 가짜 값으로 바꾸기. 진짜 키였다면 **즉시 폐기·재발급** |
+| `P2` · `P3` | 금지 HTML 이나 `style` 속성 | [HTML 블록](#html-블록) 표의 허용 태그로 바꾸기 |
+| `P4` | 이미지 설명(alt) 없음 또는 파일 없음 | `![설명](./파일명)` 형식과 파일 위치 확인 |
+| `⚠ W…` 경고 | 권장 사항 (빌드는 됨) | 메시지를 읽고 판단. 사설 IP·이메일 경고는 실제 사내 정보라면 지우기 |
 | 글이 사이트에 안 보임 | `draft: true` 그대로 | `draft: false` 로 바꾸고 다시 PR |
 | 이미지가 깨짐 | 경로 오류 | 이미지가 글 폴더 안에 있고 `./파일명` 으로 적었는지 확인 |
 | 포트 4321 이 이미 사용 중 | dev 서버가 이미 떠 있음 | 떠 있는 창을 쓰거나 `Ctrl + C` 로 끈 뒤 다시 실행. Astro 가 자동으로 다른 포트를 쓰기도 하니 터미널에 찍힌 주소를 확인 |
@@ -335,7 +403,7 @@ git add src/content/blog/compose-state && git commit -m "post: Compose 상태 �
 
 ---
 
-## 9. 참고
+## 10. 참고
 
 ### 폴더 구조
 
@@ -345,6 +413,8 @@ site.config.mjs                    ← 블로그 제목, 메뉴(분류·플랫�
 src/styles/tokens.css              ← 디자인 토큰 (색·글꼴·간격)
 src/pages/                         ← 페이지 (홈, 메뉴, 글, 태그, 소개, RSS)
 scripts/new-post.mjs               ← npm run new
+scripts/check-posts.mjs            ← 글 검사 (npm run check:posts)
+.claude/skills/blog-write/         ← Claude 글쓰기 스킬
 scripts/setup.sh                   ← 설치 스크립트
 .github/workflows/                 ← PR 빌드 검사, main 자동 배포
 ```
@@ -358,12 +428,14 @@ scripts/setup.sh                   ← 설치 스크립트
 | `npm run new "제목" slug --category … --platform …` | 새 글 |
 | `npm run build` | 배포와 같은 검사 + 빌드 |
 | `npm run preview` | 빌드 결과 미리보기 |
-| `npm run check` | 검사만 (빌드 없이) |
+| `npm run check:posts -- <slug>` | 글 하나 검사 (slug 없으면 전체) |
+| `npm run check` | 검사만 (토큰·글·타입, 빌드 없이) |
 
 ### 관련 문서
 
 - [README](README.md) — 저장소 소개
 - [디자인 토큰 정의서](docs/design-tokens.md) — 디자인을 고칠 때
-- [Claude Code 로 관리하기](docs/claude-management.md) — Claude 에게 초안 작성·점검을 맡길 때
+- [Claude Code 로 관리하기](docs/claude-management.md) — 저장소 설정, Claude 운영 규칙
+- [글쓰기 스킬](.claude/skills/blog-write/SKILL.md) — Claude 가 따르는 글쓰기 절차
 
 메뉴 항목 추가, 디자인 변경처럼 글 이외의 수정은 먼저 블로그 관리자와 이야기해 주세요.

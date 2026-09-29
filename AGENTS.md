@@ -31,6 +31,7 @@ Consult these guides before working on related tasks:
 - **push 는 하지 않는다.** 전역 hook 이 막고, main push 는 곧 공개 배포다. 커밋까지 하고 "push 하면 배포됩니다" 라고 알린다.
 - 커밋 전 반드시 `npm run build` 통과를 확인한다. build 는 `astro check`(타입 검사) 후 빌드하므로 GitHub Actions 배포도 타입 오류가 있으면 멈춘다.
 - 커밋 메시지 접두어: `post:` 새 글·발행, `edit:` 글 수정, `fix:` 버그, `style:` 디자인, `config:` 설정, `chore:` 의존성·도구.
+- **글을 쓰거나 고칠 때는 `blog-write` 스킬(`.claude/skills/blog-write/`)을 따른다.** HTML 은 `index.md` 안의 블록으로만 쓰고, `npm run check:posts` 가 비밀값·금지 HTML(script·iframe·style 속성 등)·이미지 alt 누락을 빌드에서 막는다.
 - 새 글은 기본 `draft: true` 로 만들고, 사용자가 "발행" 이라고 할 때만 `draft: false` 로 바꾼다.
 - `gh api` 로 저장소 설정(Pages, Discussions 등)을 바꾸는 작업은 실행 전에 사용자에게 확인한다. 조회(`gh run list`, graphql 읽기)는 바로 해도 된다.
 - 토큰·비밀값은 파일이나 채팅에 남기지 않는다.
