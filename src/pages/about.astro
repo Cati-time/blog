@@ -16,7 +16,8 @@ const projects = (await getCollection('projects')).sort(
 );
 const posts = await getPosts();
 const relatedCount = (tag?: string) => (tag ? posts.filter((p) => p.data.tags.includes(tag)).length : 0);
-const isDev = import.meta.env.DEV;
+// 사진이 없을 때 동그라미에 넣는 글자 — 여러 단어면 마지막 단어의 첫 글자 (예: builder declan → D)
+const initialOf = (name: string) => (name.trim().split(/\s+/).pop() ?? name).slice(0, 1).toUpperCase();
 ---
 
 <!doctype html>
@@ -36,7 +37,7 @@ const isDev = import.meta.env.DEV;
 				</p>
 			</section>
 
-			{(team.length > 0 || isDev) && (
+			{team.length > 0 && (
 			<section class="block" aria-labelledby="team-title">
 				<div class="section-head">
 					<h2 id="team-title">팀원</h2>
@@ -52,7 +53,7 @@ const isDev = import.meta.env.DEV;
 											<Image class="avatar" src={m.avatar} alt="" width={96} height={96} />
 										) : (
 											<span class="avatar initials" aria-hidden="true">
-												{m.name.slice(0, 1)}
+												{initialOf(m.name)}
 											</span>
 										)}
 										<div>
@@ -87,15 +88,13 @@ const isDev = import.meta.env.DEV;
 								</li>
 							))}
 						</ul>
-					) : (
-						isDev && <p class="hint">팀원 파일이 아직 없습니다. <code>src/content/team/</code> 에 추가하면 여기에 나옵니다. (개발 서버에서만 보이는 안내)</p>
-					)
+					) : null
 				}
 			</section>
 
 			)}
 
-			{(projects.length > 0 || isDev) && (
+			{projects.length > 0 && (
 			<section class="block" aria-labelledby="projects-title">
 				<div class="section-head">
 					<h2 id="projects-title">프로젝트</h2>
@@ -135,9 +134,7 @@ const isDev = import.meta.env.DEV;
 								);
 							})}
 						</ul>
-					) : (
-						isDev && <p class="hint">프로젝트 파일이 아직 없습니다. <code>src/content/projects/</code> 에 추가하면 여기에 나옵니다. (개발 서버에서만 보이는 안내)</p>
-					)
+					) : null
 				}
 			</section>
 			)}
@@ -323,10 +320,6 @@ const isDev = import.meta.env.DEV;
 	}
 	.p-meta {
 		color: var(--color-text-subtle);
-	}
-	.hint {
-		color: var(--color-text-subtle);
-		font-size: var(--text-sm);
 	}
 	@media (max-width: 40rem) {
 		.team {
