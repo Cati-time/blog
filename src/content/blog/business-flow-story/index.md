@@ -5,7 +5,7 @@ pubDate: 2026-10-01
 category: ax
 platform: android
 tags: ['business-flow', 'claude-code', 'ai-agent', 'workflow']
-draft: true
+draft: false
 ---
 
 이 글은 «비즈니스 플로우가 무엇인가»를 설명하는 글이 아닙니다. 우리 팀이 **어쩌다 이 방식을 쓰게 됐고, 지금 어떻게 쓰고 있으며, 어떻게 키워 가고 있는지**에 대한 기록입니다.
