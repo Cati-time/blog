@@ -8,7 +8,7 @@
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
-		"build": "npm run check && astro build",
+		"build": "npm run check && astro build --force",
 		"preview": "astro preview",
 		"check": "node scripts/check-tokens.mjs && node scripts/check-posts.mjs && astro check",
 		"new": "node scripts/new-post.mjs",

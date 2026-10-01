@@ -403,7 +403,7 @@ function fromMarkdown(text) {
 
 	const cleaned = segments.map((s) => {
 		if (s.code) return s.text;
-		let t = s.text.replace(bannedBlock, (m, a, b) => {
+		let t = s.text.replace(bannedBlock, (_m, a, b) => {
 			bump(report.removedTags, (a || b).toLowerCase());
 			return '';
 		});
@@ -444,7 +444,7 @@ function fromMarkdown(text) {
 		t = t.replace(/<(p|div)>/gi, () => (bump(report.unwrapped, '<p/div>'), '\n\n')).replace(/<\/(p|div)>/gi, '\n\n');
 		t = t.replace(/\n{3,}/g, '\n\n');
 		// 마크다운 이미지
-		t = t.replace(/!\[([^\]]*)\]\(\s*<?([^)\s>]+)>?((?:\s+["'][^)]*["'])?)\s*\)/g, (m, alt, p, titlePart) => {
+		t = t.replace(/!\[([^\]]*)\]\(\s*<?([^)\s>]+)>?((?:\s+["'][^)]*["'])?)\s*\)/g, (_m, alt, p, titlePart) => {
 			if (!alt.trim()) report.images.noAlt++;
 			return `![${alt}](${adoptImage(p)}${titlePart})`;
 		});

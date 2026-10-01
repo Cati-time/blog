@@ -590,10 +590,49 @@ Claude 는 명령을 실행하거나 파일을 바꾸기 전에 **허용할지**
 
 ## 11. 참고
 
+### 소개 페이지에 팀원·프로젝트 추가
+
+소개 페이지(https://cati-time.github.io/blog/about/)의 **팀원**과 **프로젝트** 카드는 파일 하나가 카드 하나입니다. 글과 같은 방식으로 브랜치 → 파일 추가 → PR 로 올립니다.
+
+**팀원** — `src/content/team/<GitHub아이디>.yaml`
+
+```yaml
+name: 홍길동                    # 필수. 공개되는 이름 (본명·닉네임 중 원하는 것)
+role: Android 개발              # 필수. 한 줄 역할
+platforms: [android, back-office]  # 선택. android · ios · spring · web · back-office
+bio: 앱 아키텍처와 빌드 자동화를 맡고 있습니다.   # 선택. 한두 문장
+github: octocat                 # 선택. 아이디만 (주소 아님)
+linkedin: https://www.linkedin.com/in/your-id   # 선택. 프로필 주소 전체
+avatar: ./hong.png              # 선택. 같은 폴더의 사진. 없으면 이름 첫 글자로 표시
+order: 1                        # 선택. 작을수록 앞에
+```
+
+**프로젝트** — `src/content/projects/<영문-id>.yaml`
+
+```yaml
+name: 블로그 구축                         # 필수
+summary: Astro 와 GitHub Pages 로 팀 기술 블로그를 만듭니다.   # 필수. 한두 문장
+status: 진행 중                           # 필수. 진행 중 · 예정 · 완료
+platforms: [web]                          # 선택
+period: '2026.09 –'                       # 선택. 따옴표로 감싸기
+tag: astro                                # 선택. 이 태그가 달린 글을 «관련 글 N편» 으로 연결
+links:                                    # 선택. 공개된 주소만
+  - label: GitHub
+    url: https://github.com/Cati-time/blog
+order: 1                                  # 선택. 같은 상태 안에서 작을수록 앞에
+```
+
+- 프로젝트는 **진행 중 → 예정 → 완료** 순으로 자동 정렬됩니다.
+- 값이 형식에 안 맞으면 빌드가 이유를 알려 주며 멈춥니다 (예: `github` 에 주소를 넣으면 "아이디만 적습니다").
+- **공개 페이지입니다.** 팀원 이름·사진은 본인 동의를 받고, 프로젝트는 **외부에 공개해도 되는 범위**로만 적습니다. 미발표 기능, 고객사 이름, 사내 주소는 넣지 않습니다 ([6장](#6-좋은-글을-위한-약속)).
+- Claude Code 에서는 "소개 페이지에 팀원 추가해줘: 이름 …, 역할 …" 처럼 말하면 파일을 만들어 줍니다.
+
 ### 폴더 구조
 
 ```
 src/content/blog/<slug>/index.md   ← 글 (여기만 건드리면 됩니다)
+src/content/team/<id>.yaml         ← 소개 페이지 팀원
+src/content/projects/<id>.yaml     ← 소개 페이지 프로젝트
 site.config.mjs                    ← 블로그 제목, 메뉴(분류·플랫폼), 댓글 설정
 src/styles/tokens.css              ← 디자인 토큰 (색·글꼴·간격)
 src/pages/                         ← 페이지 (홈, 메뉴, 글, 태그, 소개, RSS)

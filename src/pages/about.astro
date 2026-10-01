@@ -1,18 +1,336 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
 import { SITE } from '../consts';
+import { getPlatform, getPosts, tagUrl } from '../lib/posts';
+
+const byOrder = <T extends { data: { order: number; name: string } }>(a: T, b: T) =>
+	a.data.order - b.data.order || a.data.name.localeCompare(b.data.name, 'ko');
+const team = (await getCollection('team')).sort(byOrder);
+const STATUS_ORDER = { '진행 중': 0, 예정: 1, 완료: 2 } as const;
+const projects = (await getCollection('projects')).sort(
+	(a, b) => STATUS_ORDER[a.data.status] - STATUS_ORDER[b.data.status] || byOrder(a, b),
+);
+const posts = await getPosts();
+const relatedCount = (tag?: string) => (tag ? posts.filter((p) => p.data.tags.includes(tag)).length : 0);
+const isDev = import.meta.env.DEV;
 ---
 
-<Layout
-	title="소개"
-	description={`${SITE.author}의 기술 블로그입니다.`}
-	pubDate={new Date('2026-09-14')}
-	showComments={false}
-	showMeta={false}
->
-	<p>안녕하세요, <strong>{SITE.author}</strong>입니다.</p>
-	<p>이 블로그는 개발하면서 배운 것, 삽질한 것, 정리해두고 싶은 것을 기록하는 공간입니다.</p>
-	<p>
-		이 페이지는 <code>src/pages/about.astro</code> 를 수정해서 자유롭게 바꾸세요.
-	</p>
-</Layout>
+<!doctype html>
+<html lang={SITE.lang}>
+	<head>
+		<BaseHead title="소개" description={`${SITE.title} — 팀과 진행 중인 프로젝트를 소개합니다.`} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="intro">
+				<p class="eyebrow">About</p>
+				<h1 class="page-title">소개</h1>
+				<p class="lead">
+					{SITE.title} 는 {SITE.author} 팀이 AI 전환(AX)과 아키텍처 경험을 Android · iOS · Spring · Web ·
+					Back-office 별로 기록하는 공간입니다.
+				</p>
+			</section>
+
+			{(team.length > 0 || isDev) && (
+			<section class="block" aria-labelledby="team-title">
+				<div class="section-head">
+					<h2 id="team-title">팀원</h2>
+					{team.length > 0 && <span class="n">{team.length}명</span>}
+				</div>
+				{
+					team.length > 0 ? (
+						<ul class="team">
+							{team.map(({ data: m }) => (
+								<li class="member">
+									<div class="who">
+										{m.avatar ? (
+											<Image class="avatar" src={m.avatar} alt="" width={96} height={96} />
+										) : (
+											<span class="avatar initials" aria-hidden="true">
+												{m.name.slice(0, 1)}
+											</span>
+										)}
+										<div>
+											<p class="name">{m.name}</p>
+											<p class="role">{m.role}</p>
+										</div>
+									</div>
+									{m.bio && <p class="bio">{m.bio}</p>}
+									<div class="foot">
+										{m.platforms.length > 0 && (
+											<ul class="chips">
+												{m.platforms.map((p) => (
+													<li>{getPlatform(p).label}</li>
+												))}
+											</ul>
+										)}
+										{(m.github || m.linkedin) && (
+											<span class="links">
+												{m.github && (
+													<a class="gh" href={`https://github.com/${m.github}`} target="_blank" rel="noopener">
+														@{m.github}
+													</a>
+												)}
+												{m.linkedin && (
+													<a class="gh" href={m.linkedin} target="_blank" rel="noopener">
+														LinkedIn ↗
+													</a>
+												)}
+											</span>
+										)}
+									</div>
+								</li>
+							))}
+						</ul>
+					) : (
+						isDev && <p class="hint">팀원 파일이 아직 없습니다. <code>src/content/team/</code> 에 추가하면 여기에 나옵니다. (개발 서버에서만 보이는 안내)</p>
+					)
+				}
+			</section>
+
+			)}
+
+			{(projects.length > 0 || isDev) && (
+			<section class="block" aria-labelledby="projects-title">
+				<div class="section-head">
+					<h2 id="projects-title">프로젝트</h2>
+					{projects.length > 0 && <span class="n">{projects.length}개</span>}
+				</div>
+				{
+					projects.length > 0 ? (
+						<ul class="projects">
+							{projects.map(({ data: p }) => {
+								const n = relatedCount(p.tag);
+								return (
+									<li class="project">
+										<div class="p-head">
+											<h3>{p.name}</h3>
+											<span class:list={['status', { now: p.status === '진행 중', done: p.status === '완료', next: p.status === '예정' }]}>
+												{p.status}
+											</span>
+										</div>
+										<p class="summary">{p.summary}</p>
+										<div class="p-meta">
+											{p.period && <span>{p.period}</span>}
+											{p.platforms.length > 0 && (
+												<ul class="chips">
+													{p.platforms.map((x) => (
+														<li>{getPlatform(x).label}</li>
+													))}
+												</ul>
+											)}
+											{p.tag && n > 0 && <a href={tagUrl(p.tag)}>관련 글 {n}편 →</a>}
+											{p.links.map((l) => (
+												<a href={l.url} target="_blank" rel="noopener">
+													{l.label} ↗
+												</a>
+											))}
+										</div>
+									</li>
+								);
+							})}
+						</ul>
+					) : (
+						isDev && <p class="hint">프로젝트 파일이 아직 없습니다. <code>src/content/projects/</code> 에 추가하면 여기에 나옵니다. (개발 서버에서만 보이는 안내)</p>
+					)
+				}
+			</section>
+			)}
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.intro {
+		margin-bottom: var(--space-12);
+	}
+	.eyebrow {
+		margin-bottom: var(--space-2);
+		color: var(--color-accent);
+		font-family: var(--font-mono);
+		font-size: var(--text-sm);
+		font-weight: var(--weight-medium);
+	}
+	.lead {
+		color: var(--color-text-muted);
+		font-size: var(--text-lg);
+		line-height: var(--leading-normal);
+	}
+	.block {
+		margin-bottom: var(--space-12);
+	}
+	.section-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: var(--space-4);
+		padding-bottom: var(--space-3);
+		border-bottom: 1px solid var(--color-border);
+	}
+	.section-head h2 {
+		font-size: var(--text-sm);
+		font-weight: var(--weight-semibold);
+		color: var(--color-text-muted);
+		letter-spacing: var(--tracking-normal);
+	}
+	.section-head .n {
+		color: var(--color-text-subtle);
+		font-size: var(--text-sm);
+	}
+	.team,
+	.projects,
+	.chips {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.team {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--space-4);
+	}
+	.member,
+	.project {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+		padding: var(--space-5);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		background: var(--color-surface);
+		transition:
+			border-color var(--duration-fast) var(--ease-standard),
+			box-shadow var(--duration-fast) var(--ease-standard);
+	}
+	.member:hover,
+	.project:hover {
+		border-color: var(--color-border-strong);
+		box-shadow: var(--shadow-sm);
+	}
+	.who {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+	}
+	.avatar {
+		flex: none;
+		width: var(--space-12);
+		height: var(--space-12);
+		border-radius: var(--radius-full);
+		object-fit: cover;
+	}
+	.initials {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		background: var(--color-accent-soft);
+		color: var(--color-accent-soft-text);
+		font-size: var(--text-lg);
+		font-weight: var(--weight-bold);
+	}
+	.name {
+		color: var(--color-text);
+		font-weight: var(--weight-semibold);
+	}
+	.role {
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+	}
+	.bio {
+		flex: 1;
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+	}
+	.foot,
+	.p-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-2) var(--space-3);
+		font-size: var(--text-sm);
+	}
+	.foot {
+		justify-content: space-between;
+	}
+	.chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-1);
+	}
+	.chips li {
+		padding: var(--space-0) var(--space-2);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-full);
+		color: var(--color-text-muted);
+		font-size: var(--text-xs);
+	}
+	.links {
+		display: inline-flex;
+		gap: var(--space-3);
+	}
+	.gh {
+		color: var(--color-text-subtle);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+	}
+	.gh:hover {
+		color: var(--color-accent);
+	}
+	.projects {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+	}
+	.p-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-3);
+	}
+	.p-head h3 {
+		font-size: var(--text-lg);
+		font-weight: var(--weight-semibold);
+	}
+	.status {
+		flex: none;
+		padding: var(--space-0) var(--space-2);
+		border: 1px solid transparent;
+		border-radius: var(--radius-full);
+		font-size: var(--text-xs);
+		font-weight: var(--weight-medium);
+	}
+	.status.now {
+		background: var(--color-accent-soft);
+		color: var(--color-accent-soft-text);
+	}
+	.status.done {
+		background: var(--color-bg-subtle);
+		color: var(--color-text-muted);
+	}
+	.status.next {
+		border-color: var(--color-border-strong);
+		color: var(--color-text-subtle);
+	}
+	.summary {
+		color: var(--color-text-muted);
+		font-size: var(--text-sm);
+	}
+	.p-meta {
+		color: var(--color-text-subtle);
+	}
+	.hint {
+		color: var(--color-text-subtle);
+		font-size: var(--text-sm);
+	}
+	@media (max-width: 40rem) {
+		.team {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
