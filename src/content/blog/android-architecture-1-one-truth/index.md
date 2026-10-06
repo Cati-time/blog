@@ -1,0 +1,377 @@
+---
+title: '안드로이드 아키텍처 ① — 정본은 한 곳에'
+description: '우리 안드로이드 앱의 층 구조가 왜 이렇게 생겼는지, 규칙 하나하나를 «정본은 한 곳» 이라는 원칙에서 풀어 봅니다.'
+pubDate: 2026-10-07
+category: architecture
+platform: android
+tags: ['android', 'architecture', 'ssot', 'redux', 'design-system']
+draft: true
+---
+
+> **안드로이드 아키텍처 시리즈**
+> ① 정본은 한 곳에 (이 글) · ② 규칙이 검사가 되기까지 (준비 중)
+
+[셋이 남았을 때](../business-flow-story/) 에서 우리 팀이 AI 와 함께 일하는 방식에 정착하기까지를 적었습니다. 이번 글은 그 일이 실제로 벌어지는 자리, 안드로이드 앱의 구조 이야기입니다.
+
+구조 설명은 보통 «어떻게» 로 채워집니다. 어떤 층이 있고, 어떤 클래스가 무엇을 부르는지. 이 글은 «왜» 를 적습니다. 우리 규칙 문서에는 층과 경계에 대한 규칙이 수십 개 있는데, 하나씩 이유를 따라가 보면 대부분 한 문장으로 모입니다.
+
+> **도메인 질문 하나에 정본은 한 곳.**
+
+정본(SSOT, Single Source of Truth)은 그 질문에 답할 자격이 있는 유일한 곳입니다. 이 글은 이 원칙 하나에서 규칙들이 어떻게 나오는지, 그리고 원칙만으로는 설명되지 않는 곁가지 원리 셋이 무엇인지를 실제 코드와 함께 봅니다.
+
+## 구조 한 장
+
+```text
+app ──▶ feature (화면: View + ViewModel)
+           │  알리기    dispatch(Action)          반환값 없음
+           │  구독하기  StateReader · Selector    지속 상태 · 파생된 답
+           │  받기      SideEffectReader          한 번만 일어나는 사건
+           ▼
+        module (도메인: Store · Action · Reducer · Middleware)
+           ├──▶ data    서버·DB 에 요청하고 응답을 받는다
+           └──▶ bridge  안드로이드 프레임워크(오디오·BT·생명주기)의 신호를 받는다
+
+core (디자인 시스템 · 로거 · 유틸)   도메인 상태가 없는 것만, 층 순서 밖에서 가로지른다
+```
+
+| 층 | 맡는 일 | 갖지 않는 것 |
+| --- | --- | --- |
+| app | 앱 진입, 조립, 화면 이동 | 화면 로직, 도메인 상태 |
+| feature | 화면 그리기(View)와 화면 상태(ViewModel) | 도메인 상태, data·bridge 직접 호출 |
+| module | 도메인 상태와 그 변경 | 화면 |
+| data | 서버·DB 요청과 응답 변환 | 상태 |
+| bridge | 프레임워크의 콜백·브로드캐스트를 받아 넘기기 | 도메인 판단 |
+| core | 도메인 없는 공통 자산 | 도메인 상태·정책 |
+
+module 은 Redux 식 구조입니다. 안드로이드를 깊이 모르셔도 네 단어만 알면 됩니다.
+
+- **Store**: 도메인 상태를 들고 있는 상자. 도메인마다 하나씩 있습니다.
+- **Action**: «이런 일이 일어났다», «이걸 해 달라» 는 메시지.
+- **Reducer**: (지금 상태, Action) → 다음 상태를 계산하는 순수 함수. 상태는 여기서만 바뀝니다.
+- **Middleware**: 서버 호출처럼 바깥과 닿는 일을 맡는 곳. 결과를 다시 Action 으로 보냅니다.
+
+화면은 module 과 세 가지 방법으로만 대화합니다. 알리고(dispatch), 구독하고(Reader), 일회성 사건을 받습니다(SideEffectReader). module 안의 Store·Reducer·Middleware 는 화면에서 보이지 않습니다.
+
+### 한 바퀴 — 앱 버전 비교
+
+설정의 «앱 정보» 화면은 설치된 버전이 최신인지 서버에 물어봅니다. 이 기능이 구조를 가장 짧게 보여 줍니다. (실제 코드에서 주석과 일부 분기를 줄였습니다. 이 글의 다른 코드도 마찬가지입니다.)
+
+① 화면은 알리기만 합니다. 반환값이 없습니다.
+
+```kotlin
+// feature: ViewModel
+fun onEvent(event: SettingAppInfoEvent) {
+    when (event) {
+        is SettingAppInfoEvent.GetLatestVersion ->
+            appVersionActionDispatcher.compareVersion(event.currentVersionName)
+        // …
+    }
+}
+```
+
+② Middleware 가 서버에 묻고, 결과를 Action 으로 돌려보냅니다. 실패의 종류(네트워크·서버·기타)를 나누는 곳도 여기 한 곳뿐입니다.
+
+```kotlin
+// module: Middleware
+is AppVersionAction.CompareVersionRequested -> {
+    runCatching { repository.getComparedVersion(action.installedVersion) }
+        .onSuccess { dispatch(AppVersionAction.VersionCompared(it)) }
+        .onFailure { dispatch(AppVersionAction.VersionCompareFailed(it.toFailureReason())) }
+}
+```
+
+③ Reducer 가 다음 상태를 정합니다. 상태는 «아직 비교 전» 과 «비교됨» 둘 중 정확히 하나입니다.
+
+```kotlin
+// module: 상태와 Reducer
+sealed interface AppVersionComparisonState {
+    data object NotYetCompared : AppVersionComparisonState
+    data class Compared(val comparison: ComparedVersionEntity) : AppVersionComparisonState
+}
+
+when (action) {
+    is AppVersionAction.VersionCompared -> AppVersionComparisonState.Compared(action.comparison)
+    is AppVersionAction.VersionCompareFailed -> this   // 실패는 지속 상태를 바꾸지 않는다
+    is AppVersionAction.CompareVersionRequested -> this
+}
+```
+
+④ 화면은 결과를 구독합니다. 오래 남는 결과는 상태로, 한 번 보여 줄 실패는 일회성 사건으로 받습니다.
+
+```kotlin
+// feature: ViewModel
+appVersionStateReader.comparison.collect { applyComparison(it) }
+appVersionSideEffectReader.event.collect { effect ->
+    if (effect is AppVersionSideEffect.VersionCompareFailed) applyComparisonFailure()
+}
+```
+
+파일이 많아 보이지만 각자 할 일은 하나입니다. 이 모양이 왜 이렇게 생겼는지가 이 글의 나머지입니다.
+
+### module 층은 처음부터 있지 않았다
+
+Redux 식 Store 는 이전 안드로이드 개발자가 2025년 7월에 들여왔습니다. 그런데 2026년 1월까지 그것을 쓰는 화면은 두 곳(캐릭터 선택, 회원가입)뿐이었고, 나머지 화면은 UseCase 를 직접 불렀습니다.
+
+module 층은 2026년 1월, 로그인을 떼어 내면서 생겼습니다. Store 를 처음 들여온 것은 우리가 아니었습니다. 우리가 한 일은 그것을 «도메인마다 정본 하나» 를 지키는 자리로 쓰기 시작한 것입니다.
+
+![2026년 module 수 막대그래프. 1월 8개에서 시작해 6월 21개, 9월 24개가 됐다](./modules-born.svg)
+
+## 뿌리 — 정본은 한 곳에
+
+규칙 문서는 이 원칙을 여러 곳에서 같은 말로 적습니다.
+
+> Each module owns the truth of its own domain state (SSOT — always true).
+> — 각 module 은 자기 도메인 상태의 진실을 소유한다(정본 — 언제나 참).
+>
+> Each domain question is answered by exactly one canonical accessor; consumers read only that accessor.
+> — 도메인 질문 하나에는 정해진 읽기 창구 하나만 답하고, 쓰는 쪽은 그 창구만 읽는다.
+
+말로는 당연해 보입니다. 이게 왜 규칙이 되어야 했는지는 코드로 보는 편이 빠릅니다.
+
+### 배터리 아이콘은 몇 개였나
+
+앱에는 연결된 기기의 배터리 아이콘이 있습니다. module 을 떼어 내기 직전(2026년 1월) 코드에서, 이 아이콘을 정하는 ViewModel 은 넷이었습니다. 넷 모두 같은 세 값(BT 연결 상태, 배터리 잔량, 충전 중 여부)을 받아 «미연결» 을 각자 판정했습니다. 그중 둘입니다.
+
+```kotlin
+// 화면 A — 홈 Activity
+combine(socketState, batteryLevel, isCharging) { connection, level, charging ->
+    if (connection == DISCONNECTED || connection == NO_STATE) null   // «상태 없음» 도 미연결
+    else if (charging == true) ICON_CHARGING
+    else level?.let { iconOf(it) }
+}
+
+// 화면 B — 홈
+combine(socketState, batteryLevel, isCharging, accountState) { connection, level, charging, account ->
+    when {
+        connection == DISCONNECTED -> Unconnected                    // «상태 없음» 은 보지 않는다
+        charging == true -> show(Charging)
+        account == AccountState.DISCONNECTED -> show(Unconnected)    // 계정 상태까지 본다
+        else -> level?.let { show(levelOf(it)) }
+    }
+}
+```
+
+네 화면을 나란히 놓으면 이렇습니다.
+
+| 화면 | «상태 없음» 일 때 | 계정 상태 | 판정 순서 |
+| --- | --- | --- | --- |
+| 홈 Activity | 미연결 | 보지 않음 | 미연결 → 충전 → 잔량 |
+| 홈 | 보지 않음 | 봄 | 미연결 → 충전 → 계정 → 잔량 |
+| 홈 (기능 모듈 쪽) | 보지 않음 | 그 줄을 주석 처리 | 미연결 → 충전 → 잔량 |
+| 설정 › 내 기기 | 보지 않음 | 보지 않음 | 미연결 → 충전 → 잔량 |
+
+누구도 틀리게 쓰려고 하지 않았습니다. 처음엔 한 곳이었을 판정이 복사되고, 복사본마다 조금씩 고쳐졌을 뿐입니다. 코드만 놓고 보면 화면 B 는 미연결 분기에서 값을 만들기만 하고 화면에 반영하지 않습니다. 이런 차이는 리뷰로 잡기 어렵습니다. 네 파일을 동시에 열어 놓고 비교해야 보이기 때문입니다.
+
+BT 상태 전체는 더 심했습니다. «기기가 준비됐나» 라는 질문 하나를 enum 3개와 boolean 6개가 겹쳐 표현했고, 약 40개 파일이 그 조각들을 각자 다시 조합했습니다. «연결됨인데 재생은 안 됨» 같은 모순이 반복해서 나왔습니다.
+
+### 지금: 질문 하나, 답 하나
+
+지금 BT 상태는 module 이 내놓는 값 하나입니다. 기기는 정확히 다섯 경우 중 하나에 있습니다.
+
+```kotlin
+// module: BT 기기 상태 — 모든 화면이 이것 하나만 본다
+sealed interface BluetoothDeviceState {
+    object Disconnected : BluetoothDeviceState                                            // 연결 없음
+    data class CandidateSelected(val info: DeviceInfo) : BluetoothDeviceState             // 등록할 기기를 골랐다
+    data class ActivationCandidateConnected(val info: DeviceInfo) : BluetoothDeviceState  // 등록 전에 연결됨
+    data class Connecting(val info: DeviceInfo, val candidate: Boolean = false) : BluetoothDeviceState
+    data class Connected(val info: DeviceInfo, val serviceable: Boolean) : BluetoothDeviceState
+    //  Connected             = «연결됨»
+    //  Connected.serviceable = «지금 틀 수 있나»
+}
+```
+
+연결 신호, 오디오 경로, 재연결 판단 같은 복잡한 조각은 module 안에 `internal` 로 숨어 있어서 화면에서는 아예 보이지 않습니다. 배터리 아이콘도 이제 판정이 한 곳입니다. 설정과 홈이 함께 쓰는 순수 함수 하나를, 컨트롤러 하나에서만 부릅니다.
+
+```kotlin
+fun resolveBluetoothLevel(
+    hasConnectedDevice: Boolean,
+    batteryLevel: Int?,
+    isCharging: Boolean?,
+    currentLevel: BluetoothLevel,
+    isConnecting: Boolean,
+): BluetoothLevel = when {
+    hasConnectedDevice && isCharging == true -> BluetoothLevel.Charging
+    hasConnectedDevice -> batteryLevel?.let { levelOf(it) } ?: currentLevel.orHigh()  // (줄임)
+    isConnecting -> BluetoothLevel.Connecting
+    else -> BluetoothLevel.Unconnected
+}
+```
+
+«연결됨» 과 «연결 중» 은 BT 상태가 sealed 라서 동시에 참일 수 없습니다. 네 화면이 각자 정하던 우선순위가 이제 이 함수 하나의 `when` 순서입니다.
+
+### 화면이 기대는 것이 바뀌었다
+
+이 변화를 숫자로 보면 이렇습니다. 휴대폰 앱의 ViewModel 이 생성자에서 무엇을 주입받는지 센 값입니다.
+
+![ViewModel 생성자에 주입된 타입 수. 2026년 1월에는 UseCase 190, Repository 29, BT 상태 홀더 18이었고, 10월에는 StateReader 109, ActionDispatcher 99, SideEffectReader 36, UseCase 11, Repository 8이다](./vm-dependencies.svg)
+
+1월의 화면들은 UseCase 를 모두 190번 주입받았습니다. 화면마다 필요한 일을 직접 부르고, 결과를 각자 들고 있었다는 뜻입니다. 지금 화면은 주로 Reader(구독)와 Dispatcher(알리기)를 받습니다. 결과를 들고 있는 곳은 module 하나입니다.
+
+### 구글 가이드와는 무엇이 다른가
+
+안드로이드 공식 아키텍처 가이드도 정본을 말합니다. 다만 정본을 데이터 층의 Repository 에 둡니다. 우리는 정본을 도메인 층의 module Store 에 두고, Repository 는 상태 없는 입출력 통로로만 씁니다. 지금 data 층에는 상태를 들고 있는 Flow 가 하나도 없습니다.
+
+이게 유일한 정답이라고 생각하지는 않습니다. «Repository 에 상태를 두고 쓰기를 한 곳으로 모았어도 됐을까» 는 비교해 보지 않았습니다. 우리가 얻은 효과가 Store 덕인지, 함께 들어온 규율(쓰기는 한 길, 사본 금지) 덕인지는 가르지 못합니다. 분명한 건 «그 정본이 어디 있나» 에 한 문장으로 답할 수 있게 됐다는 점입니다.
+
+## 정본에서 바로 나오는 규칙
+
+### 쓰기는 한 길 — dispatch
+
+로그인 화면에는 예전에 로그인했던 계정이 카드로 보입니다. 카드를 누르면 그 계정으로 바로 로그인합니다. 이 카드가 «로그아웃이 됐다 안 됐다» 깜빡이는 버그를 만들었습니다. 예전 코드는 이랬습니다.
+
+```kotlin
+// 전: 카드를 누르면 ViewModel 이 직접 처리
+localData.refreshToken = token                    // ① 저장 설정에 토큰을 직접 쓴다
+authLoginActionDispatcher.autoLogin()             // ② 자동 로그인은 세션 정본에서 토큰을 읽는다
+    .onSuccess { user ->
+        postLoginSessionWriter.syncAuthenticatedUser(user)   // ③ 세션 확립도 화면이 한다
+    }
+```
+
+①에서 쓴 곳과 ②가 읽는 곳이 달랐습니다. 토큰은 저장 설정에 썼는데, 자동 로그인은 세션 정본을 읽었습니다. 그래서 빈 토큰이나 예전 토큰이 서버로 갔고, 400 에러가 나거나 다른 계정으로 로그인됐습니다.
+
+```kotlin
+// 후: 화면은 알리기만
+loginActionDispatcher.dispatch(LoginAction.LoginByFillEmail(email, isSocial))
+// 세션 확립은 Middleware 한 곳, 결과는 Store 의 이벤트로 받는다
+```
+
+규칙 문서는 이 일을 이렇게 정리합니다.
+
+> Storage is a PROJECTION (sink) of reduced state, never a reducer-bypassing input.
+> — 저장소는 Reducer 가 만든 상태의 투영일 뿐, Reducer 를 건너뛰는 입력이 아니다.
+
+저장소는 상태의 그림자입니다. 그림자에 먼저 쓰면 그게 두 번째 진실이 됩니다. 이때 버린 대안도 기록에 남아 있습니다.
+
+| 대안 | 버린 이유 |
+| --- | --- |
+| 카드 탭만 고친다 | 다른 로그인 입구에서 같은 우회가 또 생긴다 |
+| 문서로만 안내한다 | 문서만 둔 규칙은 지켜지지 않았다(디자인 시스템에서 이미 겪었다) |
+| 앱 시작 때 쓰는 세션 복원 경로로 넘긴다 | 그 경로는 앱이 실행 중일 땐 돌지 않고, 저장 설정에 먼저 쓰는 것 자체가 우회다 |
+
+고른 것은 «규칙 + 검사» 였습니다. 지금은 로그인 다섯 경로(비밀번호·소셜·소셜 가입·카드·저장된 비밀번호)가 모두 같은 «세션 확립» Action 하나로 모이고, 화면에서 세션을 직접 쓰는 곳은 0입니다. 그 0은 검사가 지킵니다.
+
+### 질문 하나에 공개 상태 하나 — sealed
+
+sealed 는 «가능한 경우를 전부 나열한 타입» 입니다. `when` 으로 분기하면 컴파일러가 빠뜨린 경우를 잡아 줍니다. 더 중요한 건 모순된 조합을 아예 만들 수 없다는 점입니다. boolean 여섯 개만 해도 64가지 조합이 생기고, 그중 상당수는 말이 안 됩니다. 앞의 BT 상태는 다섯 가지뿐입니다.
+
+이 규칙이 잡은 사례가 있습니다. BT 는 «연결됨» 인데 대화 화면이 «준비 중» 에서 넘어가지 않았습니다. 판정 조건이 예전 안드로이드에서만 오는 신호를 한 번 더 확인하고 있었는데, 새 OS 에서는 그 신호가 영영 오지 않았던 겁니다. 고친 방법은 조건을 하나 더 다는 게 아니었습니다. Middleware 가 «하드웨어 오디오 경로가 실제로 열렸나» 라는 판정값 하나를 Action 에 실어 보내고, Reducer 는 그 값만 반영하게 했습니다. 겹치던 조건은 지웠고, 같은 날 회귀 테스트 두 개와 «다시 쪼개지지 않게» 막는 검사를 더했습니다.
+
+### 답은 주인이 한 번만 계산한다 — selector
+
+화면이 정본을 구독하더라도, 원본을 받아 각자 다시 해석하면 배터리 아이콘 문제가 돌아옵니다. 그래서 읽는 쪽도 세 겹으로 나눕니다. Recoil 의 아이디어를 빌렸고, 이름은 우리 식으로 붙였습니다.
+
+| 겹 | 하는 일 | 예 |
+| --- | --- | --- |
+| reader | 원본 상태를 그대로 보여 준다. 판정하지 않는다 | 세션의 사용자 id |
+| selector | 원본에서 도메인 답을 주인 쪽에서 한 번 계산한다 | «로그인했나 · 가족이 있나 · 아이가 있나» |
+| side-effect | selector 의 값이 바뀌는 순간에 한 번 반응한다 | 기기 활성화가 풀리는 순간 활성화 안내 시트를 띄운다 |
+
+화면은 selector 를 구독하고, 같은 답을 다시 계산하지 않습니다. 도메인 답 하나에 selector 는 정확히 하나입니다.
+
+### 합치는 자리는 최후수단 — 오케스트레이터
+
+여러 module 의 상태를 합치거나 여러 module 에 순서대로 명령해야 할 때가 있습니다. 그 일을 맡는 얇은 연결자를 오케스트레이터라고 부릅니다. 도메인 로직은 갖지 않습니다.
+
+좋은 예는 로그아웃입니다. 세션·BT·미션·아바타톡·기기·아이 프로필 module 이 각자 «자기 정리» 명령을 갖고 있고, 로그아웃 오케스트레이터는 그걸 순서대로 부르기만 합니다. 정리하는 방법은 각 module 이 압니다.
+
+나쁜 예는 «편해서» 만들려던 것입니다. 회원가입 뒤 세션을 확립하는 일을 화면 쪽 오케스트레이터에 넣으려 했는데, 그건 인증이라는 한 도메인의 일입니다. 연결자에 넣는 순간 인증 로직이 두 곳으로 흩어집니다. 그래서 오케스트레이터는 합칠 대상이 둘 이상이고, 쓰는 곳이 넷 이상이고, 역할이 분명할 때만 만듭니다.
+
+## 곁가지 원리 셋
+
+정본 원칙만으로는 설명되지 않는 규칙도 있습니다. 규칙 문서를 다시 읽으며 갈라 보니 셋이었습니다.
+
+### 1. 층을 건너뛰지 않는다
+
+화면은 data 와 bridge 에 직접 닿지 않습니다. 읽기만 하는 경우도 마찬가지입니다. 이유를 제 말로 하면 이렇습니다. **화면에 데이터를 직접 연결하면, 데이터를 다루는 비즈니스 로직이 화면으로 들어옵니다.** 데이터는 module 을 거쳐 Action 과 Reader 로만 받습니다.
+
+이 규칙에는 빈틈이 있었습니다. 예전 규칙은 «화면은 module 에 Reader 로만 접근한다» 고만 적었고, bridge 를 직접 읽는 것에는 말이 없었습니다. 그 틈으로 화면이 오디오 포커스 신호를 bridge 에서 직접 읽는 코드가 들어왔습니다. 그래서 이런 문장이 더해졌습니다.
+
+> A sub-document, plan, guard allowlist, comment, or convenience that appears to permit a layer bypass … is itself a violation.
+> — 층을 건너뛰어도 되는 것처럼 보이게 하는 하위 문서·계획·예외 목록·주석·편의는 그 자체가 위반이다.
+
+«그 정본은 bridge 에 있으니 화면이 읽어도 된다» 는 논리 자체가 위반이라는 뜻입니다. 정본이 어디에 있든 화면은 module 을 거칩니다.
+
+data 와 bridge 를 나눈 이유도 여기서 나옵니다. data 는 «요청 → 응답» 한 번으로 끝나고 정리할 것이 없습니다. bridge 는 프레임워크가 보내는 콜백과 브로드캐스트를 받기 때문에 등록하고 해제해야 하고, 해제하지 않으면 새어 나갑니다. 수명이 다르니 테스트 방식도 다릅니다. 지금 두 층은 서로를 전혀 모르고, 둘을 쓰는 것은 module 뿐입니다.
+
+### 2. 순간을 본 쪽이 응답을 정하지 않는다
+
+쓰기 명령은 값을 반환하지 않습니다. 앞의 앱 버전 비교도 예전에는 이랬습니다.
+
+```kotlin
+// 전: ViewModel 이 결과를 받아 직접 처리
+val result = runCatching { appVersionMiddleware.getComparedVersion(versionName) }
+result.onSuccess { version ->
+    _uiState.update {
+        it.copy(latestVersionName = version.latestVersion.versionName,
+                isLatest = version.isLatest)             // 도메인 결과의 사본
+    }
+}.onFailure { e ->
+    when (e) { is NetworkException, is ServerException -> showServerError() }  // data 층 예외로 분기
+}
+```
+
+결과를 반환받은 화면은 그 결과의 사본을 들고, data 층의 예외 종류로 분기하고, 다음에 할 일을 직접 몹니다. 지금은 앞에서 본 것처럼 알리고 구독합니다. 이유를 제 말로 하면 간단합니다. **상태를 구독하면 되는데 반환할 이유가 없습니다.** 규칙 문서는 한 걸음 더 나갑니다. 화면이 결과를 기다렸다가 다음 단계를 직접 몰면, 그 순서가 module 밖에 하나 더 생깁니다.
+
+같은 원리가 «관찰» 에도 적용됩니다. 화면이 붙었다, 계정이 바뀌었다 같은 순간은 위층만 볼 수 있습니다. 하지만 그 순간을 본 쪽이 대응까지 정하면, 그 전이는 그 순간을 볼 수 있는 곳의 수만큼 생깁니다. 그래서 화면은 본 것을 알리고(dispatch), 무엇을 할지는 그 상태의 주인이 정합니다.
+
+이 원리가 규칙이 된 계기는 하루에 나온 같은 모양의 버그 다섯 건이었습니다. 대화 세션이 시작되기 직전의 틈에 방금 넣은 대화가 7ms 뒤에 지워졌고, 홈 초기화 확인 장치는 배너 요청 하나가 성공한 것을 보고 요청 네 개가 모두 끝났다고 표시해 추천 목록 요청이 한 번도 나가지 않았습니다. 다섯 건 모두 «본 쪽» 이 응답을 정하고 있었습니다.
+
+결과를 상태로 받을지 일회성 사건으로 받을지도 비슷한 질문으로 가릅니다. **화면이 없어도 그게 참인가?** 기기의 «연결 중» 은 화면이 없어도 참이니 상태입니다. 데이터를 «불러오는 중» 은 화면이 기다리는 것일 뿐이니 module 상태가 아니라 화면 상태입니다. 실패도 module 은 일회성 사건으로만 내보내고, 팝업을 띄우고 지우는 것은 화면 한 곳이 맡습니다.
+
+### 3. 조립하는 자리는 판단하지 않는다
+
+app 은 앱을 시작하고, 조각을 조립하고, 화면을 이동시키는 일만 합니다. module 을 떼어 내기 직전에는 휴대폰 앱 ViewModel 61개 중 47개가 app 에 있었습니다. 지금은 11개입니다.
+
+올해 8월에 잰 메인 Activity 한 파일은 약 3,300줄이었고, module 을 직접 주입받는 곳이 13곳, 비즈니스 판정이 7곳 있었습니다. «어디를 고쳐야 하나» 가 흐려지는 전형적인 모양입니다. 이유는 1번과 같습니다. 조립하는 자리에 판단이 들어오면 복잡해집니다. 규칙 문서는 테스트 쪽에서 같은 말을 합니다. 화면을 띄워야만 테스트할 수 있는 도메인 결론은 자리를 잘못 잡은 것입니다.
+
+## 절차 — 상태 명세가 먼저
+
+module 의 공개 상태를 만들거나 바꾸기 전에 `STATE.md` 를 먼저 씁니다. 규칙 문서의 표현으로는 «STATE.md is the per-module SSOT definition», 정본의 정의서입니다. 들어가는 것은 정해져 있습니다.
+
+- 공개 상태 하나와 쓰기 명령
+- 경우들이 서로 겹치지 않고 빠짐없다는 조건
+- 밖에 보이지 않게 숨기는 내부 목록
+- 예전 조각을 쓰던 곳이 무엇으로 바뀌는지 대응표
+- 테스트로 고정할 불변식
+
+이유는 간단합니다. **상태가 정의돼야 그 상태를 쓰는 쪽의 역할이 나옵니다.** 코드부터 쓰면 누가 무엇을 쓰는지, 무엇이 늘 참이어야 하는지가 나중에 따라오거나 빠집니다. 앞의 앱 버전 Reducer 에 있던 «실패는 지속 상태를 바꾸지 않는다» 는 줄이 바로 그 명세의 불변식이고, 테스트가 그 줄을 고정합니다.
+
+## 또 하나의 정본 — 디자인 시스템
+
+디자인 시스템은 core 에 있고, 화면이 직접 씁니다. 층을 건너뛰는 것처럼 보이지만 그렇지 않습니다. 디자인 시스템에는 도메인 상태가 없어서 상태 정본의 대상이 아닙니다. 대신 디자인 시스템은 자기 정본을 따로 갖습니다. 디자인 시스템 헌법의 첫 원리가 이것입니다.
+
+> 색·폰트·간격·자원·컴포넌트는 한 곳에서 정의하고 소비처는 참조만 한다.
+
+core 라는 이름이 면제는 아닙니다. core 안에 있어도 저장소처럼 데이터를 다루는 모듈이면 data 와 똑같이 화면에서 직접 쓸 수 없습니다. 판단 기준은 위치가 아니라 내용입니다.
+
+이 구조도 사고에서 나왔습니다. 처음에는 모듈 이름이 뒤집혀 있었습니다. `foundation` 이라는 이름의 모듈에 컴포넌트가, `design-system` 이라는 이름의 모듈에 토큰이 있었고, 색 토큰은 컴포넌트 파일 안에 들어 있었습니다. 바텀시트를 공통화하면서 호출부 62곳을 전수 감사하자 네 가지 파편이 나왔습니다.
+
+- 닫기(✕) 버튼은 있는데 닫힘 정책이 제각각
+- 하단 여백을 화면마다 손으로 조립
+- 헤더와 푸터를 화면마다 손으로 조립
+- 닫기 아이콘 크기가 제각각
+
+그래서 토큰(foundations) → 상태 없는 컴포넌트(components) → 조합(patterns) 세 층으로 다시 나눴습니다. 토큰 층은 아무것도 의존하지 않습니다.
+
+이 정리에서 배운 것이 하나 더 있습니다. 공통 함수와 문서를 만들고 «전부 고쳤다» 고 했는데, 검사가 없으니 잔재가 남았고 새로 만든 시트에서 같은 버그가 다시 나왔습니다. **문서만 둔 규칙은 지켜지지 않습니다.** 앞의 로그인 카드에서 «문서로만 안내한다» 를 버린 이유가 이 경험이고, 다음 편의 주제입니다.
+
+## 대가와 아직 남은 것
+
+이 구조는 공짜가 아닙니다.
+
+- **파일이 많습니다.** 앱 버전 비교 기능 하나에 module 파일 12개(그중 하나는 옛 잔재), data 파일 7개, 테스트 3개가 있습니다. Action, 상태, 일회성 사건, Store, Middleware, Dispatcher, 두 Reader, DI, 저장소 인터페이스와 구현, API, 변환기, 응답 모델이 각자 파일입니다.
+- **경계를 지키는 비용이 듭니다.** 규칙마다 검사가 있고, 검사마다 «아직 못 고친 것» 목록이 있습니다. 이 목록 관리가 다음 편 이야기입니다.
+- **아직 다 오지 않았습니다.** 화면은 여전히 UseCase 를 11번, Repository 를 8번 주입받습니다. 일부는 정리 목록에 올라 있지만, 이름 검사는 선언된 타입만 보고 주입은 보지 않아서 검사로는 다 잡히지 않습니다. 저장 설정에 직접 쓰는 옛 코드도 몇 곳 남았고, 가족 id 는 네 곳에 있어서 «세션이 이긴다» 는 불변식으로 정리하는 중입니다.
+
+AI 와 일하면서 생긴 비용도 있습니다. AI 가 «층 우회 0» 을 보고하려고 측정 범위를 스스로 좁혔다고 고백한 커밋이 있습니다. 그래서 «0» 같은 숫자는 사람이나 AI 의 보고가 아니라 기계가 센 값만 믿습니다.
+
+## 정리
+
+- **정본은 한 곳에.** 도메인 질문 하나에 정본 하나, 그 주인은 module Store 입니다.
+- 그래서 **쓰기는 한 길**(dispatch), **읽기는 구독**(Reader·selector)이고, **답은 주인이 한 번** 계산합니다. 질문 하나에 공개 상태는 sealed 하나입니다.
+- 원칙만으로 설명되지 않는 곁가지 셋: **층을 건너뛰지 않는다**, **순간을 본 쪽이 응답을 정하지 않는다**, **조립하는 자리는 판단하지 않는다**.
+- **상태 명세가 먼저**이고, 디자인도 **정본 하나**를 따로 갖습니다.
+
+규칙을 문서로 쓰는 것과 그 규칙이 지켜지는 것은 다른 일이었습니다. 다음 편에서는 로그 구조를 고치면서 규칙이 어떻게 검사가 되었는지를 봅니다.

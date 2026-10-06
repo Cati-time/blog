@@ -189,3 +189,79 @@ const W = 600;
 		svg(W, H, 'subflow 개수 — 선언 · 계약 표 · 키워드 표', '8월 초 10개에서 10월 초 25개까지. 계약 표는 8월 중순 ①(10)과 ⑤(18)에, 키워드 표는 ③·④(16)에 선언보다 뒤처졌고 8월 말에 모두 맞춰졌다.', b),
 	);
 }
+
+// ── 5. 화면(ViewModel)이 기대는 것 — 전/후 (안드로이드 아키텍처 ①) ─────
+// 휴대폰 앱 ViewModel 의 생성자 주입 타입을 꼬리 이름으로 센 값(태블릿 앱·별도 앱·템플릿 제외).
+// 전 = module 분리 직전(2026-01-19) 61개 ViewModel · 후 = 2026-10-06 63개 ViewModel.
+{
+	const rows = [
+		['UseCase', 190, 11],
+		['Repository', 29, 8],
+		['BT 상태 홀더', 18, 0],
+		['StateReader', 0, 109],
+		['ActionDispatcher', 0, 99],
+		['SideEffectReader', 0, 36],
+		['Selector', 0, 5],
+	];
+	const H = 430, L = 128, R = 44, T = 92, rowH = 44, bh = 14, max = 200;
+	const x = (v) => L + (v / max) * (W - L - R);
+	let b = text(16, 28, '화면이 기대는 것 — module 분리 전과 지금', { size: 17, fill: C.text, weight: 700 });
+	b += text(16, 48, 'ViewModel 생성자에 주입된 타입 수 · 휴대폰 앱 기준', { size: 12, fill: C.subtle });
+	// 범례
+	[[C.s2, '2026년 1월 (분리 직전)'], [C.s1, '2026년 10월 (지금)']].forEach(([color, name], i) => {
+		const lx = 16 + i * 190;
+		b += `<rect x="${lx}" y="61" width="12" height="12" rx="3" fill="${color}"/>`;
+		b += text(lx + 18, 72, name, { size: 12, fill: C.text });
+	});
+	for (const g of [0, 50, 100, 150, 200]) {
+		b += `<line x1="${x(g)}" x2="${x(g)}" y1="${T - 6}" y2="${T + rows.length * rowH - 8}" stroke="${C.grid}"/>`;
+		b += text(x(g), T + rows.length * rowH + 8, g, { size: 12, anchor: 'middle', fill: C.subtle });
+	}
+	// 위 셋 = 직접 부르기 / 아래 넷 = 알리기·구독하기 — 구분선
+	const sepY = T + 3 * rowH - 10;
+	b += `<line x1="16" x2="${W - 16}" y1="${sepY}" y2="${sepY}" stroke="${C.grid}" stroke-dasharray="4 4"/>`;
+	b += text(W - 16, T - 10, '직접 부르기', { size: 12, anchor: 'end', fill: C.muted });
+	b += text(W - 16, sepY + 16, '알리기 · 구독하기', { size: 12, anchor: 'end', fill: C.muted });
+	rows.forEach(([name, before, after], i) => {
+		const y0 = T + i * rowH;
+		b += text(L - 10, y0 + bh + 4, name, { size: 12, anchor: 'end', fill: C.text });
+		[[before, C.s2, 0], [after, C.s1, bh + 2]].forEach(([v, color, dy]) => {
+			const w = Math.max(x(v) - L, v > 0 ? 2 : 0);
+			if (w > 0) b += `<rect x="${L}" y="${y0 + dy}" width="${w}" height="${bh}" rx="3" fill="${color}"/>`;
+			b += text(L + w + 6, y0 + dy + 11, v, { size: 11, fill: C.text });
+		});
+	});
+	out(
+		'src/content/blog/android-architecture-1-one-truth/vm-dependencies.svg',
+		svg(W, H, '화면이 기대는 것 — module 분리 전과 지금', '휴대폰 앱 ViewModel 생성자 주입 타입 수. 2026년 1월: UseCase 190, Repository 29, BT 상태 홀더 18, StateReader 0, ActionDispatcher 0, SideEffectReader 0, Selector 0. 2026년 10월: UseCase 11, Repository 8, BT 상태 홀더 0, StateReader 109, ActionDispatcher 99, SideEffectReader 36, Selector 5.', b),
+	);
+}
+
+// ── 6. 지금 있는 module 24개가 생긴 때 (안드로이드 아키텍처 ①) ─────────
+// 각 module 의 빌드 파일이 처음 추가된 커밋 날짜로 센 누적값.
+{
+	const months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월'];
+	const vals = [8, 13, 14, 14, 16, 21, 21, 23, 24, 24];
+	const notes = { 0: '로그인·사용자·아이·기기 …', 1: '홈·미디어·플레이어·미션', 4: 'BT', 5: '테마·딥링크 …' };
+	const H = 360, L = 40, R = 24, T = 76, B = 44;
+	const pw = W - L - R, ph = H - T - B, max = 26;
+	const step = pw / months.length;
+	const y = (v) => T + ph - (v / max) * ph;
+	let b = text(16, 28, '지금 있는 module 24개가 생긴 때', { size: 17, fill: C.text, weight: 700 });
+	b += text(16, 48, '2026년 · 누적 · 각 module 이 처음 만들어진 달 기준', { size: 12, fill: C.subtle });
+	for (const g of [0, 8, 16, 24]) {
+		b += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="${C.grid}"/>`;
+		b += text(L - 6, y(g) + 4, g, { size: 12, anchor: 'end', fill: C.subtle });
+	}
+	vals.forEach((v, i) => {
+		const bx = L + i * step + 6, bw = step - 12;
+		b += bar(bx, y(v), bw, y(0) - y(v), notes[i] !== undefined ? C.s1 : '#86c9ad');
+		b += text(bx + bw / 2, y(v) - 8, v, { size: 13, anchor: 'middle', fill: C.text, weight: 600 });
+		b += text(bx + bw / 2, H - B + 18, months[i], { size: 12, anchor: 'middle', fill: C.subtle });
+	});
+	b += text(16, H - 8, '짙은 막대: 1월 로그인·사용자·아이·기기 · 2월 홈·미디어·플레이어·미션 · 5월 BT · 6월 테마·딥링크 등', { size: 11, fill: C.subtle });
+	out(
+		'src/content/blog/android-architecture-1-one-truth/modules-born.svg',
+		svg(W, H, '지금 있는 module 24개가 생긴 때', '2026년 누적 module 수: 1월 8, 2월 13, 3월 14, 4월 14, 5월 16, 6월 21, 7월 21, 8월 23, 9월 24, 10월 24.', b),
+	);
+}
