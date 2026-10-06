@@ -21,6 +21,19 @@ export const SITE = {
 };
 
 /**
+ * 검색엔진 등록 (SEO) — 값을 채우면 모든 페이지 <head> 에 소유 확인 태그가 들어간다.
+ * Google Search Console · 네이버 서치어드바이저에서 «HTML 태그» 방식을 고르면 나오는
+ * <meta name="..." content="여기 값"> 의 content 만 붙여 넣는다. 절차: docs/claude-management.md «검색엔진 등록».
+ */
+export const SEO = {
+	googleSiteVerification: '',
+	naverSiteVerification: '',
+	// 공유 미리보기 기본 이미지 (public/ 기준). 다시 만들기: node scripts/make-og.mjs
+	defaultImage: 'og-default.png',
+	defaultImageAlt: 'Cati time Tech Blog',
+};
+
+/**
  * 메뉴 구조 — 대분류(카테고리) × 플랫폼
  * 글의 frontmatter 에 category·platform 을 이 id 로 적는다. 여기 없는 값은 빌드에서 막힌다.
  * 주소: /<category>/  ·  /<category>/<platform>/

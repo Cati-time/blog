@@ -9,12 +9,22 @@ import { CATEGORIES, PLATFORMS, categoryUrl, filterPosts, getPosts } from '../li
 const posts = await getPosts();
 const recent = posts.slice(0, SITE.recentPostsCount);
 const base = import.meta.env.BASE_URL;
+const homeUrl = new URL(base, Astro.site).href;
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	name: SITE.title,
+	description: SITE.description,
+	url: homeUrl,
+	inLanguage: SITE.lang,
+	publisher: { '@type': 'Organization', name: SITE.author, url: homeUrl },
+};
 ---
 
 <!doctype html>
 <html lang={SITE.lang}>
 	<head>
-		<BaseHead title={SITE.title} description={SITE.description} />
+		<BaseHead title={SITE.title} description={SITE.description} jsonLd={jsonLd} />
 	</head>
 	<body>
 		<Header />

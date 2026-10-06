@@ -37,11 +37,52 @@ const {
 } = Astro.props;
 const cat = category ? getCategory(category) : undefined;
 const plat = platform ? getPlatform(platform) : undefined;
+
+// 검색엔진용 구조화 데이터 (schema.org)
+const site = Astro.site!;
+const pageUrl = new URL(Astro.url.pathname, site).href;
+const homeUrl = new URL(import.meta.env.BASE_URL, site).href;
+const section = cat && plat ? `${cat.label} · ${plat.label}` : undefined;
+const jsonLd: Record<string, unknown>[] = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'BlogPosting',
+		headline: title,
+		description,
+		datePublished: pubDate.toISOString(),
+		dateModified: (updatedDate ?? pubDate).toISOString(),
+		inLanguage: SITE.lang,
+		url: pageUrl,
+		mainEntityOfPage: pageUrl,
+		...(section && { articleSection: section }),
+		...(tags.length > 0 && { keywords: tags.join(', ') }),
+		author: { '@type': 'Organization', name: SITE.author, url: homeUrl },
+		publisher: { '@type': 'Organization', name: SITE.title, url: homeUrl },
+		isPartOf: { '@type': 'Blog', name: SITE.title, url: homeUrl },
+	},
+];
+if (cat) {
+	const crumbs = [{ name: SITE.title, url: homeUrl }, { name: cat.label, url: new URL(categoryUrl(cat.id), site).href }];
+	if (plat) crumbs.push({ name: plat.label, url: new URL(categoryUrl(cat.id, plat.id), site).href });
+	crumbs.push({ name: title, url: pageUrl });
+	jsonLd.push({
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.url })),
+	});
+}
 ---
 
 <html lang={SITE.lang}>
 	<head>
-		<BaseHead title={title} description={description} image={heroImage} type="article" />
+		<BaseHead
+			title={title}
+			description={description}
+			image={heroImage}
+			type="article"
+			article={{ published: pubDate, modified: updatedDate, section, tags }}
+			jsonLd={jsonLd}
+		/>
 	</head>
 
 	<body>

@@ -49,7 +49,7 @@ npm run new "Compose 상태 관리 정리" compose-state --category architecture
 | 호스팅 | GitHub Pages (`main` 에 머지되면 GitHub Actions 가 자동 배포) |
 | PR 검사 | GitHub Actions — 디자인 토큰 검사 → 글 검사(비밀값·금지 HTML) → 타입 검사 → 빌드 |
 | 댓글 | giscus (GitHub Discussions) — 설정 방법은 [관리 문서](docs/claude-management.md) |
-| 피드 | `/blog/rss.xml`, 사이트맵 |
+| 피드 · 검색 | `/blog/rss.xml`, 사이트맵, 구조화 데이터, 공유 미리보기 이미지 — 검색엔진 등록은 [관리 문서](docs/claude-management.md) §4-1 |
 
 ## 관리자용
 

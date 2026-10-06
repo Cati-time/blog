@@ -167,14 +167,14 @@ src/content/blog/compose-state/
 ```yaml
 ---
 title: 'Compose 상태 관리 정리'      # 필수
-description: 'remember, ViewModel, StateFlow 를 언제 쓰는지 정리합니다.'  # 목록·검색·공유 미리보기에 나옵니다. 꼭 채우세요
+description: 'remember, ViewModel, StateFlow 를 언제 쓰는지 정리합니다.'  # 목록·검색 결과·공유 미리보기에 그대로 나옵니다. 꼭 채우세요
 pubDate: 2026-09-29                  # 필수. YYYY-MM-DD
 updatedDate: 2026-10-05              # 선택. 수정했을 때
 category: architecture               # 필수. ax | architecture
 platform: android                    # 필수. android | ios | spring | web | back-office
 tags: ['compose', 'state']           # 선택
 draft: true                          # true 면 사이트에 안 나옵니다
-heroImage: './cover.png'             # 선택. 글 폴더 안의 대표 이미지
+heroImage: './cover.png'             # 선택. 글 폴더 안의 대표 이미지 — 링크 공유 미리보기에도 쓰입니다 (없으면 블로그 기본 이미지)
 ---
 ```
 

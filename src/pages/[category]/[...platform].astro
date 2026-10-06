@@ -31,7 +31,7 @@ const title = platform ? `${category.label} · ${platform.label}` : category.tit
 <!doctype html>
 <html lang={SITE.lang}>
 	<head>
-		<BaseHead title={title} description={category.description} />
+		<BaseHead title={title} description={category.description} noindex={posts.length === 0} />
 	</head>
 	<body>
 		<Header />

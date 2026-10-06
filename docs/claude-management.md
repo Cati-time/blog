@@ -209,6 +209,43 @@ curl -s -o /dev/null -w '%{http_code}\n' https://cati-time.github.io/blog/
 
 ---
 
+## 4-1. 검색엔진 등록 (SEO)
+
+### 자동으로 되는 것 — 손댈 필요 없음
+
+| 항목 | 어디서 |
+| --- | --- |
+| 페이지마다 제목 · 설명 · 대표 주소(canonical) | `src/components/BaseHead.astro` |
+| 공유 미리보기 이미지 — 글의 `heroImage`, 없으면 `public/og-default.png` | 기본 이미지 다시 만들기: `node scripts/make-og.mjs` |
+| 구조화 데이터 — 글: BlogPosting + 위치 경로(BreadcrumbList) · 홈: WebSite | `BlogPost.astro` · `index.astro` |
+| 글의 발행일 · 수정일 · 분류 · 태그 (`article:*`) | `BaseHead.astro` |
+| 사이트맵 — 글이 있는 분류 페이지만, 글마다 수정일(lastmod) | `astro.config.mjs` 의 `sitemap({ filter, serialize })` |
+| 글이 0편인 분류 페이지 · 404 페이지는 «색인하지 말 것» | `noindex` |
+| RSS | `/blog/rss.xml` |
+
+### 사람이 한 번 할 일 — 검색엔진에 알리기
+
+검색엔진 계정 소유 확인은 Claude 가 대신할 수 없습니다. 아래 순서로 하고, 나온 **확인 코드만** Claude 에게 주면 됩니다.
+
+1. **Google Search Console** — https://search.google.com/search-console
+   - 속성 추가 → **URL 접두어** → `https://cati-time.github.io/blog/`
+   - 확인 방법 **HTML 태그** → `<meta name="google-site-verification" content="…">` 의 `content` 값을 복사
+   - `site.config.mjs` 의 `SEO.googleSiteVerification` 에 넣고 push → 배포 후 Search Console 에서 **확인**
+   - 왼쪽 **Sitemaps** 에 `sitemap-index.xml` 제출
+2. **네이버 서치어드바이저** — https://searchadvisor.naver.com
+   - 사이트 등록 → `https://cati-time.github.io/blog/`
+   - **HTML 태그** 방식 → `content` 값을 `SEO.naverSiteVerification` 에 넣고 push → 소유 확인
+   - **요청 → 사이트맵 제출**: `https://cati-time.github.io/blog/sitemap-index.xml` (받아 주지 않으면 `sitemap-0.xml`)
+   - **요청 → RSS 제출**: `https://cati-time.github.io/blog/rss.xml`
+3. **Bing** (선택) — Bing Webmaster Tools 에서 «Google Search Console 에서 가져오기»
+
+등록 후 검색 결과에 나오기까지 며칠에서 몇 주 걸립니다. Claude 에게 «구글 확인 코드 이거야: …» 라고 주면 넣고 커밋합니다.
+
+### 알아 둘 한계
+
+- `robots.txt` 는 **도메인 맨 위**(`cati-time.github.io/robots.txt`)에 있어야 효력이 있습니다. 이 블로그는 `/blog/` 아래에 있는 프로젝트 사이트라 거기에 둘 수 없습니다. 없으면 검색엔진은 «모두 허용» 으로 보므로 지금은 문제가 없습니다. 꼭 필요해지면 조직에 `Cati-time.github.io` 저장소를 만들어 그곳에 둡니다.
+- 커스텀 도메인(예: `blog.회사도메인`)을 쓰면 위 한계가 사라지고 주소도 기억하기 쉬워집니다. 나중에 결정해도 됩니다.
+
 ## 5. (선택) Claude에게 push 까지 맡기려면
 
 전역 hook 이 모든 저장소에서 push 를 막으므로, 이 저장소만 예외로 두려면 hook 을 고쳐야 합니다.
