@@ -34,6 +34,15 @@ export const SEO = {
 };
 
 /**
+ * 방문 통계 — Google Analytics 4. 측정 ID(G-…)는 페이지 소스에 공개되는 값이라 비밀값이 아니다.
+ * 배포 빌드에만 들어가고 dev 서버에는 안 들어간다(로컬 확인 방문은 집계 안 됨). 비우면 GA 를 끈다.
+ * 절차: docs/claude-management.md «방문 통계».
+ */
+export const ANALYTICS = {
+	gaMeasurementId: 'G-JSCX8M9WEJ',
+};
+
+/**
  * 메뉴 구조 — 대분류(카테고리) × 플랫폼
  * 글의 frontmatter 에 category·platform 을 이 id 로 적는다. 여기 없는 값은 빌드에서 막힌다.
  * 주소: /<category>/  ·  /<category>/<platform>/

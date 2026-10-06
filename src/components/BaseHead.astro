@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
-import { SEO, SITE } from '../consts';
+import { ANALYTICS, SEO, SITE } from '../consts';
 
 interface Props {
 	title: string;
@@ -24,11 +24,30 @@ const fullTitle = title === SITE.title ? title : `${title} · ${SITE.title}`;
 const ogImage = image ? new URL(image.src, Astro.site) : new URL(`${base}${SEO.defaultImage}`, Astro.site);
 const ogImageSize = image ? { width: image.width, height: image.height } : { width: 1200, height: 630 };
 const robots = noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large';
+// 배포 빌드에서만 — dev 서버 방문이 통계에 섞이지 않게
+const gaId = import.meta.env.PROD ? ANALYTICS.gaMeasurementId : '';
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<!-- 방문 통계: Google Analytics 4 (gtag.js) -->
+{
+	gaId && (
+		<>
+			<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+			<script is:inline define:vars={{ gaId }}>
+				window.dataLayer = window.dataLayer || [];
+				window.gtag = function () {
+					window.dataLayer.push(arguments);
+				};
+				window.gtag('js', new Date());
+				window.gtag('config', gaId);
+			</script>
+		</>
+	)
+}
 <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
 <link rel="icon" href={`${base}favicon.ico`} />
 <link rel="sitemap" href={`${base}sitemap-index.xml`} />
