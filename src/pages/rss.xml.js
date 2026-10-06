@@ -3,8 +3,7 @@ import { SITE } from '../consts';
 import { getCategory, getPlatform, getPosts } from '../lib/posts';
 
 export async function GET(context) {
-	// 피드는 구독 앱 관례대로 최신 글이 먼저
-	const posts = (await getPosts()).reverse();
+	const posts = await getPosts();
 	return rss({
 		title: SITE.title,
 		description: SITE.description,
