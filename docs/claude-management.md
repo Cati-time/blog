@@ -251,7 +251,7 @@ curl -s -o /dev/null -w '%{http_code}\n' https://cati-time.github.io/blog/
 | 항목 | 내용 |
 | --- | --- |
 | 측정 ID | `site.config.mjs` 의 `ANALYTICS.gaMeasurementId` — 비우면 GA 가 꺼진다. 페이지 소스에 공개되는 값이라 비밀값 아님 |
-| 들어가는 곳 | `BaseHead.astro` → 모든 페이지 `<head>` |
+| 들어가는 곳 | `BaseHead.astro` → 모든 페이지 `<head>` · `Footer.astro` → 푸터 안내 문구(«방문 통계를 위해 Google Analytics를 사용합니다»). 둘 다 측정 ID 가 있을 때만 |
 | 언제 들어가나 | **배포 빌드(`npm run build`)에만.** dev 서버(`npm run dev`)에는 안 들어가서 로컬 확인 방문은 집계되지 않는다 |
 
 - **확인**: push·배포 후 사이트에 들어가 GA → **보고서 → 실시간** 에 방문이 잡히는지 본다. 일반 보고서에는 24~48시간 뒤에 쌓인다.
