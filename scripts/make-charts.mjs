@@ -191,22 +191,23 @@ const W = 600;
 }
 
 // ── 5. 화면(ViewModel)이 기대는 것 — 전/후 (안드로이드 아키텍처 ①) ─────
-// 휴대폰 앱 ViewModel 의 생성자 주입 타입을 꼬리 이름으로 센 값(태블릿 앱·별도 앱·템플릿 제외).
-// 전 = module 분리 직전(2026-01-19) 61개 ViewModel · 후 = 2026-10-06 63개 ViewModel.
+// 휴대폰 앱 @HiltViewModel 의 생성자 주입 타입을 꼬리 이름으로 센 값(태블릿 앱·별도 앱·템플릿 제외).
+// 전 = module 분리 직전(2026-01-19) · 후 = 2026-10-06, 둘 다 ViewModel 58개.
+// 블로그 세션과 안드로이드 세션이 따로 센 값이 3 이내로 갈리는 칸은 라벨에 «약» 을 붙인다.
 {
 	const rows = [
-		['UseCase', 190, 11],
-		['Repository', 29, 8],
-		['BT 상태 홀더', 18, 0],
-		['StateReader', 0, 109],
-		['ActionDispatcher', 0, 99],
-		['SideEffectReader', 0, 36],
+		['UseCase', 185, 9],
+		['Repository', 30, 10, '약 30'],
+		['BT 상태 홀더', 19, 0],
+		['StateReader', 0, 110, null, '약 110'],
+		['ActionDispatcher', 0, 100, null, '약 100'],
+		['SideEffectReader', 0, 37],
 		['Selector', 0, 5],
 	];
 	const H = 430, L = 128, R = 44, T = 92, rowH = 44, bh = 14, max = 200;
 	const x = (v) => L + (v / max) * (W - L - R);
 	let b = text(16, 28, '화면이 기대는 것 — module 분리 전과 지금', { size: 17, fill: C.text, weight: 700 });
-	b += text(16, 48, 'ViewModel 생성자에 주입된 타입 수 · 휴대폰 앱 기준', { size: 12, fill: C.subtle });
+	b += text(16, 48, '휴대폰 앱 ViewModel 58개의 생성자 주입 타입 수 · «약» = 세는 방법에 따라 ±3', { size: 12, fill: C.subtle });
 	// 범례
 	[[C.s2, '2026년 1월 (분리 직전)'], [C.s1, '2026년 10월 (지금)']].forEach(([color, name], i) => {
 		const lx = 16 + i * 190;
@@ -222,18 +223,18 @@ const W = 600;
 	b += `<line x1="16" x2="${W - 16}" y1="${sepY}" y2="${sepY}" stroke="${C.grid}" stroke-dasharray="4 4"/>`;
 	b += text(W - 16, T - 10, '직접 부르기', { size: 12, anchor: 'end', fill: C.muted });
 	b += text(W - 16, sepY + 16, '알리기 · 구독하기', { size: 12, anchor: 'end', fill: C.muted });
-	rows.forEach(([name, before, after], i) => {
+	rows.forEach(([name, before, after, beforeLabel, afterLabel], i) => {
 		const y0 = T + i * rowH;
 		b += text(L - 10, y0 + bh + 4, name, { size: 12, anchor: 'end', fill: C.text });
-		[[before, C.s2, 0], [after, C.s1, bh + 2]].forEach(([v, color, dy]) => {
+		[[before, C.s2, 0, beforeLabel], [after, C.s1, bh + 2, afterLabel]].forEach(([v, color, dy, label]) => {
 			const w = Math.max(x(v) - L, v > 0 ? 2 : 0);
 			if (w > 0) b += `<rect x="${L}" y="${y0 + dy}" width="${w}" height="${bh}" rx="3" fill="${color}"/>`;
-			b += text(L + w + 6, y0 + dy + 11, v, { size: 11, fill: C.text });
+			b += text(L + w + 6, y0 + dy + 11, label ?? v, { size: 11, fill: C.text });
 		});
 	});
 	out(
 		'src/content/blog/android-architecture-1-one-truth/vm-dependencies.svg',
-		svg(W, H, '화면이 기대는 것 — module 분리 전과 지금', '휴대폰 앱 ViewModel 생성자 주입 타입 수. 2026년 1월: UseCase 190, Repository 29, BT 상태 홀더 18, StateReader 0, ActionDispatcher 0, SideEffectReader 0, Selector 0. 2026년 10월: UseCase 11, Repository 8, BT 상태 홀더 0, StateReader 109, ActionDispatcher 99, SideEffectReader 36, Selector 5.', b),
+		svg(W, H, '화면이 기대는 것 — module 분리 전과 지금', '휴대폰 앱 ViewModel 58개의 생성자 주입 타입 수. 2026년 1월: UseCase 185, Repository 약 30, BT 상태 홀더 19, StateReader 0, ActionDispatcher 0, SideEffectReader 0, Selector 0. 2026년 10월: UseCase 9, Repository 10, BT 상태 홀더 0, StateReader 약 110, ActionDispatcher 약 100, SideEffectReader 37, Selector 5.', b),
 	);
 }
 
