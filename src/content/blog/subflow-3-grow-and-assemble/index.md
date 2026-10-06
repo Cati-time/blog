@@ -5,7 +5,7 @@ pubDate: 2026-10-06
 category: ax
 platform: android
 tags: ['business-flow', 'subflow', 'ai-agent', 'workflow']
-draft: true
+draft: false
 ---
 
 > **subflow 만들기 시리즈**
