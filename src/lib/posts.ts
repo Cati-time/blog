@@ -9,12 +9,12 @@ export { CATEGORIES, PLATFORMS };
 const base = import.meta.env.BASE_URL;
 
 /**
- * 발행된 글을 최신 순으로. 날짜가 같으면 slug 순(시리즈 ①②③ 이 읽는 순서대로).
+ * 발행된 글을 최신 순으로. 날짜가 같으면 slug 역순 — 시리즈는 마지막 편이 위(③②①).
  * 개발 서버에서는 draft 도 보입니다.
  */
 export async function getPosts(): Promise<Post[]> {
 	const posts = await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft);
-	return posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf() || a.id.localeCompare(b.id));
+	return posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf() || b.id.localeCompare(a.id));
 }
 
 /** 카테고리(＋플랫폼)로 거른 글 */
