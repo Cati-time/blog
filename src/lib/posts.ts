@@ -8,10 +8,13 @@ export { CATEGORIES, PLATFORMS };
 
 const base = import.meta.env.BASE_URL;
 
-/** 발행된 글을 최신순으로. 개발 서버에서는 draft 도 보입니다. */
+/**
+ * 발행된 글을 오래된 순(asc)으로 — 처음 글부터 시리즈 순서대로 읽히게. 날짜가 같으면 slug 순(①②③).
+ * 개발 서버에서는 draft 도 보입니다.
+ */
 export async function getPosts(): Promise<Post[]> {
 	const posts = await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft);
-	return posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+	return posts.sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf() || a.id.localeCompare(b.id));
 }
 
 /** 카테고리(＋플랫폼)로 거른 글 */
