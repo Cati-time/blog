@@ -439,42 +439,44 @@ const W = 600;
 	b += lane(184, 'up', GREEN, 'a-green', '', '구독하기', 'StateReader', 'Selector · 파생된 답');
 	b += lane(328, 'up', GREEN, 'a-green', '5 4', '받기', 'SideEffectReader', '한 번만 일어나는 사건');
 
-	// module
+	// module — Store 의 처리 순서 그대로: Action → Middleware → Reducer → State
 	b += box(16, 304, 432, 184, tint.module, GREEN, { sw: 2 });
 	b += text(32, 328, 'module', { size: 14, fill: C.text, weight: 700 });
 	b += text(96, 328, '도메인 상태의 주인', { size: 12, fill: C.muted });
 	b += box(350, 313, 84, 22, GREEN, GREEN, { rx: 11, sw: 1 }) + text(392, 328, '정본 (SSOT)', { size: 11, anchor: 'middle', fill: '#ffffff', weight: 700 });
-	b += chip2(32, 342, 100, 44, 'Action', '일어난 일', GREEN);
-	b += chip2(176, 342, 122, 44, 'Reducer', '상태는 여기서만 바뀐다', GREEN);
-	b += chip2(340, 342, 92, 44, 'State', 'Store 가 든다', GREEN);
-	b += arrow(134, 364, 172, 364, GREEN, 'a-green');
-	b += arrow(300, 364, 336, 364, GREEN, 'a-green');
-	// 아래 줄: 요청이 오면 움직이는 Middleware / 바깥 변화를 듣는 Runtime Observer
-	b += chip2(32, 418, 118, 44, 'Middleware', '요청이 오면 바깥 일', GREEN);
-	b += chip2(282, 418, 150, 44, 'Runtime Observer', '바깥 변화를 계속 듣는다', GREEN, '4 3');
-	b += arrow(104, 388, 104, 414, GREEN, 'a-green');
-	b += arrow(62, 416, 62, 390, GREEN, 'a-green');
-	b += text(158, 446, '결과는', { size: 11, fill: C.muted });
-	b += text(158, 460, 'Action 으로', { size: 11, fill: C.muted });
-	b += path('M300,418 V402 H124 V391', GREEN, 'a-green', '4 3');
-	b += text(212, 398, '변화를 Action 으로', { size: 11, anchor: 'middle', fill: C.muted });
-	b += text(390, 480, '플랫폼 신호를 받는 module 에만', { size: 11, anchor: 'end', fill: C.muted });
+	b += chip2(32, 342, 76, 44, 'Action', '일어난 일', GREEN);
+	b += chip2(126, 342, 92, 44, 'Middleware', '바깥 일', GREEN);
+	b += chip2(236, 342, 98, 44, 'Reducer', '여기서만 바뀐다', GREEN);
+	b += chip2(352, 342, 80, 44, 'State', 'Store 가 든다', GREEN);
+	b += arrow(110, 364, 122, 364, GREEN, 'a-green');
+	b += arrow(220, 364, 232, 364, GREEN, 'a-green');
+	b += arrow(336, 364, 348, 364, GREEN, 'a-green');
+	// Runtime Observer — 바깥 변화를 듣다가 Action 을 직접 넣는다(일부 module 에만)
+	b += box(32, 418, 150, 56, C.surface, GREEN, { rx: 7, sw: 1.2, dash: '4 3' });
+	b += text(107, 437, 'Runtime Observer', { size: 12, anchor: 'middle', fill: C.text, weight: 600 });
+	b += text(107, 453, '바깥 변화를 계속 듣는다', { size: 11, anchor: 'middle', fill: C.muted });
+	b += text(107, 467, '일부 module 에만', { size: 11, anchor: 'middle', fill: C.muted });
+	b += arrow(70, 416, 70, 390, GREEN, 'a-green', '4 3');
+	b += text(78, 406, '변화를 Action 으로', { size: 11, fill: C.muted });
+	b += text(318, 432, '들어온 Action 은', { size: 11, fill: C.muted });
+	b += text(318, 447, '모두 Middleware 를', { size: 11, fill: C.muted });
+	b += text(318, 462, '지나 Reducer 로', { size: 11, fill: C.muted });
 
-	// data · bridge
-	b += arrow(80, 464, 80, 526, ORANGE, 'a-orange');
-	b += text(88, 508, '부른다', { size: 11, fill: C.muted });
-	b += arrow(262, 490, 262, 526, ORANGE, 'a-orange');
-	b += text(270, 512, '부른다', { size: 11, fill: C.muted });
-	b += arrow(400, 526, 400, 466, ORANGE, 'a-orange', '5 4');
-	b += text(392, 512, '신호', { size: 11, anchor: 'end', fill: C.muted });
+	// bridge · data (bridge 신호는 Runtime Observer 가 받는다)
+	b += arrow(196, 388, 196, 526, ORANGE, 'a-orange');
+	b += text(204, 512, '부른다', { size: 11, fill: C.muted });
+	b += path('M212,388 V404 H300 V526', ORANGE, 'a-orange');
+	b += text(308, 512, '부른다', { size: 11, fill: C.muted });
+	b += arrow(100, 528, 100, 478, ORANGE, 'a-orange', '5 4');
+	b += text(108, 512, '신호', { size: 11, fill: C.muted });
 	b += box(16, 530, 208, 62, tint.io, ORANGE);
-	b += text(32, 554, 'data', { size: 14, fill: C.text, weight: 700 });
-	b += text(76, 554, '서버 · DB', { size: 12, fill: C.muted });
-	b += text(32, 575, '요청 → 응답, 상태는 없다', { size: 11, fill: C.muted });
+	b += text(32, 554, 'bridge', { size: 14, fill: C.text, weight: 700 });
+	b += text(88, 554, '안드로이드 프레임워크', { size: 12, fill: C.muted });
+	b += text(32, 575, '오디오 · BT · 생명주기 신호', { size: 11, fill: C.muted });
 	b += box(240, 530, 208, 62, tint.io, ORANGE);
-	b += text(256, 554, 'bridge', { size: 14, fill: C.text, weight: 700 });
-	b += text(312, 554, '안드로이드 프레임워크', { size: 12, fill: C.muted });
-	b += text(256, 575, '오디오 · BT · 생명주기 신호', { size: 11, fill: C.muted });
+	b += text(256, 554, 'data', { size: 14, fill: C.text, weight: 700 });
+	b += text(300, 554, '서버 · DB', { size: 12, fill: C.muted });
+	b += text(256, 575, '요청 → 응답, 상태는 없다', { size: 11, fill: C.muted });
 
 	// core (가로지른다)
 	b += box(464, 136, 120, 456, tint.core, GRAY, { dash: '6 4' });
@@ -501,6 +503,6 @@ const W = 600;
 
 	out(
 		'src/content/blog/android-architecture-1-one-truth/architecture.svg',
-		svg(W, H, '우리 안드로이드 구조', 'app 아래 feature(View·ViewModel), 그 아래 module(Action·Reducer·State, 요청이 오면 바깥 일을 하는 Middleware, 바깥 변화를 계속 듣고 Action 으로 바꾸는 Runtime Observer — 정본의 주인), 맨 아래 data(서버·DB)와 bridge(안드로이드 프레임워크). feature 와 module 은 알리기(dispatch), 구독하기(StateReader·Selector), 받기(SideEffectReader) 세 통로로만 대화한다. bridge 의 신호는 Runtime Observer 가 받는다. core(디자인 시스템·로거·유틸)는 층 순서 밖에서 가로지르며 화면이 디자인 시스템을 바로 쓴다. feature 는 data·bridge 를 직접 부르지 않는다.', b),
+		svg(W, H, '우리 안드로이드 구조', 'app 아래 feature(View·ViewModel), 그 아래 module(정본의 주인 — 안에서 Action → Middleware → Reducer → State 순서로 처리하고, 일부 module 에는 바깥 변화를 계속 듣다가 Action 을 직접 넣는 Runtime Observer 가 있다), 맨 아래 bridge(안드로이드 프레임워크)와 data(서버·DB). feature 와 module 은 알리기(dispatch), 구독하기(StateReader·Selector), 받기(SideEffectReader) 세 통로로만 대화한다. bridge 의 신호는 Runtime Observer 가 받는다. core(디자인 시스템·로거·유틸)는 층 순서 밖에서 가로지르며 화면이 디자인 시스템을 바로 쓴다. feature 는 data·bridge 를 직접 부르지 않는다.', b),
 	);
 }
