@@ -202,6 +202,39 @@ fun resolveBluetoothLevel(
 
 화면은 주로 구독하고(Reader) 알립니다(Dispatcher). 결과를 들고 있는 곳은 module 입니다. UseCase·Repository 를 직접 받는 곳이 아직 조금 남아 있는데, 이 구조로 오기 전 모습의 흔적입니다. 어떻게 여기까지 왔는지는 ③편에서 숫자로 봅니다.
 
+### UseCase 는 무엇이고, 왜 줄였나
+
+module 을 떼어 내기 전 우리 화면은 대부분 UseCase 를 직접 불렀습니다. UseCase 는 클린 아키텍처에서 온 이름입니다. «로그인한 사용자 가져오기», «약관 목록 가져오기» 처럼 업무 동작 하나를 클래스 하나로 만들어 ViewModel 과 Repository 사이에 둡니다. 안드로이드 공식 가이드에서 선택 사항으로 두는 «도메인 층» 이 이것입니다.
+
+```kotlin
+// 전: 로그인 ViewModel 의 생성자
+class LoginViewModel @Inject constructor(
+    private val getAuthenticatedUserUseCase: GetAuthenticatedUserUseCase,
+    private val getAgreementsUseCase: GetAgreementsUseCase,
+    private val authRepository: AuthRepository,
+    private val localData: AppLocalData,
+    // …
+) : ViewModel()
+```
+
+아마 어느 회사든 한 번쯤 겪고 있는 일이겠지만, 우리가 겪은 단점은 둘로 요약됩니다. 파편화가 쉬웠고, 화면마다 데이터의 일관성을 지키기 어려웠습니다.
+
+- **결과는 부른 쪽이 들고 있습니다.** UseCase 는 부르면 결과를 돌려주고 끝나는 함수입니다. 결과를 들고 있는 것은 부른 ViewModel 이라서, 같은 데이터를 여러 화면이 부르면 사본이 화면 수만큼 생깁니다. 분리 직전 홈 ViewModel 하나가 UseCase 를 16개 받았고, 화면 전체로는 185번이었습니다.
+- **순서를 화면이 몹니다.** 로그인 → 세션 확립 → 후처리처럼 단계가 이어지는 일을 ViewModel 이 UseCase 를 차례로 불러 처리했습니다. 입구가 늘면 그 순서가 입구마다 복사됩니다. 뒤에서 볼 로그인 카드 버그가 그 예입니다.
+- **상태를 든 UseCase 는 숨은 정본이 됩니다.** 여러 화면이 같은 값을 봐야 하니 UseCase 가 상태를 들기 시작했습니다. 분리 직전에 상태를 든 UseCase 가 일곱 개였습니다. 아이 정보 UseCase 는 앱에 하나뿐인 객체로 아이 정보와 설정을 들고, 캐싱·등록·수정·다시 불러오기까지 함수 23개를 가진 447줄짜리 클래스였고, 28개 파일이 이것을 썼습니다. 이름은 «동작 하나» 인데 실제로는 상태를 가진 서비스였습니다. 게다가 아이 id 는 저장 설정에도 따로 있어서 진실이 두 곳이었습니다.
+
+돌아보면 UseCase 라서 생긴 문제는 아니었습니다. **층마다 의미와 역할을 분명히 정하고 그에 맞춰 나누는 설계가 없었습니다.** 그래서 여러 의존성과 기능이 UseCase 에도, ViewModel 에도, 화면에도 흩어졌습니다. UseCase 는 그 흩어짐이 가장 잘 드러난 자리였을 뿐입니다.
+
+그래서 질문을 바꿨습니다. 정본을 가장 쉽게, 눈에 보이게 만드는 방법은 무엇일까. Redux·Flux·MVI 같은 구조를 참고해 함께 공부했고, 그 위에서 우리 회사에 맞는 구조를 설계했습니다. 지금 구조에는 그 흔적이 남아 있습니다.
+
+| 참고한 구조 | 지금 구조에 남은 모양 |
+| --- | --- |
+| Redux | 상태는 Reducer 에서만 바뀌고, 바깥과 닿는 일은 Middleware 가 맡는다 |
+| Flux | 데이터는 한 방향으로만 흐르고, Store 는 도메인마다 하나씩 있다 |
+| MVI | 화면의 입력은 이벤트 하나(onEvent), 출력은 화면 상태(uiState)와 일회성 사건(sideEffect) |
+
+Redux 는 앱 전체에 Store 를 하나 두지만, 우리는 도메인마다 Store 를 둡니다. 도메인마다 정본의 주인을 하나씩 두기 위해서입니다. UseCase 가 하던 일은 module 안으로 내려갔습니다. 동작은 Action 이 되고, 결과는 Store 의 상태가 됩니다. UseCase 클래스가 모두 사라진 것은 아닙니다. 일부는 module 안에서 Middleware 가 부르는 내부 부품으로 남았고, 아직 옮기지 못한 화면 쪽 UseCase 는 검사의 «줄여야 할 목록» 에 80개가 올라 있습니다(홈 38 · 아바타톡 22 · 기기 14 · 테마 6).
+
 ### 구글 가이드와는 무엇이 다른가
 
 안드로이드 공식 아키텍처 가이드도 정본을 말합니다. 다만 정본을 데이터 층의 Repository 에 둡니다. 우리는 정본을 도메인 층의 module Store 에 두고, Repository 는 상태 없는 입출력 통로로만 씁니다. 지금 data 층에는 상태를 들고 있는 Flow 가 하나도 없습니다.
