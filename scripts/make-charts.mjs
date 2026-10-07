@@ -439,44 +439,41 @@ const W = 600;
 	b += lane(184, 'up', GREEN, 'a-green', '', '구독하기', 'StateReader', 'Selector · 파생된 답');
 	b += lane(328, 'up', GREEN, 'a-green', '5 4', '받기', 'SideEffectReader', '한 번만 일어나는 사건');
 
-	// module — Store 의 처리 순서 그대로: Action → Middleware → Reducer → State
+	// module
 	b += box(16, 304, 432, 184, tint.module, GREEN, { sw: 2 });
 	b += text(32, 328, 'module', { size: 14, fill: C.text, weight: 700 });
 	b += text(96, 328, '도메인 상태의 주인', { size: 12, fill: C.muted });
 	b += box(350, 313, 84, 22, GREEN, GREEN, { rx: 11, sw: 1 }) + text(392, 328, '정본 (SSOT)', { size: 11, anchor: 'middle', fill: '#ffffff', weight: 700 });
-	b += chip2(32, 342, 76, 44, 'Action', '일어난 일', GREEN);
-	b += chip2(126, 342, 92, 44, 'Middleware', '바깥 일', GREEN);
-	b += chip2(236, 342, 98, 44, 'Reducer', '여기서만 바뀐다', GREEN);
-	b += chip2(352, 342, 80, 44, 'State', 'Store 가 든다', GREEN);
-	b += arrow(110, 364, 122, 364, GREEN, 'a-green');
-	b += arrow(220, 364, 232, 364, GREEN, 'a-green');
-	b += arrow(336, 364, 348, 364, GREEN, 'a-green');
-	// Runtime Observer — 바깥 변화를 듣다가 Action 을 직접 넣는다(일부 module 에만)
-	b += box(32, 418, 150, 56, C.surface, GREEN, { rx: 7, sw: 1.2, dash: '4 3' });
-	b += text(107, 437, 'Runtime Observer', { size: 12, anchor: 'middle', fill: C.text, weight: 600 });
-	b += text(107, 453, '바깥 변화를 계속 듣는다', { size: 11, anchor: 'middle', fill: C.muted });
-	b += text(107, 467, '일부 module 에만', { size: 11, anchor: 'middle', fill: C.muted });
-	b += arrow(70, 416, 70, 390, GREEN, 'a-green', '4 3');
-	b += text(78, 406, '변화를 Action 으로', { size: 11, fill: C.muted });
-	b += text(318, 432, '들어온 Action 은', { size: 11, fill: C.muted });
-	b += text(318, 447, '모두 Middleware 를', { size: 11, fill: C.muted });
-	b += text(318, 462, '지나 Reducer 로', { size: 11, fill: C.muted });
+	b += chip2(32, 342, 100, 44, 'Action', '일어난 일', GREEN);
+	b += chip2(176, 342, 122, 44, 'Reducer', '상태는 여기서만 바뀐다', GREEN);
+	b += chip2(340, 342, 92, 44, 'State', 'Store 가 든다', GREEN);
+	b += arrow(134, 364, 172, 364, GREEN, 'a-green');
+	b += arrow(300, 364, 336, 364, GREEN, 'a-green');
+	// 아래 줄: 요청이 오면 움직이는 Middleware / 바깥 변화를 듣는 Runtime Observer
+	b += chip2(32, 418, 118, 44, 'Middleware', '요청 · 변화를 받는다', GREEN);
+	b += chip2(282, 418, 150, 44, 'Runtime Observer', '신호를 Flow 로 바꾼다', GREEN, '4 3');
+	b += arrow(62, 388, 62, 414, GREEN, 'a-green');
+	b += arrow(104, 416, 104, 390, GREEN, 'a-green');
+	b += text(112, 405, '결과는 Action 으로', { size: 11, fill: C.muted });
+	b += arrow(280, 442, 154, 442, GREEN, 'a-green', '4 3');
+	b += text(217, 435, '변화를 넘긴다', { size: 11, anchor: 'middle', fill: C.muted });
+	b += text(390, 480, '플랫폼 신호를 받는 module 에만', { size: 11, anchor: 'end', fill: C.muted });
 
-	// bridge · data (bridge 신호는 Runtime Observer 가 받는다)
-	b += arrow(196, 388, 196, 526, ORANGE, 'a-orange');
-	b += text(204, 512, '부른다', { size: 11, fill: C.muted });
-	b += path('M212,388 V404 H300 V526', ORANGE, 'a-orange');
-	b += text(308, 512, '부른다', { size: 11, fill: C.muted });
-	b += arrow(100, 528, 100, 478, ORANGE, 'a-orange', '5 4');
-	b += text(108, 512, '신호', { size: 11, fill: C.muted });
+	// data · bridge
+	b += arrow(80, 464, 80, 526, ORANGE, 'a-orange');
+	b += text(88, 508, '부른다', { size: 11, fill: C.muted });
+	b += arrow(262, 490, 262, 526, ORANGE, 'a-orange');
+	b += text(270, 512, '부른다', { size: 11, fill: C.muted });
+	b += arrow(400, 526, 400, 466, ORANGE, 'a-orange', '5 4');
+	b += text(392, 512, '신호', { size: 11, anchor: 'end', fill: C.muted });
 	b += box(16, 530, 208, 62, tint.io, ORANGE);
-	b += text(32, 554, 'bridge', { size: 14, fill: C.text, weight: 700 });
-	b += text(88, 554, '안드로이드 프레임워크', { size: 12, fill: C.muted });
-	b += text(32, 575, '오디오 · BT · 생명주기 신호', { size: 11, fill: C.muted });
+	b += text(32, 554, 'data', { size: 14, fill: C.text, weight: 700 });
+	b += text(76, 554, '서버 · DB', { size: 12, fill: C.muted });
+	b += text(32, 575, '요청 → 응답, 상태는 없다', { size: 11, fill: C.muted });
 	b += box(240, 530, 208, 62, tint.io, ORANGE);
-	b += text(256, 554, 'data', { size: 14, fill: C.text, weight: 700 });
-	b += text(300, 554, '서버 · DB', { size: 12, fill: C.muted });
-	b += text(256, 575, '요청 → 응답, 상태는 없다', { size: 11, fill: C.muted });
+	b += text(256, 554, 'bridge', { size: 14, fill: C.text, weight: 700 });
+	b += text(312, 554, '안드로이드 프레임워크', { size: 12, fill: C.muted });
+	b += text(256, 575, '오디오 · BT · 생명주기 신호', { size: 11, fill: C.muted });
 
 	// core (가로지른다)
 	b += box(464, 136, 120, 456, tint.core, GRAY, { dash: '6 4' });
@@ -503,6 +500,79 @@ const W = 600;
 
 	out(
 		'src/content/blog/android-architecture-1-one-truth/architecture.svg',
-		svg(W, H, '우리 안드로이드 구조', 'app 아래 feature(View·ViewModel), 그 아래 module(정본의 주인 — 안에서 Action → Middleware → Reducer → State 순서로 처리하고, 일부 module 에는 바깥 변화를 계속 듣다가 Action 을 직접 넣는 Runtime Observer 가 있다), 맨 아래 bridge(안드로이드 프레임워크)와 data(서버·DB). feature 와 module 은 알리기(dispatch), 구독하기(StateReader·Selector), 받기(SideEffectReader) 세 통로로만 대화한다. bridge 의 신호는 Runtime Observer 가 받는다. core(디자인 시스템·로거·유틸)는 층 순서 밖에서 가로지르며 화면이 디자인 시스템을 바로 쓴다. feature 는 data·bridge 를 직접 부르지 않는다.', b),
+		svg(W, H, '우리 안드로이드 구조', 'app 아래 feature(View·ViewModel), 그 아래 module(정본의 주인 — Action 은 Middleware 를 거쳐 결과 Action 이 되어 Reducer 로 가고 State 가 바뀐다. 일부 module 에는 bridge 신호를 Flow 로 바꿔 Middleware 에 넘기는 Runtime Observer 가 있다), 맨 아래 data(서버·DB)와 bridge(안드로이드 프레임워크). feature 와 module 은 알리기(dispatch), 구독하기(StateReader·Selector), 받기(SideEffectReader) 세 통로로만 대화한다. bridge 의 신호는 Runtime Observer 가 받는다. core(디자인 시스템·로거·유틸)는 층 순서 밖에서 가로지르며 화면이 디자인 시스템을 바로 쓴다. feature 는 data·bridge 를 직접 부르지 않는다.', b),
+	);
+}
+
+// ── 11. 앱 정보 화면이 지난 길 (안드로이드 아키텍처 ③) ───────────────────────
+// 설정 화면 전체를 옮긴 비즈니스 플로우 안에서 «앱 정보» 몫. 날짜는 단계가 돈 날(2026년).
+{
+	const H = 360;
+	const steps = [
+		['조사', '9/23', '위반 5개를 찾음'],
+		['아키텍처', '9/24', '주인과 표면 셋을 정함'],
+		['BDD', '9/28 – 29', '시나리오 15개'],
+		['SDD', '9/29', '이벤트 9 · 일회성 6'],
+		['계획', '9/29 – 30', '스텝 6개'],
+		['실행', '9/30 – 10/1', '커밋 4 · 반려 2'],
+		['검증', '10/1', '렌더 · 도달성 · 수명 검사'],
+		['정리', '10/3', '옛 값 반환 계약 삭제'],
+	];
+	const w = 130, h = 78, gap = 16, x0 = 16;
+	const marker = `<marker id="t-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${C.s1}"/></marker>`;
+	let b = `<defs>${marker}</defs>`;
+	b += text(16, 28, '앱 정보 화면이 지난 길', { size: 17, fill: C.text, weight: 700 });
+	b += text(16, 48, '설정 화면을 옮긴 비즈니스 플로우 안에서 앱 정보 몫 · 2026년 9월 23일 ~ 10월 3일', { size: 12, fill: C.subtle });
+	const pos = (i) => (i < 4 ? [x0 + i * (w + gap), 76] : [x0 + (7 - i) * (w + gap), 226]);
+	steps.forEach(([name, date, out], i) => {
+		const [x, y] = pos(i);
+		const exec = i === 5;
+		b += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${exec ? '#e8f5ef' : C.surface}" stroke="${C.s1}" stroke-width="${exec ? 2 : 1.3}"/>`;
+		b += text(x + 12, y + 24, `${i + 1}. ${name}`, { size: 13, fill: C.text, weight: 700 });
+		b += text(x + 12, y + 42, date, { size: 11, fill: C.subtle });
+		b += text(x + 12, y + 62, out, { size: 11.5, fill: C.text });
+	});
+	for (let i = 0; i < 3; i++) {
+		const [x, y] = pos(i);
+		b += `<line x1="${x + w + 2}" y1="${y + h / 2}" x2="${x + w + gap - 2}" y2="${y + h / 2}" stroke="${C.s1}" stroke-width="1.8" marker-end="url(#t-ah)"/>`;
+	}
+	const [sx, sy] = pos(3);
+	b += `<path d="M${sx + w / 2},${sy + h + 2} V${226 - 4}" fill="none" stroke="${C.s1}" stroke-width="1.8" marker-end="url(#t-ah)"/>`;
+	for (let i = 4; i < 7; i++) {
+		const [x, y] = pos(i);
+		b += `<line x1="${x - 2}" y1="${y + h / 2}" x2="${x - gap + 2}" y2="${y + h / 2}" stroke="${C.s1}" stroke-width="1.8" marker-end="url(#t-ah)"/>`;
+	}
+	b += text(16, 336, '실행은 상태 명세부터 화면 정리까지 약 8시간, 단계마다 독립 검수 · 반려는 두 번', { size: 12, fill: C.muted });
+	out(
+		'src/content/blog/android-architecture-3-how-we-moved/app-info-flow.svg',
+		svg(W, H, '앱 정보 화면이 지난 길', '조사(9/23, 위반 5개) → 아키텍처(9/24, 주인과 표면 셋) → BDD(9/28–29, 시나리오 15개) → SDD(9/29, 이벤트 9·일회성 6) → 계획(9/29–30, 스텝 6) → 실행(9/30–10/1, 커밋 4·반려 2) → 검증(10/1, 렌더·도달성·수명 검사) → 정리(10/3, 옛 값 반환 계약 삭제).', b),
+	);
+}
+
+// ── 12. 지금 자리에 있는 검사 72종이 생긴 때 (안드로이드 아키텍처 ③) ──────────
+// 하드 가드 파일이 지금 자리(규칙 폴더의 검사 자리)에 처음 추가된 달로 센 누적값.
+{
+	const months = ['7월 말', '8월 말', '9월 말'];
+	const vals = [26, 47, 72];
+	const H = 320, L = 44, R = 24, T = 78, B = 44, max = 80;
+	const pw = W - L - R, ph = H - T - B, step = pw / months.length, bw = step - 70;
+	const y = (v) => T + ph - (v / max) * ph;
+	let b = text(16, 28, '지금 자리에 있는 검사 72종이 생긴 때', { size: 17, fill: C.text, weight: 700 });
+	b += text(16, 48, '하드 가드 · 누적 · 7월 30일, 문서 정리에 쓸려 나간 26종을 지금 자리로 되살린 뒤', { size: 12, fill: C.subtle });
+	for (const g of [0, 20, 40, 60, 80]) {
+		b += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="${C.grid}"/>`;
+		b += text(L - 6, y(g) + 4, g, { size: 12, anchor: 'end', fill: C.subtle });
+	}
+	vals.forEach((v, i) => {
+		const x = L + i * step + 35;
+		b += bar(x, y(v), bw, y(0) - y(v), i === 0 ? '#86c9ad' : C.s1);
+		b += text(x + bw / 2, y(v) - 8, `${v}`, { size: 13, anchor: 'middle', fill: C.text, weight: 700 });
+		const note = i === 0 ? '되살린 26종' : `새로 +${v - vals[i - 1]}`;
+		b += text(x + bw / 2, y(v) + 20, note, { size: 11, anchor: 'middle', fill: i === 0 ? C.text : '#ffffff', weight: 600 });
+		b += text(x + bw / 2, H - B + 18, months[i], { size: 12, anchor: 'middle', fill: C.subtle });
+	});
+	out(
+		'src/content/blog/android-architecture-3-how-we-moved/guards-growth.svg',
+		svg(W, H, '지금 자리에 있는 검사 72종이 생긴 때', '하드 가드 누적: 7월 말 26종(되살린 것), 8월 말 47종(새로 21), 9월 말 72종(새로 25).', b),
 	);
 }
