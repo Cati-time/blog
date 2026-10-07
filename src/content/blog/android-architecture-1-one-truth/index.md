@@ -41,7 +41,7 @@ module 은 Redux 식 구조입니다. 안드로이드를 깊이 모르셔도 네
 - **Reducer**: (지금 상태, Action) → 다음 상태를 계산하는 순수 함수. 상태는 여기서만 바뀝니다.
 - **Middleware**: 서버 호출처럼 바깥과 닿는 일을 맡는 곳. 결과를 다시 Action 으로 보냅니다.
 
-그림에서 Middleware 옆의 Runtime Observer 는 그 짝입니다. Middleware 가 요청이 와야 움직인다면, Runtime Observer 는 BT 연결이나 앱의 생명주기처럼 바깥에서 저절로 바뀌는 것을 계속 듣다가 Action 으로 바꿔 넣습니다. Middleware 안에 있는 것이 아니라 module 안에 따로 있는 부품이고, 상태를 직접 갖지 않습니다. 대신 이렇게 넣은 Action 도 화면이 보낸 Action 과 똑같이 Middleware 를 지나 Reducer 로 갑니다. 이 이야기는 따로 한 편으로 쓰겠습니다.
+그림에서 Middleware 옆의 Runtime Observer 는 그 짝입니다. 모든 module 에 있지는 않고, 플랫폼 신호를 받아야 하는 module 에만 있습니다(지금은 BT·연결 권유·네트워크·플레이어 넷). Middleware 가 요청이 와야 움직인다면, Runtime Observer 는 BT 연결이나 앱의 생명주기처럼 바깥에서 저절로 바뀌는 것을 계속 듣다가 Action 으로 바꿔 넣습니다. Middleware 안에 있는 것이 아니라 module 안에 따로 있는 부품이고, 상태를 직접 갖지 않습니다. 대신 이렇게 넣은 Action 도 화면이 보낸 Action 과 똑같이 Middleware 를 지나 Reducer 로 갑니다. 이 이야기는 따로 한 편으로 쓰겠습니다.
 
 화면은 module 과 세 가지 방법으로만 대화합니다. 알리고(dispatch), 구독하고(Reader), 일회성 사건을 받습니다(SideEffectReader). module 안의 Store·Reducer·Middleware 는 화면에서 보이지 않습니다.
 

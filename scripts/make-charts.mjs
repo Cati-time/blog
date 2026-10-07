@@ -388,7 +388,7 @@ const W = 600;
 // 층(app → feature → module → data·bridge) + 화면과 module 사이의 세 통로 + module 안의 흐름
 // (Middleware = 요청이 오면 바깥 일 · Runtime Observer = 바깥 변화를 듣고 Action 으로) + 가로지르는 core.
 {
-	const H = 624;
+	const H = 636;
 	const BLUE = C.s2, GREEN = C.s1, ORANGE = C.s3, GRAY = '#9ca3af';
 	const tint = { app: '#f3f4f6', feature: '#eaf2fc', module: '#e8f5ef', io: '#fdf0e8', core: '#fafafa' };
 	const marker = (id, color) =>
@@ -440,7 +440,7 @@ const W = 600;
 	b += lane(328, 'up', GREEN, 'a-green', '5 4', '받기', 'SideEffectReader', '한 번만 일어나는 사건');
 
 	// module
-	b += box(16, 304, 432, 172, tint.module, GREEN, { sw: 2 });
+	b += box(16, 304, 432, 184, tint.module, GREEN, { sw: 2 });
 	b += text(32, 328, 'module', { size: 14, fill: C.text, weight: 700 });
 	b += text(96, 328, '도메인 상태의 주인', { size: 12, fill: C.muted });
 	b += box(350, 313, 84, 22, GREEN, GREEN, { rx: 11, sw: 1 }) + text(392, 328, '정본 (SSOT)', { size: 11, anchor: 'middle', fill: '#ffffff', weight: 700 });
@@ -458,25 +458,26 @@ const W = 600;
 	b += text(158, 460, 'Action 으로', { size: 11, fill: C.muted });
 	b += path('M300,418 V402 H124 V391', GREEN, 'a-green', '4 3');
 	b += text(212, 398, '변화를 Action 으로', { size: 11, anchor: 'middle', fill: C.muted });
+	b += text(390, 480, '플랫폼 신호를 받는 module 에만', { size: 11, anchor: 'end', fill: C.muted });
 
 	// data · bridge
-	b += arrow(80, 464, 80, 514, ORANGE, 'a-orange');
-	b += text(88, 496, '부른다', { size: 11, fill: C.muted });
-	b += arrow(262, 478, 262, 514, ORANGE, 'a-orange');
-	b += text(270, 500, '부른다', { size: 11, fill: C.muted });
-	b += arrow(400, 514, 400, 466, ORANGE, 'a-orange', '5 4');
-	b += text(392, 500, '신호', { size: 11, anchor: 'end', fill: C.muted });
-	b += box(16, 518, 208, 62, tint.io, ORANGE);
-	b += text(32, 542, 'data', { size: 14, fill: C.text, weight: 700 });
-	b += text(76, 542, '서버 · DB', { size: 12, fill: C.muted });
-	b += text(32, 563, '요청 → 응답, 상태는 없다', { size: 11, fill: C.muted });
-	b += box(240, 518, 208, 62, tint.io, ORANGE);
-	b += text(256, 542, 'bridge', { size: 14, fill: C.text, weight: 700 });
-	b += text(312, 542, '안드로이드 프레임워크', { size: 12, fill: C.muted });
-	b += text(256, 563, '오디오 · BT · 생명주기 신호', { size: 11, fill: C.muted });
+	b += arrow(80, 464, 80, 526, ORANGE, 'a-orange');
+	b += text(88, 508, '부른다', { size: 11, fill: C.muted });
+	b += arrow(262, 490, 262, 526, ORANGE, 'a-orange');
+	b += text(270, 512, '부른다', { size: 11, fill: C.muted });
+	b += arrow(400, 526, 400, 466, ORANGE, 'a-orange', '5 4');
+	b += text(392, 512, '신호', { size: 11, anchor: 'end', fill: C.muted });
+	b += box(16, 530, 208, 62, tint.io, ORANGE);
+	b += text(32, 554, 'data', { size: 14, fill: C.text, weight: 700 });
+	b += text(76, 554, '서버 · DB', { size: 12, fill: C.muted });
+	b += text(32, 575, '요청 → 응답, 상태는 없다', { size: 11, fill: C.muted });
+	b += box(240, 530, 208, 62, tint.io, ORANGE);
+	b += text(256, 554, 'bridge', { size: 14, fill: C.text, weight: 700 });
+	b += text(312, 554, '안드로이드 프레임워크', { size: 12, fill: C.muted });
+	b += text(256, 575, '오디오 · BT · 생명주기 신호', { size: 11, fill: C.muted });
 
 	// core (가로지른다)
-	b += box(464, 136, 120, 444, tint.core, GRAY, { dash: '6 4' });
+	b += box(464, 136, 120, 456, tint.core, GRAY, { dash: '6 4' });
 	b += text(478, 160, 'core', { size: 14, fill: C.text, weight: 700 });
 	b += text(478, 178, '층 순서 밖에서', { size: 11, fill: C.muted });
 	b += text(478, 193, '가로지른다', { size: 11, fill: C.muted });
@@ -486,17 +487,17 @@ const W = 600;
 	b += chip(474, 314, 100, '유틸', GRAY);
 	b += text(478, 372, '도메인 상태가', { size: 11, fill: C.muted });
 	b += text(478, 387, '없는 것만 둔다', { size: 11, fill: C.muted });
-	b += `<line x1="474" x2="574" y1="496" y2="496" stroke="${GRAY}" stroke-dasharray="3 3"/>`;
-	b += text(478, 519, '데이터를 다루면', { size: 11, fill: C.muted });
-	b += text(478, 534, 'core 여도 data 와', { size: 11, fill: C.muted });
-	b += text(478, 549, '같다 — 화면은', { size: 11, fill: C.muted });
-	b += text(478, 564, 'module 을 거친다', { size: 11, fill: C.muted });
+	b += `<line x1="474" x2="574" y1="508" y2="508" stroke="${GRAY}" stroke-dasharray="3 3"/>`;
+	b += text(478, 531, '데이터를 다루면', { size: 11, fill: C.muted });
+	b += text(478, 546, 'core 여도 data 와', { size: 11, fill: C.muted });
+	b += text(478, 561, '같다 — 화면은', { size: 11, fill: C.muted });
+	b += text(478, 576, 'module 을 거친다', { size: 11, fill: C.muted });
 	b += `<path d="M448,206 H458 V226 H470" fill="none" stroke="${GRAY}" stroke-width="1.6" marker-end="url(#a-gray)"/>`;
 
 	// 금지: 건너뛰기
-	b += `<circle cx="25" cy="605" r="8" fill="#fbeaea" stroke="${C.critical}" stroke-width="1.5"/>`;
-	b += text(25, 609, '✕', { size: 11, anchor: 'middle', fill: C.critical, weight: 700 });
-	b += text(40, 609, 'feature 는 data · bridge 를 직접 부르지 않는다 — 읽기만 해도 module 을 거친다', { size: 12, fill: C.text });
+	b += `<circle cx="25" cy="617" r="8" fill="#fbeaea" stroke="${C.critical}" stroke-width="1.5"/>`;
+	b += text(25, 621, '✕', { size: 11, anchor: 'middle', fill: C.critical, weight: 700 });
+	b += text(40, 621, 'feature 는 data · bridge 를 직접 부르지 않는다 — 읽기만 해도 module 을 거친다', { size: 12, fill: C.text });
 
 	out(
 		'src/content/blog/android-architecture-1-one-truth/architecture.svg',
