@@ -9,7 +9,7 @@ draft: true
 ---
 
 > **안드로이드 아키텍처 시리즈**
-> ① 지금의 구조 — 정본은 한 곳에 (이 글) · ② 새로 만들고 고치기 (준비 중) · ③ 어떻게 옮겨 왔나 — subflow 로 (준비 중)
+> ① 지금의 구조 — 정본은 한 곳에 (이 글) · [② 새로 만들고 고치기](../android-architecture-2-build-and-fix/) · ③ 어떻게 옮겨 왔나 — subflow 로 (준비 중)
 
 [셋이 남았을 때](../business-flow-story/) 에서 우리 팀이 AI 와 함께 일하는 방식에 정착하기까지를 적었습니다. 이번 글은 그 일이 실제로 벌어지는 자리, 안드로이드 앱의 구조 이야기입니다.
 
@@ -23,18 +23,7 @@ draft: true
 
 ## 구조 한 장
 
-```text
-app ──▶ feature (화면: View + ViewModel)
-           │  알리기    dispatch(Action)          반환값 없음
-           │  구독하기  StateReader · Selector    지속 상태 · 파생된 답
-           │  받기      SideEffectReader          한 번만 일어나는 사건
-           ▼
-        module (도메인: Store · Action · Reducer · Middleware)
-           ├──▶ data    서버·DB 에 요청하고 응답을 받는다
-           └──▶ bridge  안드로이드 프레임워크(오디오·BT·생명주기)의 신호를 받는다
-
-core (디자인 시스템 · 로거 · 유틸)   도메인 상태가 없는 것만, 층 순서 밖에서 가로지른다
-```
+![우리 안드로이드 구조. app 아래 feature(View와 ViewModel), 그 아래 정본의 주인인 module(Action·Reducer·State·Middleware), 맨 아래 data(서버·DB)와 bridge(안드로이드 프레임워크)가 있다. feature 와 module 은 알리기·구독하기·받기 세 통로로만 대화하고, core(디자인 시스템·로거·유틸)는 층 순서 밖에서 가로지른다](./architecture.svg)
 
 | 층 | 맡는 일 | 갖지 않는 것 |
 | --- | --- | --- |

@@ -305,3 +305,192 @@ const W = 600;
 		svg(W, H, '지금 화면이 기대는 것', '휴대폰 앱 ViewModel 58개의 생성자 주입 타입 수. StateReader 약 110, ActionDispatcher 약 100, SideEffectReader 37, Selector 5, Repository 10, UseCase 9.', b),
 	);
 }
+
+// ── 8. 새 module 하나 — 설계와 코딩 (안드로이드 아키텍처 ②) ───────────────
+// «다음 연결 안내를 언제 다시 띄우나» module. 설계 = BT UI 기능의 설계 문서 커밋(조사·계획·시나리오),
+// 코딩 = module 기능 커밋 4 + 실행 검수 반려 처분 커밋 2. 날짜는 2026년 8월.
+{
+	const days = ['8/3', '8/4', '8/5', '8/6', '8/7'];
+	const design = [3, 7, 30, 16, 0];
+	const code = [0, 0, 0, 2, 4];
+	const H = 340, L = 44, R = 20, T = 84, B = 44, max = 32;
+	const pw = W - L - R, ph = H - T - B, step = pw / days.length, bw = step - 26;
+	const y = (v) => T + ph - (v / max) * ph;
+	let b = text(16, 28, '새 module 하나 — 설계 4일, 코딩 17시간', { size: 17, fill: C.text, weight: 700 });
+	b += text(16, 48, '하루 커밋 수 · 설계 문서 56개(반려 6번 뒤 통과) / 코드 6개(기능 4 + 검수 반려 처분 2)', { size: 12, fill: C.subtle });
+	[[C.s2, '설계 문서'], [C.s1, '코드']].forEach(([color, name], i) => {
+		const lx = 16 + i * 110;
+		b += `<rect x="${lx}" y="58" width="12" height="12" rx="3" fill="${color}"/>`;
+		b += text(lx + 18, 69, name, { size: 12, fill: C.text });
+	});
+	for (const g of [0, 10, 20, 30]) {
+		b += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="${C.grid}"/>`;
+		b += text(L - 6, y(g) + 4, g, { size: 12, anchor: 'end', fill: C.subtle });
+	}
+	days.forEach((d, i) => {
+		const x = L + i * step + 13;
+		let top = y(0);
+		[[design[i], C.s2], [code[i], C.s1]].forEach(([v, color]) => {
+			if (!v) return;
+			const h = y(0) - y(v);
+			b += bar(x, top - h, bw, h - (top < y(0) ? 2 : 0), color);
+			top -= h;
+		});
+		const total = design[i] + code[i];
+		const label = design[i] && code[i] ? `${design[i]} + ${code[i]}` : `${total}`;
+		b += text(x + bw / 2, top - 8, label, { size: 12, anchor: 'middle', fill: C.text, weight: 600 });
+		b += text(x + bw / 2, H - B + 18, d, { size: 12, anchor: 'middle', fill: C.subtle });
+	});
+	out(
+		'src/content/blog/android-architecture-2-build-and-fix/design-vs-code.svg',
+		svg(W, H, '새 module 하나 — 설계 4일, 코딩 17시간', '2026년 8월 하루 커밋 수. 설계 문서 8/3 3개, 8/4 7개, 8/5 30개, 8/6 16개. 코드 8/6 2개, 8/7 4개.', b),
+	);
+}
+
+// ── 9. 테스트 — module 분리 전과 지금 (안드로이드 아키텍처 ②) ───────────────
+// @Test 줄 수 · 태블릿 앱·별도 앱·템플릿 제외 · 단위 = src/test, 기기 = src/androidTest.
+{
+	const rows = [
+		['단위 테스트 전체', 281, 4463],
+		['그중 module', 0, 1772],
+		['ViewModel 테스트', 21, 423],
+		['기기 테스트', 31, 33],
+	];
+	const H = 330, L = 128, R = 64, T = 92, rowH = 52, bh = 16, max = 5000;
+	const x = (v) => L + (v / max) * (W - L - R);
+	let b = text(16, 28, '테스트 — module 분리 전과 지금', { size: 17, fill: C.text, weight: 700 });
+	b += text(16, 48, '@Test 수 · 늘어난 것은 화면 없이 도는 단위 테스트, 기기 테스트는 그대로', { size: 12, fill: C.subtle });
+	[[C.s2, '2026년 1월 (분리 직전)'], [C.s1, '2026년 10월 (지금)']].forEach(([color, name], i) => {
+		const lx = 16 + i * 190;
+		b += `<rect x="${lx}" y="61" width="12" height="12" rx="3" fill="${color}"/>`;
+		b += text(lx + 18, 72, name, { size: 12, fill: C.text });
+	});
+	for (const g of [0, 1000, 2000, 3000, 4000, 5000]) {
+		b += `<line x1="${x(g)}" x2="${x(g)}" y1="${T - 6}" y2="${T + rows.length * rowH - 10}" stroke="${C.grid}"/>`;
+		b += text(x(g), T + rows.length * rowH + 6, g.toLocaleString('en-US'), { size: 12, anchor: 'middle', fill: C.subtle });
+	}
+	rows.forEach(([name, before, after], i) => {
+		const y0 = T + i * rowH;
+		b += text(L - 10, y0 + bh + 4, name, { size: 12, anchor: 'end', fill: C.text });
+		[[before, C.s2, 0], [after, C.s1, bh + 2]].forEach(([v, color, dy]) => {
+			const w = Math.max(x(v) - L, v > 0 ? 2 : 0);
+			if (w > 0) b += `<rect x="${L}" y="${y0 + dy}" width="${w}" height="${bh}" rx="3" fill="${color}"/>`;
+			b += text(L + w + 6, y0 + dy + 12, v.toLocaleString('en-US'), { size: 11, fill: C.text });
+		});
+	});
+	out(
+		'src/content/blog/android-architecture-2-build-and-fix/tests-before-after.svg',
+		svg(W, H, '테스트 — module 분리 전과 지금', '@Test 수. 단위 테스트 전체 281에서 4,463, 그중 module 0에서 1,772, ViewModel 테스트 21에서 423, 기기 테스트 31에서 33.', b),
+	);
+}
+
+// ── 10. 우리 안드로이드 구조 (안드로이드 아키텍처 ①) ────────────────────────
+// 층(app → feature → module → data·bridge) + 화면과 module 사이의 세 통로 + module 안의 흐름 + 가로지르는 core.
+{
+	const H = 610;
+	const BLUE = C.s2, GREEN = C.s1, ORANGE = C.s3, GRAY = '#9ca3af';
+	const tint = { app: '#f3f4f6', feature: '#eaf2fc', module: '#e8f5ef', io: '#fdf0e8', core: '#fafafa' };
+	const marker = (id, color) =>
+		`<marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${color}"/></marker>`;
+	const box = (x, y, w, h, fill, stroke, o = {}) =>
+		`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.rx ?? 10}" fill="${fill}" stroke="${stroke}" stroke-width="${o.sw ?? 1.5}"${o.dash ? ` stroke-dasharray="${o.dash}"` : ''}/>`;
+	const arrow = (x1, y1, x2, y2, color, id, dash = '') =>
+		`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="1.8"${dash ? ` stroke-dasharray="${dash}"` : ''} marker-end="url(#${id})"/>`;
+	const chip = (x, y, w, label, stroke) =>
+		box(x, y, w, 32, C.surface, stroke, { rx: 7, sw: 1.2 }) + text(x + w / 2, y + 21, label, { size: 12, anchor: 'middle', fill: C.text, weight: 600 });
+
+	let b = `<defs>${marker('a-blue', BLUE)}${marker('a-green', GREEN)}${marker('a-gray', GRAY)}${marker('a-orange', ORANGE)}</defs>`;
+	b += text(16, 30, '우리 안드로이드 구조', { size: 18, fill: C.text, weight: 700 });
+	b += text(16, 50, '의존은 위에서 아래로 한 방향 · 층을 건너뛰지 않는다', { size: 12, fill: C.subtle });
+
+	// app
+	b += box(16, 70, 432, 46, tint.app, GRAY);
+	b += text(32, 99, 'app', { size: 14, fill: C.text, weight: 700 });
+	b += text(78, 99, '앱 진입 · 조립 · 화면 이동', { size: 12, fill: C.muted });
+	b += arrow(232, 116, 232, 134, GRAY, 'a-gray');
+
+	// feature
+	b += box(16, 136, 432, 88, tint.feature, BLUE);
+	b += text(32, 159, 'feature', { size: 14, fill: C.text, weight: 700 });
+	b += text(98, 159, '화면', { size: 12, fill: C.muted });
+	b += chip(32, 172, 150, 'View · 그리기', BLUE);
+	b += chip(282, 172, 150, 'ViewModel · 화면 상태', BLUE);
+	b += arrow(184, 183, 278, 183, BLUE, 'a-blue');
+	b += arrow(280, 197, 186, 197, BLUE, 'a-blue');
+	b += text(232, 178, 'onEvent', { size: 11, anchor: 'middle', fill: C.muted });
+	b += text(232, 214, 'uiState', { size: 11, anchor: 'middle', fill: C.muted });
+
+	// 화면 ↔ module 세 통로
+	const lane = (x, dir, color, id, dash, title, l1, l2) => {
+		let s = dir === 'down' ? arrow(x, 228, x, 300, color, id, dash) : arrow(x, 300, x, 228, color, id, dash);
+		s += text(x + 10, 252, title, { size: 12, fill: C.text, weight: 700 });
+		s += text(x + 10, 268, l1, { size: 11, fill: C.muted });
+		if (l2) s += text(x + 10, 283, l2, { size: 11, fill: C.muted });
+		return s;
+	};
+	b += lane(40, 'down', BLUE, 'a-blue', '', '알리기', 'dispatch(Action)', '반환값 없음');
+	b += lane(184, 'up', GREEN, 'a-green', '', '구독하기', 'StateReader', 'Selector · 파생된 답');
+	b += lane(328, 'up', GREEN, 'a-green', '5 4', '받기', 'SideEffectReader', '한 번만 일어나는 사건');
+
+	// module
+	b += box(16, 304, 432, 156, tint.module, GREEN, { sw: 2 });
+	b += text(32, 328, 'module', { size: 14, fill: C.text, weight: 700 });
+	b += text(96, 328, '도메인 상태의 주인', { size: 12, fill: C.muted });
+	b += box(350, 313, 84, 22, GREEN, GREEN, { rx: 11, sw: 1 }) + text(392, 328, '정본 (SSOT)', { size: 11, anchor: 'middle', fill: '#ffffff', weight: 700 });
+	b += chip(32, 344, 96, 'Action', GREEN);
+	b += chip(176, 344, 110, 'Reducer', GREEN);
+	b += chip(334, 344, 98, 'State', GREEN);
+	b += arrow(130, 360, 172, 360, GREEN, 'a-green');
+	b += arrow(288, 360, 330, 360, GREEN, 'a-green');
+	b += text(231, 394, '상태는 여기서만 바뀐다', { size: 11, anchor: 'middle', fill: C.muted });
+	b += text(383, 394, 'Store 가 들고 있다', { size: 11, anchor: 'middle', fill: C.muted });
+	b += chip(32, 414, 96, 'Middleware', GREEN);
+	b += arrow(96, 378, 96, 410, GREEN, 'a-green');
+	b += arrow(64, 412, 64, 380, GREEN, 'a-green');
+	b += text(140, 428, '서버·프레임워크와 닿는 일', { size: 11, fill: C.muted });
+	b += text(140, 443, '결과도 Action 으로 돌려보낸다', { size: 11, fill: C.muted });
+
+	// data · bridge
+	b += arrow(80, 446, 80, 500, ORANGE, 'a-orange');
+	b += text(88, 480, '부른다', { size: 11, fill: C.muted });
+	b += arrow(300, 462, 300, 500, ORANGE, 'a-orange');
+	b += text(308, 486, '부른다', { size: 11, fill: C.muted });
+	b += arrow(412, 500, 412, 464, ORANGE, 'a-orange', '5 4');
+	b += text(404, 486, '신호', { size: 11, anchor: 'end', fill: C.muted });
+	b += box(16, 504, 208, 62, tint.io, ORANGE);
+	b += text(32, 528, 'data', { size: 14, fill: C.text, weight: 700 });
+	b += text(76, 528, '서버 · DB', { size: 12, fill: C.muted });
+	b += text(32, 549, '요청 → 응답, 상태는 없다', { size: 11, fill: C.muted });
+	b += box(240, 504, 208, 62, tint.io, ORANGE);
+	b += text(256, 528, 'bridge', { size: 14, fill: C.text, weight: 700 });
+	b += text(312, 528, '안드로이드 프레임워크', { size: 12, fill: C.muted });
+	b += text(256, 549, '오디오 · BT · 생명주기 신호', { size: 11, fill: C.muted });
+
+	// core (가로지른다)
+	b += box(464, 136, 120, 430, tint.core, GRAY, { dash: '6 4' });
+	b += text(478, 160, 'core', { size: 14, fill: C.text, weight: 700 });
+	b += text(478, 178, '층 순서 밖에서', { size: 11, fill: C.muted });
+	b += text(478, 193, '가로지른다', { size: 11, fill: C.muted });
+	b += chip(474, 210, 100, '디자인 시스템', GRAY);
+	b += text(478, 258, '화면이 바로 쓴다', { size: 11, fill: C.muted });
+	b += chip(474, 272, 100, '로거', GRAY);
+	b += chip(474, 314, 100, '유틸', GRAY);
+	b += text(478, 372, '도메인 상태가', { size: 11, fill: C.muted });
+	b += text(478, 387, '없는 것만 둔다', { size: 11, fill: C.muted });
+	b += `<line x1="474" x2="574" y1="482" y2="482" stroke="${GRAY}" stroke-dasharray="3 3"/>`;
+	b += text(478, 505, '데이터를 다루면', { size: 11, fill: C.muted });
+	b += text(478, 520, 'core 여도 data 와', { size: 11, fill: C.muted });
+	b += text(478, 535, '같다 — 화면은', { size: 11, fill: C.muted });
+	b += text(478, 550, 'module 을 거친다', { size: 11, fill: C.muted });
+	b += `<path d="M448,206 H458 V226 H470" fill="none" stroke="${GRAY}" stroke-width="1.6" marker-end="url(#a-gray)"/>`;
+
+	// 금지: 건너뛰기
+	b += `<circle cx="25" cy="591" r="8" fill="#fbeaea" stroke="${C.critical}" stroke-width="1.5"/>`;
+	b += text(25, 595, '✕', { size: 11, anchor: 'middle', fill: C.critical, weight: 700 });
+	b += text(40, 595, 'feature 는 data · bridge 를 직접 부르지 않는다 — 읽기만 해도 module 을 거친다', { size: 12, fill: C.text });
+
+	out(
+		'src/content/blog/android-architecture-1-one-truth/architecture.svg',
+		svg(W, H, '우리 안드로이드 구조', 'app 아래 feature(View·ViewModel), 그 아래 module(Action·Reducer·State·Middleware, 정본의 주인), 맨 아래 data(서버·DB)와 bridge(안드로이드 프레임워크). feature 와 module 은 알리기(dispatch), 구독하기(StateReader·Selector), 받기(SideEffectReader) 세 통로로만 대화한다. core(디자인 시스템·로거·유틸)는 층 순서 밖에서 가로지르며 화면이 디자인 시스템을 바로 쓴다. feature 는 data·bridge 를 직접 부르지 않는다.', b),
+	);
+}
