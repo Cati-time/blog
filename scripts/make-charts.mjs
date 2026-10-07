@@ -654,6 +654,8 @@ const W = 600;
 	b += arrow(280, 442, 154, 442, GREEN, 'a-green', '4 3');
 	b += text(217, 435, '변화를 넘긴다', { size: 11, anchor: 'middle', fill: C.muted });
 	b += text(390, 480, '플랫폼 신호를 받는 module 에만', { size: 11, anchor: 'end', fill: C.muted });
+	// Store 가 커밋한 전이(Action · 이전 · 다음 상태)를 받는 두 자리 — 진단 로거와 그 옆 관찰 자리
+	b += text(436, 405, '전이 → StoreLogger · 관찰 자리', { size: 10.5, anchor: 'end', fill: C.muted });
 
 	// data · bridge
 	b += arrow(80, 464, 80, 526, ORANGE, 'a-orange');
@@ -676,33 +678,36 @@ const W = 600;
 	b += text(478, 160, '관찰 · 기록', { size: 14, fill: C.text, weight: 700 });
 	b += text(478, 178, '흐름을 바꾸지', { size: 11, fill: C.muted });
 	b += text(478, 193, '않는다', { size: 11, fill: C.muted });
-	// 분석 이벤트 (GA)
-	b += box(474, 212, 100, 116, C.surface, VIOLET, { rx: 7, sw: 1.4 });
+	// 분석 이벤트 (GA) — 화면은 ViewModel 의 onEvent, module 은 StoreLogger 옆 관찰 자리
+	b += box(474, 212, 100, 140, C.surface, VIOLET, { rx: 7, sw: 1.4 });
 	b += text(482, 231, '분석 이벤트', { size: 12, fill: C.text, weight: 700 });
 	b += text(482, 249, '← 탭 (화면)', { size: 11, fill: C.text });
-	b += text(482, 265, '← 전이 (module)', { size: 11, fill: C.text });
-	b += text(482, 284, '이름은 이음새를', { size: 11, fill: C.muted });
-	b += text(482, 299, '가진 층이 짓는다', { size: 11, fill: C.muted });
-	b += text(482, 318, '→ GA (firebase)', { size: 10.5, fill: C.subtle });
+	b += text(490, 264, 'onEvent 에서', { size: 10.5, fill: C.muted });
+	b += text(482, 284, '← 전이 (module)', { size: 11, fill: C.text });
+	b += text(490, 299, 'StoreLogger 옆', { size: 10.5, fill: C.muted });
+	b += text(490, 313, '관찰 자리', { size: 10.5, fill: C.muted });
+	b += text(482, 341, '→ GA (firebase)', { size: 10.5, fill: C.subtle });
 	// 화면의 입력(탭) → GA
 	b += path('M432,196 H466 V245 H472', VIOLET, 'a-violet', '5 4');
 	// module 의 전이(State) → GA
-	b += path('M432,370 H466 V261 H472', VIOLET, 'a-violet', '5 4');
-	// 디버그 로그 — 모든 층에서 로거의 문 하나로
+	b += path('M432,370 H466 V280 H472', VIOLET, 'a-violet', '5 4');
+	// 디버그 로그 — 모든 층에서 로거의 문 하나로 (module 은 StoreLogger 자리 옆에서 잇는다)
 	b += `<line x1="456" x2="456" y1="160" y2="578" stroke="${GRAY}" stroke-width="1.4" stroke-dasharray="3 3"/>`;
-	for (const yy of [168, 470, 578]) b += `<line x1="448" x2="456" y1="${yy}" y2="${yy}" stroke="${GRAY}" stroke-width="1.4" stroke-dasharray="3 3"/>`;
+	for (const yy of [168, 401, 578]) b += `<line x1="448" x2="456" y1="${yy}" y2="${yy}" stroke="${GRAY}" stroke-width="1.4" stroke-dasharray="3 3"/>`;
 	b += arrow(456, 452, 472, 452, GRAY, 'a-gray', '3 3');
-	b += box(474, 402, 100, 100, C.surface, GRAY, { rx: 7, sw: 1.4 });
+	b += box(474, 402, 100, 124, C.surface, GRAY, { rx: 7, sw: 1.4 });
 	b += text(482, 421, '디버그 로그', { size: 12, fill: C.text, weight: 700 });
 	b += text(482, 438, '로거의 문 하나', { size: 11, fill: C.muted });
-	b += text(482, 457, '수준 거르기', { size: 11, fill: C.muted });
-	b += text(482, 472, '+ 개인정보', { size: 11, fill: C.muted });
-	b += text(482, 487, '가리기 (core)', { size: 11, fill: C.muted });
+	b += text(482, 454, '수준 거르기', { size: 11, fill: C.muted });
+	b += text(482, 469, '+ 개인정보', { size: 11, fill: C.muted });
+	b += text(482, 484, '가리기 (core)', { size: 11, fill: C.muted });
+	b += text(482, 503, 'Store 전이는', { size: 10.5, fill: C.text });
+	b += text(482, 517, 'StoreLogger 에서', { size: 10.5, fill: C.text });
 	// 가르는 질문
-	b += `<line x1="474" x2="574" y1="524" y2="524" stroke="${VIOLET}" stroke-dasharray="3 3"/>`;
-	b += text(478, 545, '의도와 전후가', { size: 11, fill: C.text });
-	b += text(478, 560, '있으면 이벤트,', { size: 11, fill: C.text });
-	b += text(478, 575, '없으면 로그', { size: 11, fill: C.text });
+	b += `<line x1="474" x2="574" y1="538" y2="538" stroke="${VIOLET}" stroke-dasharray="3 3"/>`;
+	b += text(478, 556, '의도와 전후가', { size: 11, fill: C.text });
+	b += text(478, 571, '있으면 이벤트,', { size: 11, fill: C.text });
+	b += text(478, 586, '없으면 로그', { size: 11, fill: C.text });
 
 	// 금지: 건너뛰기
 	b += `<circle cx="25" cy="617" r="8" fill="#fbeaea" stroke="${C.critical}" stroke-width="1.5"/>`;
@@ -711,6 +716,6 @@ const W = 600;
 
 	out(
 		'src/content/blog/android-architecture-2-build-and-fix/architecture-telemetry.svg',
-		svg(W, H, '분석 이벤트와 로그가 나오는 자리', '1편의 구조 그림 위에 관찰과 기록을 덧그린 그림. 화면의 입력(탭)과 module 의 상태 전이에서 분석 이벤트를 관찰해 GA 로 보내고(이름은 이음새를 가진 층이 짓고, 싱크는 firebase module), 모든 층의 디버그 로그는 core 로거의 문 하나에서 수준 거르기와 개인정보 가리기를 거친다. 관찰은 흐름을 바꾸지 않는다. 의도와 전후가 있으면 이벤트, 없으면 로그.', b),
+		svg(W, H, '분석 이벤트와 로그가 나오는 자리', '1편의 구조 그림 위에 관찰과 기록을 덧그린 그림. 분석 이벤트는 화면에서는 ViewModel 의 onEvent 로 들어온 입력(탭)을, module 에서는 StoreLogger 옆 관찰 자리가 받는 상태 전이를 GA 로 보낸다(이름은 이음새를 가진 층이 짓고, 싱크는 firebase module). Store 의 전이 기록은 StoreLogger 에서 남고, 모든 층의 디버그 로그는 core 로거의 문 하나에서 수준 거르기와 개인정보 가리기를 거친다. 관찰은 흐름을 바꾸지 않는다. 의도와 전후가 있으면 이벤트, 없으면 로그.', b),
 	);
 }
