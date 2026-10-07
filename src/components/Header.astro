@@ -7,7 +7,7 @@ const base = import.meta.env.BASE_URL;
 
 <header class="site-header">
 	<nav class="nav" aria-label="주 메뉴">
-		<a class="brand" href={base}>{SITE.title}</a>
+		<a class="brand" href={base}><img class="brand-icon" src={`${base}brand-icon.png`} alt="" width="20" height="20" />{SITE.title}</a>
 		<ul class="menus">
 			{
 				CATEGORIES.map((c) => (
@@ -88,6 +88,9 @@ const base = import.meta.env.BASE_URL;
 		padding: 0 var(--space-5);
 	}
 	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
 		color: var(--color-text);
 		font-size: var(--text-base);
 		font-weight: var(--weight-bold);
@@ -96,6 +99,9 @@ const base = import.meta.env.BASE_URL;
 	}
 	.brand:hover {
 		color: var(--color-accent);
+	}
+	.brand-icon {
+		flex: none;
 	}
 	.menus {
 		display: flex;
