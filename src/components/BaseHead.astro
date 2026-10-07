@@ -48,8 +48,7 @@ const gaId = import.meta.env.PROD ? ANALYTICS.gaMeasurementId : '';
 		</>
 	)
 }
-<link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
-<link rel="icon" href={`${base}favicon.ico`} />
+<link rel="icon" href={`${base}favicon.ico`} sizes="32x32" />
 <link rel="sitemap" href={`${base}sitemap-index.xml`} />
 <link rel="alternate" type="application/rss+xml" title={SITE.title} href={new URL(`${base}rss.xml`, Astro.site)} />
 <meta name="generator" content={Astro.generator} />
