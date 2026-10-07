@@ -316,8 +316,8 @@ const W = 600;
 	const H = 340, L = 44, R = 20, T = 84, B = 44, max = 32;
 	const pw = W - L - R, ph = H - T - B, step = pw / days.length, bw = step - 26;
 	const y = (v) => T + ph - (v / max) * ph;
-	let b = text(16, 28, '새 module 하나 — 설계 4일, 코딩 17시간', { size: 17, fill: C.text, weight: 700 });
-	b += text(16, 48, '하루 커밋 수 · 설계 문서 56개(반려 6번 뒤 통과) / 코드 6개(기능 4 + 검수 반려 처분 2)', { size: 12, fill: C.subtle });
+	let b = text(16, 28, '새 module 하나 — 설계 약 10시간, 코딩 약 2시간 반', { size: 17, fill: C.text, weight: 700 });
+	b += text(16, 48, '하루 커밋 수 · 작업 시간은 커밋 시각으로 추정(1시간 넘게 비면 쉰 것으로)', { size: 12, fill: C.subtle });
 	[[C.s2, '설계 문서'], [C.s1, '코드']].forEach(([color, name], i) => {
 		const lx = 16 + i * 110;
 		b += `<rect x="${lx}" y="58" width="12" height="12" rx="3" fill="${color}"/>`;
@@ -343,7 +343,7 @@ const W = 600;
 	});
 	out(
 		'src/content/blog/android-architecture-2-build-and-fix/design-vs-code.svg',
-		svg(W, H, '새 module 하나 — 설계 4일, 코딩 17시간', '2026년 8월 하루 커밋 수. 설계 문서 8/3 3개, 8/4 7개, 8/5 30개, 8/6 16개. 코드 8/6 2개, 8/7 4개.', b),
+		svg(W, H, '새 module 하나 — 설계 약 10시간, 코딩 약 2시간 반', '2026년 8월 하루 커밋 수. 설계 문서 8/3 3개, 8/4 7개, 8/5 30개, 8/6 16개. 코드 8/6 2개, 8/7 4개. 커밋 시각으로 추정한 실제 작업 시간은 설계 약 10시간, 코딩 약 2시간 반.', b),
 	);
 }
 
@@ -542,7 +542,7 @@ const W = 600;
 		const [x, y] = pos(i);
 		b += `<line x1="${x - 2}" y1="${y + h / 2}" x2="${x - gap + 2}" y2="${y + h / 2}" stroke="${C.s1}" stroke-width="1.8" marker-end="url(#t-ah)"/>`;
 	}
-	b += text(16, 336, '실행은 상태 명세부터 화면 정리까지 약 8시간, 단계마다 독립 검수 · 반려는 두 번', { size: 12, fill: C.muted });
+	b += text(16, 336, '실행은 상태 명세부터 화면 정리까지 약 2시간(커밋 시각으로 추정) · 단계마다 독립 검수 · 반려는 두 번', { size: 12, fill: C.muted });
 	out(
 		'src/content/blog/android-architecture-3-how-we-moved/app-info-flow.svg',
 		svg(W, H, '앱 정보 화면이 지난 길', '조사(9/23, 위반 5개) → 아키텍처(9/24, 주인과 표면 셋) → BDD(9/28–29, 시나리오 15개) → SDD(9/29, 이벤트 9·일회성 6) → 계획(9/29–30, 스텝 6) → 실행(9/30–10/1, 커밋 4·반려 2) → 검증(10/1, 렌더·도달성·수명 검사) → 정리(10/3, 옛 값 반환 계약 삭제).', b),
@@ -574,5 +574,143 @@ const W = 600;
 	out(
 		'src/content/blog/android-architecture-3-how-we-moved/guards-growth.svg',
 		svg(W, H, '지금 자리에 있는 검사 72종이 생긴 때', '하드 가드 누적: 7월 말 26종(되살린 것), 8월 말 47종(새로 21), 9월 말 72종(새로 25).', b),
+	);
+}
+
+// ── 13. 분석 이벤트와 로그가 나오는 자리 (안드로이드 아키텍처 ②) ─────────────
+// 10번 구조 그림을 그대로 쓰고, 오른쪽 core 띠 자리에 «관찰 · 기록» 띠를 그린다(로거는 core, GA 싱크는 firebase module).
+// 관찰은 흐름을 바꾸지 않으므로 점선 · 한 방향.
+// 층(app → feature → module → data·bridge) + 화면과 module 사이의 세 통로 + module 안의 흐름
+// (Middleware = 요청이 오면 바깥 일 · Runtime Observer = 바깥 변화를 듣고 Action 으로) + 가로지르는 core.
+{
+	const H = 636;
+	const BLUE = C.s2, GREEN = C.s1, ORANGE = C.s3, GRAY = '#9ca3af';
+	const tint = { app: '#f3f4f6', feature: '#eaf2fc', module: '#e8f5ef', io: '#fdf0e8', core: '#fafafa' };
+	const marker = (id, color) =>
+		`<marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${color}"/></marker>`;
+	const box = (x, y, w, h, fill, stroke, o = {}) =>
+		`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.rx ?? 10}" fill="${fill}" stroke="${stroke}" stroke-width="${o.sw ?? 1.5}"${o.dash ? ` stroke-dasharray="${o.dash}"` : ''}/>`;
+	const arrow = (x1, y1, x2, y2, color, id, dash = '') =>
+		`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="1.8"${dash ? ` stroke-dasharray="${dash}"` : ''} marker-end="url(#${id})"/>`;
+	const path = (d, color, id, dash = '') =>
+		`<path d="${d}" fill="none" stroke="${color}" stroke-width="1.8"${dash ? ` stroke-dasharray="${dash}"` : ''} marker-end="url(#${id})"/>`;
+	const chip = (x, y, w, label, stroke) =>
+		box(x, y, w, 32, C.surface, stroke, { rx: 7, sw: 1.2 }) + text(x + w / 2, y + 21, label, { size: 12, anchor: 'middle', fill: C.text, weight: 600 });
+	const chip2 = (x, y, w, h, label, sub, stroke, dash = '') =>
+		box(x, y, w, h, C.surface, stroke, { rx: 7, sw: 1.2, dash }) +
+		text(x + w / 2, y + 19, label, { size: 12, anchor: 'middle', fill: C.text, weight: 600 }) +
+		text(x + w / 2, y + 35, sub, { size: 11, anchor: 'middle', fill: C.muted });
+
+	const VIOLET = '#7c3aed';
+	let b = `<defs>${marker('a-blue', BLUE)}${marker('a-green', GREEN)}${marker('a-gray', GRAY)}${marker('a-orange', ORANGE)}${marker('a-violet', VIOLET)}</defs>`;
+	b += text(16, 30, '분석 이벤트와 로그가 나오는 자리', { size: 18, fill: C.text, weight: 700 });
+	b += text(16, 50, '1편의 구조 그림 위에 · 관찰은 흐름을 바꾸지 않는다(보라 점선)', { size: 12, fill: C.subtle });
+
+	// app
+	b += box(16, 70, 432, 46, tint.app, GRAY);
+	b += text(32, 99, 'app', { size: 14, fill: C.text, weight: 700 });
+	b += text(78, 99, '앱 진입 · 조립 · 화면 이동', { size: 12, fill: C.muted });
+	b += arrow(232, 116, 232, 134, GRAY, 'a-gray');
+
+	// feature
+	b += box(16, 136, 432, 88, tint.feature, BLUE);
+	b += text(32, 159, 'feature', { size: 14, fill: C.text, weight: 700 });
+	b += text(98, 159, '화면', { size: 12, fill: C.muted });
+	b += chip(32, 172, 150, 'View · 그리기', BLUE);
+	b += chip(282, 172, 150, 'ViewModel · 화면 상태', BLUE);
+	b += arrow(184, 183, 278, 183, BLUE, 'a-blue');
+	b += arrow(280, 197, 186, 197, BLUE, 'a-blue');
+	b += text(232, 178, 'onEvent', { size: 11, anchor: 'middle', fill: C.muted });
+	b += text(232, 214, 'uiState', { size: 11, anchor: 'middle', fill: C.muted });
+
+	// 화면 ↔ module 세 통로
+	const lane = (x, dir, color, id, dash, title, l1, l2) => {
+		let s = dir === 'down' ? arrow(x, 228, x, 300, color, id, dash) : arrow(x, 300, x, 228, color, id, dash);
+		s += text(x + 10, 252, title, { size: 12, fill: C.text, weight: 700 });
+		s += text(x + 10, 268, l1, { size: 11, fill: C.muted });
+		if (l2) s += text(x + 10, 283, l2, { size: 11, fill: C.muted });
+		return s;
+	};
+	b += lane(40, 'down', BLUE, 'a-blue', '', '알리기', 'dispatch(Action)', '반환값 없음');
+	b += lane(184, 'up', GREEN, 'a-green', '', '구독하기', 'StateReader', 'Selector · 파생된 답');
+	b += lane(328, 'up', GREEN, 'a-green', '5 4', '받기', 'SideEffectReader', '한 번만 일어나는 사건');
+
+	// module
+	b += box(16, 304, 432, 184, tint.module, GREEN, { sw: 2 });
+	b += text(32, 328, 'module', { size: 14, fill: C.text, weight: 700 });
+	b += text(96, 328, '도메인 상태의 주인', { size: 12, fill: C.muted });
+	b += box(350, 313, 84, 22, GREEN, GREEN, { rx: 11, sw: 1 }) + text(392, 328, '정본 (SSOT)', { size: 11, anchor: 'middle', fill: '#ffffff', weight: 700 });
+	b += chip2(32, 342, 100, 44, 'Action', '일어난 일', GREEN);
+	b += chip2(176, 342, 122, 44, 'Reducer', '상태는 여기서만 바뀐다', GREEN);
+	b += chip2(340, 342, 92, 44, 'State', 'Store 가 든다', GREEN);
+	b += arrow(134, 364, 172, 364, GREEN, 'a-green');
+	b += arrow(300, 364, 336, 364, GREEN, 'a-green');
+	// 아래 줄: 요청이 오면 움직이는 Middleware / 바깥 변화를 듣는 Runtime Observer
+	b += chip2(32, 418, 118, 44, 'Middleware', '요청 · 변화를 받는다', GREEN);
+	b += chip2(282, 418, 150, 44, 'Runtime Observer', '신호를 Flow 로 바꾼다', GREEN, '4 3');
+	b += arrow(62, 388, 62, 414, GREEN, 'a-green');
+	b += arrow(104, 416, 104, 390, GREEN, 'a-green');
+	b += text(112, 405, '결과는 Action 으로', { size: 11, fill: C.muted });
+	b += arrow(280, 442, 154, 442, GREEN, 'a-green', '4 3');
+	b += text(217, 435, '변화를 넘긴다', { size: 11, anchor: 'middle', fill: C.muted });
+	b += text(390, 480, '플랫폼 신호를 받는 module 에만', { size: 11, anchor: 'end', fill: C.muted });
+
+	// data · bridge
+	b += arrow(80, 464, 80, 526, ORANGE, 'a-orange');
+	b += text(88, 508, '부른다', { size: 11, fill: C.muted });
+	b += arrow(262, 490, 262, 526, ORANGE, 'a-orange');
+	b += text(270, 512, '부른다', { size: 11, fill: C.muted });
+	b += arrow(400, 526, 400, 466, ORANGE, 'a-orange', '5 4');
+	b += text(392, 512, '신호', { size: 11, anchor: 'end', fill: C.muted });
+	b += box(16, 530, 208, 62, tint.io, ORANGE);
+	b += text(32, 554, 'data', { size: 14, fill: C.text, weight: 700 });
+	b += text(76, 554, '서버 · DB', { size: 12, fill: C.muted });
+	b += text(32, 575, '요청 → 응답, 상태는 없다', { size: 11, fill: C.muted });
+	b += box(240, 530, 208, 62, tint.io, ORANGE);
+	b += text(256, 554, 'bridge', { size: 14, fill: C.text, weight: 700 });
+	b += text(312, 554, '안드로이드 프레임워크', { size: 12, fill: C.muted });
+	b += text(256, 575, '오디오 · BT · 생명주기 신호', { size: 11, fill: C.muted });
+
+	// 관찰 · 기록 띠 (core 띠 자리)
+	b += box(464, 136, 120, 456, '#f5f3ff', VIOLET, { dash: '6 4' });
+	b += text(478, 160, '관찰 · 기록', { size: 14, fill: C.text, weight: 700 });
+	b += text(478, 178, '흐름을 바꾸지', { size: 11, fill: C.muted });
+	b += text(478, 193, '않는다', { size: 11, fill: C.muted });
+	// 분석 이벤트 (GA)
+	b += box(474, 212, 100, 116, C.surface, VIOLET, { rx: 7, sw: 1.4 });
+	b += text(482, 231, '분석 이벤트', { size: 12, fill: C.text, weight: 700 });
+	b += text(482, 249, '← 탭 (화면)', { size: 11, fill: C.text });
+	b += text(482, 265, '← 전이 (module)', { size: 11, fill: C.text });
+	b += text(482, 284, '이름은 이음새를', { size: 11, fill: C.muted });
+	b += text(482, 299, '가진 층이 짓는다', { size: 11, fill: C.muted });
+	b += text(482, 318, '→ GA (firebase)', { size: 10.5, fill: C.subtle });
+	// 화면의 입력(탭) → GA
+	b += path('M432,196 H466 V245 H472', VIOLET, 'a-violet', '5 4');
+	// module 의 전이(State) → GA
+	b += path('M432,370 H466 V261 H472', VIOLET, 'a-violet', '5 4');
+	// 디버그 로그 — 모든 층에서 로거의 문 하나로
+	b += `<line x1="456" x2="456" y1="160" y2="578" stroke="${GRAY}" stroke-width="1.4" stroke-dasharray="3 3"/>`;
+	for (const yy of [168, 470, 578]) b += `<line x1="448" x2="456" y1="${yy}" y2="${yy}" stroke="${GRAY}" stroke-width="1.4" stroke-dasharray="3 3"/>`;
+	b += arrow(456, 452, 472, 452, GRAY, 'a-gray', '3 3');
+	b += box(474, 402, 100, 100, C.surface, GRAY, { rx: 7, sw: 1.4 });
+	b += text(482, 421, '디버그 로그', { size: 12, fill: C.text, weight: 700 });
+	b += text(482, 438, '로거의 문 하나', { size: 11, fill: C.muted });
+	b += text(482, 457, '수준 거르기', { size: 11, fill: C.muted });
+	b += text(482, 472, '+ 개인정보', { size: 11, fill: C.muted });
+	b += text(482, 487, '가리기 (core)', { size: 11, fill: C.muted });
+	// 가르는 질문
+	b += `<line x1="474" x2="574" y1="524" y2="524" stroke="${VIOLET}" stroke-dasharray="3 3"/>`;
+	b += text(478, 545, '의도와 전후가', { size: 11, fill: C.text });
+	b += text(478, 560, '있으면 이벤트,', { size: 11, fill: C.text });
+	b += text(478, 575, '없으면 로그', { size: 11, fill: C.text });
+
+	// 금지: 건너뛰기
+	b += `<circle cx="25" cy="617" r="8" fill="#fbeaea" stroke="${C.critical}" stroke-width="1.5"/>`;
+	b += text(25, 621, '✕', { size: 11, anchor: 'middle', fill: C.critical, weight: 700 });
+	b += text(40, 621, 'feature 는 data · bridge 를 직접 부르지 않는다 — 읽기만 해도 module 을 거친다', { size: 12, fill: C.text });
+
+	out(
+		'src/content/blog/android-architecture-2-build-and-fix/architecture-telemetry.svg',
+		svg(W, H, '분석 이벤트와 로그가 나오는 자리', '1편의 구조 그림 위에 관찰과 기록을 덧그린 그림. 화면의 입력(탭)과 module 의 상태 전이에서 분석 이벤트를 관찰해 GA 로 보내고(이름은 이음새를 가진 층이 짓고, 싱크는 firebase module), 모든 층의 디버그 로그는 core 로거의 문 하나에서 수준 거르기와 개인정보 가리기를 거친다. 관찰은 흐름을 바꾸지 않는다. 의도와 전후가 있으면 이벤트, 없으면 로그.', b),
 	);
 }
