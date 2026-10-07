@@ -5,7 +5,8 @@
  * 색: 블로그 강조 초록 + 데이터 시각화 기본 팔레트(파랑·주황) — 색약 대비 검사 통과 조합.
  * 상태색(일치·불일치)은 아이콘과 글자를 함께 쓴다.
  */
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 
 const C = {
 	surface: '#ffffff',
@@ -35,6 +36,7 @@ const bar = (x, y, w, h, fill) => {
 	return `<path d="M${x},${y + h} V${y + r} Q${x},${y} ${x + r},${y} H${x + w - r} Q${x + w},${y} ${x + w},${y + r} V${y + h} Z" fill="${fill}"/>`;
 };
 const out = (path, s) => {
+	mkdirSync(dirname(path), { recursive: true });
 	writeFileSync(path, s);
 	console.log('✔', path);
 };
@@ -190,7 +192,7 @@ const W = 600;
 	);
 }
 
-// ── 5. 화면(ViewModel)이 기대는 것 — 전/후 (안드로이드 아키텍처 ①) ─────
+// ── 5. 화면(ViewModel)이 기대는 것 — 전/후 (안드로이드 아키텍처 ③) ─────
 // 휴대폰 앱 @HiltViewModel 의 생성자 주입 타입을 꼬리 이름으로 센 값(태블릿 앱·별도 앱·템플릿 제외).
 // 전 = module 분리 직전(2026-01-19) · 후 = 2026-10-06, 둘 다 ViewModel 58개.
 // 블로그 세션과 안드로이드 세션이 따로 센 값이 3 이내로 갈리는 칸은 라벨에 «약» 을 붙인다.
@@ -233,12 +235,12 @@ const W = 600;
 		});
 	});
 	out(
-		'src/content/blog/android-architecture-1-one-truth/vm-dependencies.svg',
+		'src/content/blog/android-architecture-3-how-we-moved/vm-dependencies.svg',
 		svg(W, H, '화면이 기대는 것 — module 분리 전과 지금', '휴대폰 앱 ViewModel 58개의 생성자 주입 타입 수. 2026년 1월: UseCase 185, Repository 약 30, BT 상태 홀더 19, StateReader 0, ActionDispatcher 0, SideEffectReader 0, Selector 0. 2026년 10월: UseCase 9, Repository 10, BT 상태 홀더 0, StateReader 약 110, ActionDispatcher 약 100, SideEffectReader 37, Selector 5.', b),
 	);
 }
 
-// ── 6. 지금 있는 module 24개가 생긴 때 (안드로이드 아키텍처 ①) ─────────
+// ── 6. 지금 있는 module 24개가 생긴 때 (안드로이드 아키텍처 ③) ─────────
 // 각 module 의 빌드 파일이 처음 추가된 커밋 날짜로 센 누적값.
 {
 	const months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월'];
@@ -262,7 +264,44 @@ const W = 600;
 	});
 	b += text(16, H - 8, '짙은 막대: 1월 로그인·사용자·아이·기기 · 2월 홈·미디어·플레이어·미션 · 5월 BT · 6월 테마·딥링크 등', { size: 11, fill: C.subtle });
 	out(
-		'src/content/blog/android-architecture-1-one-truth/modules-born.svg',
+		'src/content/blog/android-architecture-3-how-we-moved/modules-born.svg',
 		svg(W, H, '지금 있는 module 24개가 생긴 때', '2026년 누적 module 수: 1월 8, 2월 13, 3월 14, 4월 14, 5월 16, 6월 21, 7월 21, 8월 23, 9월 24, 10월 24.', b),
+	);
+}
+
+// ── 7. 지금 화면이 기대는 것 (안드로이드 아키텍처 ①) ──────────────────────
+// 5번과 같은 측정의 «지금» 쪽만. 위 넷 = 구독·알리기, 아래 둘 = 이전 구조의 흔적.
+{
+	const rows = [
+		['StateReader', 110, '약 110'],
+		['ActionDispatcher', 100, '약 100'],
+		['SideEffectReader', 37],
+		['Selector', 5],
+		['Repository', 10],
+		['UseCase', 9],
+	];
+	const H = 340, L = 128, R = 60, T = 84, rowH = 36, bh = 18, max = 120;
+	const x = (v) => L + (v / max) * (W - L - R);
+	let b = text(16, 28, '지금 화면이 기대는 것', { size: 17, fill: C.text, weight: 700 });
+	b += text(16, 48, '휴대폰 앱 ViewModel 58개의 생성자 주입 타입 수 · «약» = 세는 방법에 따라 ±3', { size: 12, fill: C.subtle });
+	const sepY = T + 4 * rowH - 9;
+	for (const g of [0, 40, 80, 120]) {
+		b += `<line x1="${x(g)}" x2="${x(g)}" y1="${T - 8}" y2="${T + rows.length * rowH - 8}" stroke="${C.grid}"/>`;
+		b += text(x(g), T + rows.length * rowH + 10, g, { size: 12, anchor: 'middle', fill: C.subtle });
+	}
+	b += `<line x1="16" x2="${W - 16}" y1="${sepY}" y2="${sepY}" stroke="${C.grid}" stroke-dasharray="4 4"/>`;
+	b += text(W - 16, T - 14, '구독하기 · 알리기', { size: 12, anchor: 'end', fill: C.muted });
+	b += text(W - 16, sepY + 16, '직접 부르기 — 이전 구조의 흔적', { size: 12, anchor: 'end', fill: C.muted });
+	rows.forEach(([name, v, label], i) => {
+		const y0 = T + i * rowH;
+		const legacy = i >= 4;
+		b += text(L - 10, y0 + bh - 4, name, { size: 12, anchor: 'end', fill: C.text });
+		const w = Math.max(x(v) - L, 2);
+		b += `<rect x="${L}" y="${y0}" width="${w}" height="${bh}" rx="4" fill="${legacy ? '#86c9ad' : C.s1}"/>`;
+		b += text(L + w + 6, y0 + bh - 5, label ?? v, { size: 12, fill: C.text });
+	});
+	out(
+		'src/content/blog/android-architecture-1-one-truth/vm-dependencies-now.svg',
+		svg(W, H, '지금 화면이 기대는 것', '휴대폰 앱 ViewModel 58개의 생성자 주입 타입 수. StateReader 약 110, ActionDispatcher 약 100, SideEffectReader 37, Selector 5, Repository 10, UseCase 9.', b),
 	);
 }
