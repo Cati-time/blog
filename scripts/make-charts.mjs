@@ -604,7 +604,7 @@ const W = 600;
 	const VIOLET = '#7c3aed';
 	let b = `<defs>${marker('a-blue', BLUE)}${marker('a-green', GREEN)}${marker('a-gray', GRAY)}${marker('a-orange', ORANGE)}${marker('a-violet', VIOLET)}</defs>`;
 	b += text(16, 30, '분석 이벤트와 로그가 나오는 자리', { size: 18, fill: C.text, weight: 700 });
-	b += text(16, 50, '1편의 구조 그림 위에 · 관찰은 흐름을 바꾸지 않는다(보라 점선)', { size: 12, fill: C.subtle });
+	b += text(16, 50, '①편의 구조 그림 위에 · 관찰은 흐름을 바꾸지 않는다(보라 점선)', { size: 12, fill: C.subtle });
 
 	// app
 	b += box(16, 70, 432, 46, tint.app, GRAY);
@@ -716,6 +716,6 @@ const W = 600;
 
 	out(
 		'src/content/blog/android-architecture-2-build-and-fix/architecture-telemetry.svg',
-		svg(W, H, '분석 이벤트와 로그가 나오는 자리', '1편의 구조 그림 위에 관찰과 기록을 덧그린 그림. 분석 이벤트는 화면에서는 ViewModel 의 onEvent 로 들어온 입력(탭)을, module 에서는 StoreLogger 옆 관찰 자리가 받는 상태 전이를 GA 로 보낸다(이름은 이음새를 가진 층이 짓고, 싱크는 firebase module). Store 의 전이 기록은 StoreLogger 에서 남고, 모든 층의 디버그 로그는 core 로거의 문 하나에서 수준 거르기와 개인정보 가리기를 거친다. 관찰은 흐름을 바꾸지 않는다. 의도와 전후가 있으면 이벤트, 없으면 로그.', b),
+		svg(W, H, '분석 이벤트와 로그가 나오는 자리', '①편의 구조 그림 위에 관찰과 기록을 덧그린 그림. 분석 이벤트는 화면에서는 ViewModel 의 onEvent 로 들어온 입력(탭)을, module 에서는 StoreLogger 옆 관찰 자리가 받는 상태 전이를 GA 로 보낸다(이름은 이음새를 가진 층이 짓고, 싱크는 firebase module). Store 의 전이 기록은 StoreLogger 에서 남고, 모든 층의 디버그 로그는 core 로거의 문 하나에서 수준 거르기와 개인정보 가리기를 거친다. 관찰은 흐름을 바꾸지 않는다. 의도와 전후가 있으면 이벤트, 없으면 로그.', b),
 	);
 }
