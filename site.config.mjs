@@ -8,7 +8,7 @@ export const SITE = {
 	base: '/blog',
 
 	title: 'Cati time Tech Blog',
-	description: '개발하면서 배우고 삽질한 것들을 기록합니다.',
+	description: 'Cati time 개발팀이 AI 와 함께 일하는 방식(AX)과 안드로이드·iOS·웹·서버 아키텍처를 실제 코드와 숫자로 기록합니다.',
 	author: 'Cati time',
 	lang: 'ko',
 

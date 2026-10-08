@@ -217,7 +217,9 @@ curl -s -o /dev/null -w '%{http_code}\n' https://cati-time.github.io/blog/
 | --- | --- |
 | 페이지마다 제목 · 설명 · 대표 주소(canonical) | `src/components/BaseHead.astro` |
 | 공유 미리보기 이미지 — 글의 `heroImage`, 없으면 `public/og-default.png` | 기본 이미지 다시 만들기: `node scripts/make-og.mjs` |
-| 구조화 데이터 — 글: BlogPosting + 위치 경로(BreadcrumbList) · 홈: WebSite | `BlogPost.astro` · `index.astro` |
+| 구조화 데이터 — 글: BlogPosting(대표 이미지 포함) + 위치 경로(BreadcrumbList) · 홈: WebSite | `BlogPost.astro` · `index.astro` |
+| 목록·분류·태그 페이지 제목(h1)은 글자만 — 글 수는 CSS(`data-count` · `::after`)로 그려 «Android2» 처럼 읽히지 않게 | `global.css` `.page-title[data-count]` |
+| 분류 페이지 검색 설명은 플랫폼마다 다르게(«<플랫폼> <대분류> 글 모음. …») — 화면 문구는 그대로 | `[category]/[...platform].astro` |
 | 글의 발행일 · 수정일 · 분류 · 태그 (`article:*`) | `BaseHead.astro` |
 | 사이트맵 — 글이 있는 분류 페이지만, 글마다 수정일(lastmod) | `astro.config.mjs` 의 `sitemap({ filter, serialize })` |
 | 글이 0편인 분류 페이지 · 404 페이지는 «색인하지 말 것» | `noindex` |
@@ -232,18 +234,35 @@ curl -s -o /dev/null -w '%{http_code}\n' https://cati-time.github.io/blog/
    - 확인 방법 **HTML 태그** → `<meta name="google-site-verification" content="…">` 의 `content` 값을 복사
    - `site.config.mjs` 의 `SEO.googleSiteVerification` 에 넣고 push → 배포 후 Search Console 에서 **확인**
    - 왼쪽 **Sitemaps** 에 `sitemap-index.xml` 제출
+   - **URL 검사** 에 주요 글 주소를 넣고 **색인 생성 요청** — 새 사이트는 이게 가장 빠르다
 2. **네이버 서치어드바이저** — https://searchadvisor.naver.com
-   - 사이트 등록 → `https://cati-time.github.io/blog/`
-   - **HTML 태그** 방식 → `content` 값을 `SEO.naverSiteVerification` 에 넣고 push → 소유 확인
+   - 사이트 등록 → **`https://cati-time.github.io`** (최상위 주소. 네이버는 최상위 주소 등록을 안내한다 — 아래 «루트 사이트» 가 먼저 떠 있어야 한다)
+   - **HTML 태그** 방식 → `content` 값을 루트 저장소 `index.html` 의 `naver-site-verification` 줄에 넣고(블로그 `SEO.naverSiteVerification` 에도 같은 값) push → 소유 확인
    - **요청 → 사이트맵 제출**: `https://cati-time.github.io/blog/sitemap-index.xml` (받아 주지 않으면 `sitemap-0.xml`)
    - **요청 → RSS 제출**: `https://cati-time.github.io/blog/rss.xml`
+   - **요청 → 웹 페이지 수집**: 주요 글 주소
 3. **Bing** (선택) — Bing Webmaster Tools 에서 «Google Search Console 에서 가져오기»
 
 등록 후 검색 결과에 나오기까지 며칠에서 몇 주 걸립니다. Claude 에게 «구글 확인 코드 이거야: …» 라고 주면 넣고 커밋합니다.
 
+새 사이트는 **들어오는 링크**가 있어야 검색엔진이 빨리 찾습니다. 회사 홈페이지 · GitHub 조직 프로필과 이 저장소의 About(Website) · LinkedIn 글에 블로그 주소를 걸어 두세요.
+
+### 루트 사이트 — `Cati-time/cati-time.github.io`
+
+이 블로그는 `/blog/` 아래의 프로젝트 사이트라, 도메인 맨 위(`https://cati-time.github.io/`)는 조직 저장소 `Cati-time/cati-time.github.io` 가 맡는다(2026-10-08 사용자 결정).
+
+| 파일 | 하는 일 |
+| --- | --- |
+| `index.html` | 맨 위 주소를 `/blog/` 로 넘긴다(meta refresh + canonical). 네이버 소유 확인 태그 자리 |
+| `robots.txt` | 모두 허용 + `Sitemap: https://cati-time.github.io/blog/sitemap-index.xml` |
+| `404.html` | 블로그 밖 주소로 들어오면 블로그 링크를 보여 준다(`noindex`) |
+
+- 저장소 이름은 정확히 `cati-time.github.io`, 공개. Settings → Pages 에서 «Deploy from a branch · main · /(root)» 인지 확인한다.
+- 블로그 글·설정은 여기 두지 않는다. 이 저장소는 위 세 파일만 갖는다.
+
 ### 알아 둘 한계
 
-- `robots.txt` 는 **도메인 맨 위**(`cati-time.github.io/robots.txt`)에 있어야 효력이 있습니다. 이 블로그는 `/blog/` 아래에 있는 프로젝트 사이트라 거기에 둘 수 없습니다. 없으면 검색엔진은 «모두 허용» 으로 보므로 지금은 문제가 없습니다. 꼭 필요해지면 조직에 `Cati-time.github.io` 저장소를 만들어 그곳에 둡니다.
+- `robots.txt` 는 **도메인 맨 위**(`cati-time.github.io/robots.txt`)에 있어야 효력이 있습니다. 이 블로그 저장소에는 둘 수 없어서 위 «루트 사이트» 저장소가 갖습니다.
 - 커스텀 도메인(예: `blog.회사도메인`)을 쓰면 위 한계가 사라지고 주소도 기억하기 쉬워집니다. 나중에 결정해도 됩니다.
 
 ## 4-2. 방문 통계 (Google Analytics 4)
