@@ -230,14 +230,14 @@ curl -s -o /dev/null -w '%{http_code}\n' https://cati-time.github.io/blog/
 검색엔진 계정 소유 확인은 Claude 가 대신할 수 없습니다. 아래 순서로 하고, 나온 **확인 코드만** Claude 에게 주면 됩니다.
 
 1. **Google Search Console** — https://search.google.com/search-console
-   - 속성 추가 → **URL 접두어** → `https://cati-time.github.io/blog/`
+   - 속성 추가 → **URL 접두어** → **`https://cati-time.github.io/`** (맨 위 주소 — 블로그와 앞으로 만들 페이지를 한 속성으로 본다)
    - 확인 방법 **HTML 태그** → `<meta name="google-site-verification" content="…">` 의 `content` 값을 복사
-   - `site.config.mjs` 의 `SEO.googleSiteVerification` 에 넣고 push → 배포 후 Search Console 에서 **확인**
-   - 왼쪽 **Sitemaps** 에 `sitemap-index.xml` 제출
+   - 루트 저장소 `index.html` 의 `<head>` 에 넣고 push → 배포 후 Search Console 에서 **확인** (블로그만 따로 등록할 때는 `https://cati-time.github.io/blog/` 속성 + `SEO.googleSiteVerification`)
+   - 왼쪽 **Sitemaps** 에 `https://cati-time.github.io/blog/sitemap-index.xml` 제출
    - **URL 검사** 에 주요 글 주소를 넣고 **색인 생성 요청** — 새 사이트는 이게 가장 빠르다
 2. **네이버 서치어드바이저** — https://searchadvisor.naver.com
    - 사이트 등록 → **`https://cati-time.github.io`** (최상위 주소. 네이버는 최상위 주소 등록을 안내한다 — 아래 «루트 사이트» 가 먼저 떠 있어야 한다)
-   - **HTML 태그** 방식 → `content` 값을 루트 저장소 `index.html` 의 `naver-site-verification` 줄에 넣고(블로그 `SEO.naverSiteVerification` 에도 같은 값) push → 소유 확인
+   - **HTML 태그** 방식 → `content` 값을 루트 저장소 `index.html` 의 `naver-site-verification` 줄에 넣고 push → 소유 확인
    - **요청 → 사이트맵 제출**: `https://cati-time.github.io/blog/sitemap-index.xml` (받아 주지 않으면 `sitemap-0.xml`)
    - **요청 → RSS 제출**: `https://cati-time.github.io/blog/rss.xml`
    - **요청 → 웹 페이지 수집**: 주요 글 주소
@@ -249,11 +249,11 @@ curl -s -o /dev/null -w '%{http_code}\n' https://cati-time.github.io/blog/
 
 ### 루트 사이트 — `Cati-time/cati-time.github.io`
 
-이 블로그는 `/blog/` 아래의 프로젝트 사이트라, 도메인 맨 위(`https://cati-time.github.io/`)는 조직 저장소 `Cati-time/cati-time.github.io` 가 맡는다(2026-10-08 사용자 결정).
+이 블로그는 `/blog/` 아래의 프로젝트 사이트라, 도메인 맨 위(`https://cati-time.github.io/`)는 조직 저장소 `Cati-time/cati-time.github.io` 가 맡는다(2026-10-08 사용자 결정 · 같은 날 공개). 다른 저장소의 페이지는 이 저장소와 상관없이 `/<저장소 이름>/` 으로 열린다. 페이지가 늘면 `index.html` 을 «블로그로 넘기기» 대신 «페이지들로 가는 첫 화면» 으로 바꾸고, `robots.txt` 에 그 페이지의 사이트맵 줄을 더한다.
 
 | 파일 | 하는 일 |
 | --- | --- |
-| `index.html` | 맨 위 주소를 `/blog/` 로 넘긴다(meta refresh + canonical). 네이버 소유 확인 태그 자리 |
+| `index.html` | 맨 위 주소를 `/blog/` 로 넘긴다(meta refresh + canonical). 구글 · 네이버 소유 확인 태그 자리 |
 | `robots.txt` | 모두 허용 + `Sitemap: https://cati-time.github.io/blog/sitemap-index.xml` |
 | `404.html` | 블로그 밖 주소로 들어오면 블로그 링크를 보여 준다(`noindex`) |
 
