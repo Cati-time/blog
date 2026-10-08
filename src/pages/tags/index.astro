@@ -16,7 +16,7 @@ const tags = await getTagCounts();
 	<body>
 		<Header />
 		<main>
-			<h1 class="page-title">태그<span class="count">{tags.length}</span></h1>
+			<h1 class="page-title" data-count={tags.length}>태그</h1>
 			<p class="page-desc">주제별로 글을 모아 봅니다.</p>
 			{
 				tags.length === 0 ? (

@@ -7,7 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Giscus from '../components/Giscus.astro';
 import Header from '../components/Header.astro';
 import Tags from '../components/Tags.astro';
-import { SITE } from '../consts';
+import { SEO, SITE } from '../consts';
 import { categoryUrl, getCategory, getPlatform } from '../lib/posts';
 
 // 글 이외의 페이지(소개 등)도 이 레이아웃을 쓰므로 tags·draft 는 선택으로 둔다
@@ -43,6 +43,8 @@ const site = Astro.site!;
 const pageUrl = new URL(Astro.url.pathname, site).href;
 const homeUrl = new URL(import.meta.env.BASE_URL, site).href;
 const section = cat && plat ? `${cat.label} · ${plat.label}` : undefined;
+// 대표 이미지 — og:image 와 같은 규칙(글의 heroImage, 없으면 기본 공유 이미지)
+const imageUrl = (heroImage ? new URL(heroImage.src, site) : new URL(`${import.meta.env.BASE_URL}${SEO.defaultImage}`, site)).href;
 const jsonLd: Record<string, unknown>[] = [
 	{
 		'@context': 'https://schema.org',
@@ -54,6 +56,7 @@ const jsonLd: Record<string, unknown>[] = [
 		inLanguage: SITE.lang,
 		url: pageUrl,
 		mainEntityOfPage: pageUrl,
+		image: [imageUrl],
 		...(section && { articleSection: section }),
 		...(tags.length > 0 && { keywords: tags.join(', ') }),
 		author: { '@type': 'Organization', name: SITE.author, url: homeUrl },

@@ -94,7 +94,9 @@ pre {
 	font-size: var(--text-3xl);
 	margin-bottom: var(--space-2);
 }
-.page-title .count {
+/* 글 수는 제목 글자(h1)에 섞지 않고 CSS 로만 그린다 — 검색엔진이 «Android2» 처럼 읽지 않게 */
+.page-title[data-count]::after {
+	content: attr(data-count);
 	margin-left: var(--space-2);
 	color: var(--color-text-subtle);
 	font-size: var(--text-lg);

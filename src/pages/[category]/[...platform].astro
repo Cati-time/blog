@@ -26,18 +26,20 @@ const { category, platform } = Astro.props;
 const all = await getPosts();
 const posts = filterPosts(all, category.id, platform?.id);
 const title = platform ? `${category.label} · ${platform.label}` : category.title;
+// 검색 결과 설명은 플랫폼마다 달라야 한다(같은 설명이 여러 페이지에 겹치지 않게). 화면의 설명 문구는 그대로 둔다.
+const metaDescription = platform ? `${platform.label} ${category.label} 글 모음. ${category.description}` : category.description;
 ---
 
 <!doctype html>
 <html lang={SITE.lang}>
 	<head>
-		<BaseHead title={title} description={category.description} noindex={posts.length === 0} />
+		<BaseHead title={title} description={metaDescription} noindex={posts.length === 0} />
 	</head>
 	<body>
 		<Header />
 		<main>
 			<p class="eyebrow">{category.label}</p>
-			<h1 class="page-title">{platform ? platform.label : category.title}<span class="count">{posts.length}</span></h1>
+			<h1 class="page-title" data-count={posts.length}>{platform ? platform.label : category.title}</h1>
 			<p class="page-desc">{category.description}</p>
 			<CategoryNav category={category.id} active={platform?.id} posts={all} />
 			<PostList posts={posts} showCategory={false} />
