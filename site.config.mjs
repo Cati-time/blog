@@ -26,7 +26,8 @@ export const SITE = {
  * <meta name="..." content="여기 값"> 의 content 만 붙여 넣는다. 절차: docs/claude-management.md «검색엔진 등록».
  */
 export const SEO = {
-	googleSiteVerification: '',
+	// 맨 위 주소(https://cati-time.github.io/) 속성의 확인 값. 맨 위 페이지가 /blog/ 로 넘어가서 구글 검증기는 블로그 첫 페이지를 본다 — 루트 저장소 index.html 과 같은 값을 둔다
+	googleSiteVerification: 'PBkOrFzqzPamC1LsWIoptXf-LHJnLMwvHWUJpx446SQ',
 	naverSiteVerification: '',
 	// 공유 미리보기 기본 이미지 (public/ 기준). 다시 만들기: node scripts/make-og.mjs
 	defaultImage: 'og-default.png',

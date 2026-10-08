@@ -232,7 +232,7 @@ curl -s -o /dev/null -w '%{http_code}\n' https://cati-time.github.io/blog/
 1. **Google Search Console** — https://search.google.com/search-console
    - 속성 추가 → **URL 접두어** → **`https://cati-time.github.io/`** (맨 위 주소 — 블로그와 앞으로 만들 페이지를 한 속성으로 본다)
    - 확인 방법 **HTML 태그** → `<meta name="google-site-verification" content="…">` 의 `content` 값을 복사
-   - 루트 저장소 `index.html` 의 `<head>` 에 넣고 push → 배포 후 Search Console 에서 **확인** (블로그만 따로 등록할 때는 `https://cati-time.github.io/blog/` 속성 + `SEO.googleSiteVerification`)
+   - 루트 저장소 `index.html` 의 `<head>` **와** 블로그 `SEO.googleSiteVerification` 에 **같은 값**을 넣고 push → 배포 후(캐시 10분) Search Console 에서 **확인**. 맨 위 페이지가 `/blog/` 로 넘어가서 구글 검증기는 넘어간 뒤의 블로그 첫 페이지에서 태그를 찾는다 — 루트에만 넣었더니 실패했다(2026-10-08). 네이버는 루트의 태그로 확인됐다.
    - 왼쪽 **Sitemaps** 에 `https://cati-time.github.io/blog/sitemap-index.xml` 제출
    - **URL 검사** 에 주요 글 주소를 넣고 **색인 생성 요청** — 새 사이트는 이게 가장 빠르다
 2. **네이버 서치어드바이저** — https://searchadvisor.naver.com
