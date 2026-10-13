@@ -194,25 +194,25 @@ const W = 600;
 
 // ── 5. 화면(ViewModel)이 기대는 것 — 전/후 (안드로이드 아키텍처 ③) ─────
 // 휴대폰 앱 @HiltViewModel 의 생성자 주입 타입을 꼬리 이름으로 센 값(태블릿 앱·별도 앱·템플릿 제외).
-// 전 = module 분리 직전(2026-01-19) · 후 = 2026-10-06, 둘 다 ViewModel 58개.
-// 블로그 세션과 안드로이드 세션이 따로 센 값이 3 이내로 갈리는 칸은 라벨에 «약» 을 붙인다.
+// 처음 = 첫 module 을 뗀 직후(로그인 분리 커밋 · ViewModel 56~57) · 지금 = 2026-10-13 판(ViewModel 55).
+// 블로그 세션과 안드로이드 세션이 따로 센 값이 3 이내로 갈리는 칸은 라벨에 «약» 을 붙인다(UseCase 173/174 · StateReader 103/106 · ActionDispatcher 92/95).
 {
 	const rows = [
-		['UseCase', 185, 9],
-		['Repository', 30, 10, '약 30'],
+		['UseCase', 175, 9, '약 175'],
+		['Repository', 27, 10],
 		['BT 상태 홀더', 19, 0],
-		['StateReader', 0, 110, null, '약 110'],
-		['ActionDispatcher', 0, 100, null, '약 100'],
-		['SideEffectReader', 0, 37],
+		['StateReader', 0, 105, null, '약 105'],
+		['ActionDispatcher', 0, 95, null, '약 95'],
+		['SideEffectReader', 0, 41],
 		['Selector', 0, 5],
 	];
 	const H = 430, L = 128, R = 44, T = 92, rowH = 44, bh = 14, max = 200;
 	const x = (v) => L + (v / max) * (W - L - R);
 	let b = text(16, 28, '화면이 기대는 것 — module 분리 전과 지금', { size: 17, fill: C.text, weight: 700 });
-	b += text(16, 48, '휴대폰 앱 ViewModel 58개의 생성자 주입 타입 수 · «약» = 세는 방법에 따라 ±3', { size: 12, fill: C.subtle });
+	b += text(16, 48, '휴대폰 앱 ViewModel 50여 개의 생성자 주입 타입 수 · «약» = 두 세션이 센 값이 ±3 안', { size: 12, fill: C.subtle });
 	// 범례
-	[[C.s2, '2026년 1월 (분리 직전)'], [C.s1, '2026년 10월 (지금)']].forEach(([color, name], i) => {
-		const lx = 16 + i * 190;
+	[[C.s2, '처음 (첫 module 을 뗀 직후)'], [C.s1, '지금']].forEach(([color, name], i) => {
+		const lx = 16 + i * 230;
 		b += `<rect x="${lx}" y="61" width="12" height="12" rx="3" fill="${color}"/>`;
 		b += text(lx + 18, 72, name, { size: 12, fill: C.text });
 	});
@@ -236,14 +236,14 @@ const W = 600;
 	});
 	out(
 		'src/content/blog/android-architecture-3-how-we-moved/vm-dependencies.svg',
-		svg(W, H, '화면이 기대는 것 — module 분리 전과 지금', '휴대폰 앱 ViewModel 58개의 생성자 주입 타입 수. 2026년 1월: UseCase 185, Repository 약 30, BT 상태 홀더 19, StateReader 0, ActionDispatcher 0, SideEffectReader 0, Selector 0. 2026년 10월: UseCase 9, Repository 10, BT 상태 홀더 0, StateReader 약 110, ActionDispatcher 약 100, SideEffectReader 37, Selector 5.', b),
+		svg(W, H, '화면이 기대는 것 — module 분리 전과 지금', '휴대폰 앱 ViewModel 50여 개의 생성자 주입 타입 수. 처음(첫 module 을 뗀 직후): UseCase 약 175, Repository 27, BT 상태 홀더 19, StateReader · ActionDispatcher · SideEffectReader · Selector 0. 지금: UseCase 9, Repository 10, BT 상태 홀더 0, StateReader 약 105, ActionDispatcher 약 95, SideEffectReader 41, Selector 5.', b),
 	);
 }
 
 // ── 6. 지금 있는 module 24개가 생긴 때 (안드로이드 아키텍처 ③) ─────────
-// 각 module 의 빌드 파일이 처음 추가된 커밋 날짜로 센 누적값.
+// 지금 남은 24개의 빌드 파일이 처음 추가된 커밋 날짜로 센 누적값(중간에 만들었다 지운 2개는 뺌). 첫 module 을 뗀 달이 1달째.
 {
-	const months = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월'];
+	const months = ['1달째', '2달째', '3달째', '4달째', '5달째', '6달째', '7달째', '8달째', '9달째', '지금'];
 	const vals = [8, 13, 14, 14, 16, 21, 21, 23, 24, 24];
 	const notes = { 0: '로그인·사용자·아이·기기 …', 1: '홈·미디어·플레이어·미션', 4: 'BT', 5: '테마·딥링크 …' };
 	const H = 360, L = 40, R = 24, T = 76, B = 44;
@@ -251,7 +251,7 @@ const W = 600;
 	const step = pw / months.length;
 	const y = (v) => T + ph - (v / max) * ph;
 	let b = text(16, 28, '지금 있는 module 24개가 생긴 때', { size: 17, fill: C.text, weight: 700 });
-	b += text(16, 48, '2026년 · 누적 · 각 module 이 처음 만들어진 달 기준', { size: 12, fill: C.subtle });
+	b += text(16, 48, '누적 · 첫 module 을 뗀 달이 1달째 · 중간에 만들었다 지운 2개는 뺌', { size: 12, fill: C.subtle });
 	for (const g of [0, 8, 16, 24]) {
 		b += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="${C.grid}"/>`;
 		b += text(L - 6, y(g) + 4, g, { size: 12, anchor: 'end', fill: C.subtle });
@@ -262,10 +262,10 @@ const W = 600;
 		b += text(bx + bw / 2, y(v) - 8, v, { size: 13, anchor: 'middle', fill: C.text, weight: 600 });
 		b += text(bx + bw / 2, H - B + 18, months[i], { size: 12, anchor: 'middle', fill: C.subtle });
 	});
-	b += text(16, H - 8, '짙은 막대: 1월 로그인·사용자·아이·기기 · 2월 홈·미디어·플레이어·미션 · 5월 BT · 6월 테마·딥링크 등', { size: 11, fill: C.subtle });
+	b += text(16, H - 8, '짙은 막대: 1달째 로그인·사용자·아이·기기 · 2달째 홈·미디어·플레이어·미션 · 5달째 BT · 6달째 테마 등', { size: 11, fill: C.subtle });
 	out(
 		'src/content/blog/android-architecture-3-how-we-moved/modules-born.svg',
-		svg(W, H, '지금 있는 module 24개가 생긴 때', '2026년 누적 module 수: 1월 8, 2월 13, 3월 14, 4월 14, 5월 16, 6월 21, 7월 21, 8월 23, 9월 24, 10월 24.', b),
+		svg(W, H, '지금 있는 module 24개가 생긴 때', '누적 module 수(첫 module 을 뗀 달이 1달째): 1달째 8, 2달째 13, 3달째 14, 4달째 14, 5달째 16, 6달째 21, 7달째 21, 8달째 23, 9달째 24, 지금 24.', b),
 	);
 }
 
@@ -505,28 +505,28 @@ const W = 600;
 }
 
 // ── 11. 앱 정보 화면이 지난 길 (안드로이드 아키텍처 ③) ───────────────────────
-// 설정 화면 전체를 옮긴 비즈니스 플로우 안에서 «앱 정보» 몫. 날짜는 단계가 돈 날(2026년).
+// 설정 화면 전체를 옮긴 비즈니스 플로우 안에서 «앱 정보» 몫. 단계마다 독립 검수 — 최대 세 라운드.
 {
 	const H = 360;
 	const steps = [
-		['조사', '9/23', '위반 5개를 찾음'],
-		['아키텍처', '9/24', '주인과 표면 셋을 정함'],
-		['BDD', '9/28 – 29', '시나리오 15개'],
-		['SDD', '9/29', '이벤트 9 · 일회성 6'],
-		['계획', '9/29 – 30', '스텝 6개'],
-		['실행', '9/30 – 10/1', '커밋 4 · 반려 2'],
-		['검증', '10/1', '렌더 · 도달성 · 수명 검사'],
-		['정리', '10/3', '옛 값 반환 계약 삭제'],
+		['조사', '검수 세 라운드', '지적 24 → 10 → 7'],
+		['아키텍처', '한 번 반려', '원장을 다시 씀'],
+		['BDD', '반송 1 · 세 라운드', '시나리오 177'],
+		['SDD', '세 라운드', '어긋난 사본을 하나로'],
+		['계획', '세 라운드 · 반송 13', '슬라이스 22'],
+		['완료 기준', '세 번 반려', '고친 뒤 통과'],
+		['실행', '독립 검수 · 반려', '명세 → Store → 화면'],
+		['검증', '아직 열려 있음', '설정 화면 전체'],
 	];
 	const w = 130, h = 78, gap = 16, x0 = 16;
 	const marker = `<marker id="t-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${C.s1}"/></marker>`;
 	let b = `<defs>${marker}</defs>`;
 	b += text(16, 28, '앱 정보 화면이 지난 길', { size: 17, fill: C.text, weight: 700 });
-	b += text(16, 48, '설정 화면을 옮긴 비즈니스 플로우 안에서 앱 정보 몫 · 2026년 9월 23일 ~ 10월 3일', { size: 12, fill: C.subtle });
+	b += text(16, 48, '설정 화면을 옮긴 비즈니스 플로우 안에서 앱 정보 몫 · 단계마다 독립 검수, 최대 세 라운드', { size: 12, fill: C.subtle });
 	const pos = (i) => (i < 4 ? [x0 + i * (w + gap), 76] : [x0 + (7 - i) * (w + gap), 226]);
 	steps.forEach(([name, date, out], i) => {
 		const [x, y] = pos(i);
-		const exec = i === 5;
+		const exec = i === 6;
 		b += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${exec ? '#e8f5ef' : C.surface}" stroke="${C.s1}" stroke-width="${exec ? 2 : 1.3}"/>`;
 		b += text(x + 12, y + 24, `${i + 1}. ${name}`, { size: 13, fill: C.text, weight: 700 });
 		b += text(x + 12, y + 42, date, { size: 11, fill: C.subtle });
@@ -542,23 +542,24 @@ const W = 600;
 		const [x, y] = pos(i);
 		b += `<line x1="${x - 2}" y1="${y + h / 2}" x2="${x - gap + 2}" y2="${y + h / 2}" stroke="${C.s1}" stroke-width="1.8" marker-end="url(#t-ah)"/>`;
 	}
-	b += text(16, 336, '실행은 상태 명세부터 화면 정리까지 약 2시간(커밋 시각으로 추정) · 단계마다 독립 검수 · 반려는 두 번', { size: 12, fill: C.muted });
+	b += text(16, 328, '앱 정보 화면 쪽 작업은 커밋 시각으로 약 4시간', { size: 12, fill: C.muted });
+	b += text(16, 346, '설정 화면 전체는 약 86시간 — 여러 AI 작업이 겹친 커밋으로 잰 값이라 사람의 시간은 아니다', { size: 12, fill: C.muted });
 	out(
 		'src/content/blog/android-architecture-3-how-we-moved/app-info-flow.svg',
-		svg(W, H, '앱 정보 화면이 지난 길', '조사(9/23, 위반 5개) → 아키텍처(9/24, 주인과 표면 셋) → BDD(9/28–29, 시나리오 15개) → SDD(9/29, 이벤트 9·일회성 6) → 계획(9/29–30, 스텝 6) → 실행(9/30–10/1, 커밋 4·반려 2) → 검증(10/1, 렌더·도달성·수명 검사) → 정리(10/3, 옛 값 반환 계약 삭제).', b),
+		svg(W, H, '앱 정보 화면이 지난 길', '조사(검수 세 라운드, 지적 24 → 10 → 7) → 아키텍처(한 번 반려, 원장을 다시 씀) → BDD(반송 1, 세 라운드, 시나리오 177) → SDD(세 라운드, 어긋난 사본을 하나로) → 계획(세 라운드, 반송 13, 슬라이스 22) → 완료 기준(세 번 반려 뒤 통과) → 실행(독립 검수, 명세 → Store → 화면) → 검증(설정 화면 전체 기준으로 아직 열려 있음). 앱 정보 화면 쪽 작업은 커밋 시각으로 약 4시간, 설정 화면 전체는 약 86시간(여러 AI 작업이 겹친 커밋 기준).', b),
 	);
 }
 
-// ── 12. 지금 자리에 있는 검사 72종이 생긴 때 (안드로이드 아키텍처 ③) ──────────
-// 하드 가드 파일이 지금 자리(규칙 폴더의 검사 자리)에 처음 추가된 달로 센 누적값.
+// ── 12. 지금 있는 검사 74종이 생긴 때 (안드로이드 아키텍처 ③) ──────────
+// 하드 가드 파일이 지금 자리(규칙 폴더의 검사 자리)에 처음 추가된 때로 센 누적값. 처음 = 되살린 26종, 한 달 뒤 = 47, 지금 = 74(그사이 하나는 지움).
 {
-	const months = ['7월 말', '8월 말', '9월 말'];
-	const vals = [26, 47, 72];
+	const months = ['처음', '한 달 뒤', '지금'];
+	const vals = [26, 47, 74];
 	const H = 320, L = 44, R = 24, T = 78, B = 44, max = 80;
 	const pw = W - L - R, ph = H - T - B, step = pw / months.length, bw = step - 70;
 	const y = (v) => T + ph - (v / max) * ph;
-	let b = text(16, 28, '지금 자리에 있는 검사 72종이 생긴 때', { size: 17, fill: C.text, weight: 700 });
-	b += text(16, 48, '하드 가드 · 누적 · 7월 30일, 문서 정리에 쓸려 나간 26종을 지금 자리로 되살린 뒤', { size: 12, fill: C.subtle });
+	let b = text(16, 28, '지금 있는 검사 74종이 생긴 때', { size: 17, fill: C.text, weight: 700 });
+	b += text(16, 48, '하드 가드 · 누적 · 문서 정리에 쓸려 나간 26종을 지금 자리로 되살린 뒤부터', { size: 12, fill: C.subtle });
 	for (const g of [0, 20, 40, 60, 80]) {
 		b += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="${C.grid}"/>`;
 		b += text(L - 6, y(g) + 4, g, { size: 12, anchor: 'end', fill: C.subtle });
@@ -573,7 +574,7 @@ const W = 600;
 	});
 	out(
 		'src/content/blog/android-architecture-3-how-we-moved/guards-growth.svg',
-		svg(W, H, '지금 자리에 있는 검사 72종이 생긴 때', '하드 가드 누적: 7월 말 26종(되살린 것), 8월 말 47종(새로 21), 9월 말 72종(새로 25).', b),
+		svg(W, H, '지금 있는 검사 74종이 생긴 때', '하드 가드 누적: 처음 26종(되살린 것), 한 달 뒤 47종(새로 21), 지금 74종(새로 27, 그사이 하나는 지움).', b),
 	);
 }
 
