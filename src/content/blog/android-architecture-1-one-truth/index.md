@@ -9,7 +9,7 @@ draft: false
 ---
 
 > **안드로이드 아키텍처 시리즈**
-> ① 지금의 구조 — 정본은 한 곳에 (이 글) · [② 새로 만들고 고치기](../android-architecture-2-build-and-fix/) · ③ 어떻게 옮겨 왔나 — subflow 로 (준비 중)
+> ① 지금의 구조 — 정본은 한 곳에 (이 글) · [② 새로 만들고 고치기](../android-architecture-2-build-and-fix/) · [③ 어떻게 옮겨 왔나 — subflow 로](../android-architecture-3-how-we-moved/)
 
 [셋이 남았을 때](../business-flow-story/) 에서 우리 팀이 AI 와 함께 일하는 방식에 정착하기까지를 적었습니다. 이번 글은 그 일이 실제로 벌어지는 자리, 안드로이드 앱의 구조 이야기입니다.
 
@@ -19,7 +19,7 @@ draft: false
 
 정본(SSOT, Single Source of Truth)은 그 질문에 답할 자격이 있는 유일한 곳입니다. 이 글은 이 원칙 하나에서 규칙들이 어떻게 나오는지, 그리고 원칙만으로는 설명되지 않는 곁가지 원리 셋이 무엇인지를 실제 코드와 함께 봅니다.
 
-시리즈는 세 편입니다. 이 글은 지금의 구조와 그 이유를 다룹니다. ②편은 이 구조로 새 기능을 만들고 고칠 때 무엇이 좋아졌는지를, ③편은 subflow 로 일하면서 이 구조까지 어떻게 옮겨 왔는지를 다룹니다.
+시리즈는 세 편입니다. 이 글은 지금의 구조와 그 이유를 다룹니다. [②편](../android-architecture-2-build-and-fix/) 은 이 구조로 새 기능을 만들고 고칠 때 무엇이 좋아졌는지를, [③편](../android-architecture-3-how-we-moved/) 은 subflow 로 일하면서 이 구조까지 어떻게 옮겨 왔는지를 다룹니다.
 
 ## 구조 한 장
 
@@ -193,7 +193,7 @@ fun resolveBluetoothLevel(
 
 ![지금 화면이 기대는 것. ViewModel 55개의 생성자 주입 타입 수는 StateReader 약 105, ActionDispatcher 약 95, SideEffectReader 41, Selector 5, Repository 10, UseCase 9다](./vm-dependencies-now.svg)
 
-화면은 주로 구독하고(Reader) 알립니다(Dispatcher). 결과를 들고 있는 곳은 module 입니다. UseCase·Repository 를 직접 받는 곳이 아직 조금 남아 있는데, 이 구조로 오기 전 모습의 흔적입니다. 어떻게 여기까지 왔는지는 ③편에서 숫자로 봅니다.
+화면은 주로 구독하고(Reader) 알립니다(Dispatcher). 결과를 들고 있는 곳은 module 입니다. UseCase·Repository 를 직접 받는 곳이 아직 조금 남아 있는데, 이 구조로 오기 전 모습의 흔적입니다. 어떻게 여기까지 왔는지는 [③편](../android-architecture-3-how-we-moved/) 에서 숫자로 봅니다.
 
 ### UseCase 는 무엇이고, 왜 줄였나
 
@@ -377,7 +377,7 @@ core 라는 이름이 면제는 아닙니다. core 안에 있어도 저장소처
 
 그래서 토큰(foundations) → 상태 없는 컴포넌트(components) → 조합(patterns) 세 층으로 다시 나눴습니다. 토큰 층은 아무것도 의존하지 않습니다.
 
-이 정리에서 배운 것이 하나 더 있습니다. 공통 함수와 문서를 만들고 «전부 고쳤다» 고 했는데, 검사가 없으니 잔재가 남았고 새로 만든 시트에서 같은 버그가 다시 나왔습니다. **문서만 둔 규칙은 지켜지지 않습니다.** 앞의 로그인 카드에서 «문서로만 안내한다» 를 버린 이유가 이 경험입니다. 규칙을 검사로 바꾼 이야기는 ③편에서 합니다.
+이 정리에서 배운 것이 하나 더 있습니다. 공통 함수와 문서를 만들고 «전부 고쳤다» 고 했는데, 검사가 없으니 잔재가 남았고 새로 만든 시트에서 같은 버그가 다시 나왔습니다. **문서만 둔 규칙은 지켜지지 않습니다.** 앞의 로그인 카드에서 «문서로만 안내한다» 를 버린 이유가 이 경험입니다. 규칙을 검사로 바꾼 이야기는 [③편](../android-architecture-3-how-we-moved/) 에서 합니다.
 
 ## 정리
 

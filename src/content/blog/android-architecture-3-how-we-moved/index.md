@@ -5,7 +5,7 @@ pubDate: 2026-10-13
 category: architecture
 platform: android
 tags: ['android', 'architecture', 'business-flow', 'subflow', 'refactoring', 'ai-agent']
-draft: true
+draft: false
 ---
 
 > **안드로이드 아키텍처 시리즈**
