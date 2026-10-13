@@ -273,9 +273,9 @@ const W = 600;
 // 5번과 같은 측정의 «지금» 쪽만. 위 넷 = 구독·알리기, 아래 둘 = 이전 구조의 흔적.
 {
 	const rows = [
-		['StateReader', 110, '약 110'],
-		['ActionDispatcher', 100, '약 100'],
-		['SideEffectReader', 37],
+		['StateReader', 105, '약 105'],
+		['ActionDispatcher', 95, '약 95'],
+		['SideEffectReader', 41],
 		['Selector', 5],
 		['Repository', 10],
 		['UseCase', 9],
@@ -283,7 +283,7 @@ const W = 600;
 	const H = 340, L = 128, R = 60, T = 84, rowH = 36, bh = 18, max = 120;
 	const x = (v) => L + (v / max) * (W - L - R);
 	let b = text(16, 28, '지금 화면이 기대는 것', { size: 17, fill: C.text, weight: 700 });
-	b += text(16, 48, '휴대폰 앱 ViewModel 58개의 생성자 주입 타입 수 · «약» = 세는 방법에 따라 ±3', { size: 12, fill: C.subtle });
+	b += text(16, 48, '휴대폰 앱 ViewModel 55개의 생성자 주입 타입 수 · «약» = 세는 방법에 따라 ±3', { size: 12, fill: C.subtle });
 	const sepY = T + 4 * rowH - 9;
 	for (const g of [0, 40, 80, 120]) {
 		b += `<line x1="${x(g)}" x2="${x(g)}" y1="${T - 8}" y2="${T + rows.length * rowH - 8}" stroke="${C.grid}"/>`;
@@ -302,7 +302,7 @@ const W = 600;
 	});
 	out(
 		'src/content/blog/android-architecture-1-one-truth/vm-dependencies-now.svg',
-		svg(W, H, '지금 화면이 기대는 것', '휴대폰 앱 ViewModel 58개의 생성자 주입 타입 수. StateReader 약 110, ActionDispatcher 약 100, SideEffectReader 37, Selector 5, Repository 10, UseCase 9.', b),
+		svg(W, H, '지금 화면이 기대는 것', '휴대폰 앱 ViewModel 55개의 생성자 주입 타입 수. StateReader 약 105, ActionDispatcher 약 95, SideEffectReader 41, Selector 5, Repository 10, UseCase 9.', b),
 	);
 }
 

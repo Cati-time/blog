@@ -189,9 +189,9 @@ fun resolveBluetoothLevel(
 
 ### 지금 화면이 기대는 것
 
-지금 휴대폰 앱의 ViewModel 58개가 생성자에서 무엇을 주입받는지 세면 이렇습니다. 세는 방법에 따라 몇 개씩 차이가 나는 칸은 «약» 으로 적었습니다.
+지금 휴대폰 앱의 ViewModel 55개가 생성자에서 무엇을 주입받는지 세면 이렇습니다. 세는 방법에 따라 몇 개씩 차이가 나는 칸은 «약» 으로 적었습니다.
 
-![지금 화면이 기대는 것. ViewModel 58개의 생성자 주입 타입 수는 StateReader 약 110, ActionDispatcher 약 100, SideEffectReader 37, Selector 5, Repository 10, UseCase 9다](./vm-dependencies-now.svg)
+![지금 화면이 기대는 것. ViewModel 55개의 생성자 주입 타입 수는 StateReader 약 105, ActionDispatcher 약 95, SideEffectReader 41, Selector 5, Repository 10, UseCase 9다](./vm-dependencies-now.svg)
 
 화면은 주로 구독하고(Reader) 알립니다(Dispatcher). 결과를 들고 있는 곳은 module 입니다. UseCase·Repository 를 직접 받는 곳이 아직 조금 남아 있는데, 이 구조로 오기 전 모습의 흔적입니다. 어떻게 여기까지 왔는지는 ③편에서 숫자로 봅니다.
 
@@ -344,7 +344,7 @@ result.onSuccess { version ->
 
 ### 3. 조립하는 자리는 판단하지 않는다
 
-app 은 앱을 시작하고, 조각을 조립하고, 화면을 이동시키는 일만 합니다. module 을 떼어 내기 직전에는 휴대폰 앱 ViewModel 58개 중 43개가 app 에 있었습니다. 지금은 58개 중 10개입니다.
+app 은 앱을 시작하고, 조각을 조립하고, 화면을 이동시키는 일만 합니다. module 을 떼어 내기 직전에는 휴대폰 앱 ViewModel 의 4분의 3 이상(약 44개)이 app 에 있었습니다. 지금은 10개 안팎입니다.
 
 올해 8월에 잰 메인 Activity 한 파일은 약 3,300줄이었습니다. module 타입을 직접 주입받는 필드가 13개, 비즈니스 판정이 7곳 있었습니다. «어디를 고쳐야 하나» 가 흐려지는 전형적인 모양입니다. 이유는 1번과 같습니다. 조립하는 자리에 판단이 들어오면 복잡해집니다. 규칙 문서는 테스트 쪽에서 같은 말을 합니다. 화면을 띄워야만 테스트할 수 있는 도메인 결론은 자리를 잘못 잡은 것입니다.
 
