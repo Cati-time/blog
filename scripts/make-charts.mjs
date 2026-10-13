@@ -194,12 +194,12 @@ const W = 600;
 
 // ── 5. 화면(ViewModel)이 기대는 것 — 전/후 (안드로이드 아키텍처 ③) ─────
 // 휴대폰 앱 @HiltViewModel 의 생성자 주입 타입을 꼬리 이름으로 센 값(태블릿 앱·별도 앱·템플릿 제외).
-// 처음 = 첫 module 을 뗀 직후(로그인 분리 커밋 · ViewModel 56~57) · 지금 = 2026-10-13 판(ViewModel 55).
-// 블로그 세션과 안드로이드 세션이 따로 센 값이 3 이내로 갈리는 칸은 라벨에 «약» 을 붙인다(UseCase 173/174 · StateReader 103/106 · ActionDispatcher 92/95).
+// 처음 = 첫 module 을 떼기 직전(ViewModel 57~58) · 지금 = 2026-10-13 판(ViewModel 55). 본문의 «처음» 과 같은 판.
+// 블로그 세션과 안드로이드 세션이 따로 센 값이 3 이내로 갈리는 칸은 라벨에 «약» 을 붙인다(UseCase 179/180/177 · StateReader 103/106 · ActionDispatcher 92/95).
 {
 	const rows = [
-		['UseCase', 175, 9, '약 175'],
-		['Repository', 27, 10],
+		['UseCase', 180, 9, '약 180'],
+		['Repository', 28, 10],
 		['BT 상태 홀더', 19, 0],
 		['StateReader', 0, 105, null, '약 105'],
 		['ActionDispatcher', 0, 95, null, '약 95'],
@@ -211,7 +211,7 @@ const W = 600;
 	let b = text(16, 28, '화면이 기대는 것 — module 분리 전과 지금', { size: 17, fill: C.text, weight: 700 });
 	b += text(16, 48, '휴대폰 앱 ViewModel 50여 개의 생성자 주입 타입 수 · «약» = 두 세션이 센 값이 ±3 안', { size: 12, fill: C.subtle });
 	// 범례
-	[[C.s2, '처음 (첫 module 을 뗀 직후)'], [C.s1, '지금']].forEach(([color, name], i) => {
+	[[C.s2, '처음 (첫 module 을 떼기 직전)'], [C.s1, '지금']].forEach(([color, name], i) => {
 		const lx = 16 + i * 230;
 		b += `<rect x="${lx}" y="61" width="12" height="12" rx="3" fill="${color}"/>`;
 		b += text(lx + 18, 72, name, { size: 12, fill: C.text });
@@ -236,7 +236,7 @@ const W = 600;
 	});
 	out(
 		'src/content/blog/android-architecture-3-how-we-moved/vm-dependencies.svg',
-		svg(W, H, '화면이 기대는 것 — module 분리 전과 지금', '휴대폰 앱 ViewModel 50여 개의 생성자 주입 타입 수. 처음(첫 module 을 뗀 직후): UseCase 약 175, Repository 27, BT 상태 홀더 19, StateReader · ActionDispatcher · SideEffectReader · Selector 0. 지금: UseCase 9, Repository 10, BT 상태 홀더 0, StateReader 약 105, ActionDispatcher 약 95, SideEffectReader 41, Selector 5.', b),
+		svg(W, H, '화면이 기대는 것 — module 분리 전과 지금', '휴대폰 앱 ViewModel 50여 개의 생성자 주입 타입 수. 처음(첫 module 을 떼기 직전): UseCase 약 180, Repository 28, BT 상태 홀더 19, StateReader · ActionDispatcher · SideEffectReader · Selector 0. 지금: UseCase 9, Repository 10, BT 상태 홀더 0, StateReader 약 105, ActionDispatcher 약 95, SideEffectReader 41, Selector 5.', b),
 	);
 }
 
@@ -509,7 +509,7 @@ const W = 600;
 {
 	const H = 360;
 	const steps = [
-		['조사', '검수 세 라운드', '지적 24 → 10 → 7'],
+		['조사', '검수 세 라운드', '지적 약 24 → 10 → 7'],
 		['아키텍처', '한 번 반려', '원장을 다시 씀'],
 		['BDD', '반송 1 · 세 라운드', '시나리오 177'],
 		['SDD', '세 라운드', '어긋난 사본을 하나로'],
@@ -522,7 +522,7 @@ const W = 600;
 	const marker = `<marker id="t-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${C.s1}"/></marker>`;
 	let b = `<defs>${marker}</defs>`;
 	b += text(16, 28, '앱 정보 화면이 지난 길', { size: 17, fill: C.text, weight: 700 });
-	b += text(16, 48, '설정 화면을 옮긴 비즈니스 플로우 안에서 앱 정보 몫 · 단계마다 독립 검수, 최대 세 라운드', { size: 12, fill: C.subtle });
+	b += text(16, 48, '조사 ~ 완료 기준은 설정 화면 전체 기준 · 실행이 앱 정보 몫 · 단계마다 독립 검수, 최대 세 라운드', { size: 12, fill: C.subtle });
 	const pos = (i) => (i < 4 ? [x0 + i * (w + gap), 76] : [x0 + (7 - i) * (w + gap), 226]);
 	steps.forEach(([name, date, out], i) => {
 		const [x, y] = pos(i);
@@ -542,11 +542,11 @@ const W = 600;
 		const [x, y] = pos(i);
 		b += `<line x1="${x - 2}" y1="${y + h / 2}" x2="${x - gap + 2}" y2="${y + h / 2}" stroke="${C.s1}" stroke-width="1.8" marker-end="url(#t-ah)"/>`;
 	}
-	b += text(16, 328, '앱 정보 화면 쪽 작업은 커밋 시각으로 약 4시간', { size: 12, fill: C.muted });
-	b += text(16, 346, '설정 화면 전체는 약 86시간 — 여러 AI 작업이 겹친 커밋으로 잰 값이라 사람의 시간은 아니다', { size: 12, fill: C.muted });
+	b += text(16, 328, '앱 정보 화면 쪽 작업은 커밋 시각으로 약 4시간 반(실행 단계만 약 3시간)', { size: 12, fill: C.muted });
+	b += text(16, 346, '설정 화면 전체는 약 86시간 — AI 작업이 겹친 커밋 기준이라 사람의 시간이 아니다', { size: 12, fill: C.muted });
 	out(
 		'src/content/blog/android-architecture-3-how-we-moved/app-info-flow.svg',
-		svg(W, H, '앱 정보 화면이 지난 길', '조사(검수 세 라운드, 지적 24 → 10 → 7) → 아키텍처(한 번 반려, 원장을 다시 씀) → BDD(반송 1, 세 라운드, 시나리오 177) → SDD(세 라운드, 어긋난 사본을 하나로) → 계획(세 라운드, 반송 13, 슬라이스 22) → 완료 기준(세 번 반려 뒤 통과) → 실행(독립 검수, 명세 → Store → 화면) → 검증(설정 화면 전체 기준으로 아직 열려 있음). 앱 정보 화면 쪽 작업은 커밋 시각으로 약 4시간, 설정 화면 전체는 약 86시간(여러 AI 작업이 겹친 커밋 기준).', b),
+		svg(W, H, '앱 정보 화면이 지난 길', '조사부터 완료 기준까지는 설정 화면 전체 기준이고 실행이 앱 정보 몫. 조사(검수 세 라운드, 설정 전체 지적 약 24 → 10 → 7) → 아키텍처(한 번 반려, 원장을 다시 씀) → BDD(반송 1, 세 라운드, 시나리오 177) → SDD(세 라운드, 어긋난 사본을 하나로) → 계획(세 라운드, 반송 13, 슬라이스 22) → 완료 기준(세 번 반려 뒤 통과) → 실행(독립 검수, 명세 → Store → 화면) → 검증(설정 화면 전체 기준으로 아직 열려 있음). 앱 정보 화면 쪽 작업은 커밋 시각으로 약 4시간 반(실행 단계만 약 3시간), 설정 화면 전체는 약 86시간(AI 작업이 겹친 커밋 기준).', b),
 	);
 }
 
@@ -559,7 +559,7 @@ const W = 600;
 	const pw = W - L - R, ph = H - T - B, step = pw / months.length, bw = step - 70;
 	const y = (v) => T + ph - (v / max) * ph;
 	let b = text(16, 28, '지금 있는 검사 74종이 생긴 때', { size: 17, fill: C.text, weight: 700 });
-	b += text(16, 48, '하드 가드 · 누적 · 문서 정리에 쓸려 나간 26종을 지금 자리로 되살린 뒤부터', { size: 12, fill: C.subtle });
+	b += text(16, 48, '하드 가드 · 누적 · 처음 26종은 그 전 두 달 사이에 만들었다가 문서 정리 때 지워진 것을 되살린 것', { size: 12, fill: C.subtle });
 	for (const g of [0, 20, 40, 60, 80]) {
 		b += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="${C.grid}"/>`;
 		b += text(L - 6, y(g) + 4, g, { size: 12, anchor: 'end', fill: C.subtle });
