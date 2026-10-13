@@ -404,7 +404,7 @@ npm run import -- ~/Downloads/Export-123/회고.html --slug team-retro --categor
 
 ## 9. Claude Code 로 포스팅하기
 
-Claude Code 를 쓰면 명령어를 외우지 않고 **말로** 포스팅할 수 있습니다. 이 저장소에는 포스팅용 스킬(`blog-write`)과 규칙(`CLAUDE.md`)이 들어 있어서, 저장소를 열기만 하면 Claude 가 이 블로그의 절차를 알고 시작합니다.
+Claude Code 를 쓰면 명령어를 외우지 않고 **말로** 포스팅할 수 있습니다. 이 저장소에는 포스팅용 스킬 두 개(`blog-write` 문서 옮기기 · `blog-compose` 취재해서 함께 쓰기)와 규칙(`CLAUDE.md`)이 들어 있어서, 저장소를 열기만 하면 Claude 가 이 블로그의 절차를 알고 시작합니다.
 
 ```
 처음 한 번: 계정 · 설치 · 저장소 열기
@@ -548,6 +548,23 @@ Claude 는 명령을 실행하거나 파일을 바꾸기 전에 **허용할지**
 3. "검사하고 미리보기 켜줘" → 문제를 알려 줍니다.
 4. "커밋해줘" → PR 은 직접.
 
+**주제만 주고 Claude 가 취재해서 함께 쓰기 — `/blog-compose`**
+
+글의 사실이 다른 저장소(앱·서버 레포)에 있으면, Claude 가 그 저장소에서 일하는 Claude 세션(원천 세션)에 조사를 맡기고 네 단계로 같이 씁니다.
+
+| 단계 | 하는 일 |
+| --- | --- |
+| ① 뼈대 | 주제·독자·흐름을 듣고 섹션별 «보여 줄 것 · 필요한 숫자» 를 잡아 확인받은 뒤, 원천 세션에 조사를 요청 |
+| ② 질문 | 빈 곳과 «왜» 를 다시 묻고, 핵심 숫자는 두 세션이 **따로** 세어 맞춤 |
+| ③ 살 붙이기 | 초안(`draft: true`)·그림을 만들어 미리보기로 보여 줌 |
+| ④ 사실 확인 | 원천 세션이 주장마다 «그대로 · 고침 · 뺌» 표로 확인 → 반영 |
+
+> `/blog-compose` 「<주제>」 를 Architecture › iOS 로 써 보자. 사실은 iOS 레포 세션에 조사 요청해줘
+
+- 숫자와 «좋아졌다» 같은 효과는 저장소에서 센 값만 씁니다. 못 잰 것은 «따로 세어 두지는 않았지만» 처럼 **작성자 판단**으로 밝힙니다.
+- 기간은 달력 기간이 아니라 커밋 시각으로 추정한 작업 시간으로 씁니다.
+- 확인 표처럼 사내 근거가 담긴 기록은 저장소 밖(`../blog-notes/`)에 둡니다 — 이 저장소는 공개입니다.
+
 ### 9-8. Claude Code 문제 해결
 
 | 증상 | 해결 |
@@ -640,6 +657,7 @@ scripts/new-post.mjs               ← npm run new
 scripts/check-posts.mjs            ← 글 검사 (npm run check:posts)
 scripts/import-doc.mjs             ← 문서 가져오기 (npm run import)
 .claude/skills/blog-write/         ← Claude 문서 가져오기 스킬
+.claude/skills/blog-compose/       ← Claude 취재해서 함께 쓰기 스킬 (뼈대 → 질문 → 살 붙이기 → 사실 확인)
 scripts/setup.sh                   ← 설치 스크립트
 .github/workflows/                 ← PR 빌드 검사, main 자동 배포
 ```
