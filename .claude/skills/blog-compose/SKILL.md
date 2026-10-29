@@ -79,6 +79,7 @@ description: >-
 ## 발행
 
 - 사용자가 «발행» 이라고 할 때만 한다.
+  0. `blog-wording` 스킬로 용어 · 말투를 검사하고, 사용자가 확인한 문장만 고친다.
   1. (선택) `humanize-korean` 스킬로 윤문한다. 숫자 · 인용 · 판단 + 단서 문장은 보존한다.
   2. `pubDate` · `draft: false` · 시리즈 상자 링크를 바꾼다.
   3. build → `post:` 커밋 → «push 하면 배포됩니다».
