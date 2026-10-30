@@ -62,6 +62,12 @@ export const TERMS = [
 	{ id: 'branch', avoid: /갈래/g, glossary: '하위 작업' },
 	{ id: 'artifact', avoid: /산출물/g, glossary: '결과물' },
 	{ id: 'export', avoid: /결정 반출/g, glossary: '결정 기록' },
+	{ id: 'integration-test', avoid: /(배선|연결) ?시험/g, glossary: '연동 테스트' },
+	{ id: 'test', avoid: /(?<!(배선|연결) ?)(?<![가-힣])시험(?!적)/g, glossary: '테스트' },
+	{ id: 'mask', avoid: /개인 ?정보 ?(가리|가린|가렸|가려|가림)/g, glossary: '마스킹' },
+	{ id: 'hide', avoid: /(?<!개인 ?정보 )(?<!우열을 )(?<![가-힣])(가리(?![킵킨킬키켰켜]|지 않|지 말)|가린|가렸|가려(?![내낸냈낼냅고면는서야던])|가림)/g, glossary: '숨기다' },
+	{ id: 'remove', avoid: /걷어 ?(내|낸|냈)|걷었/g, glossary: '제거하다' },
+	{ id: 'list', avoid: /(?<![가-힣])대장(?!간|균|암|장)/g, glossary: '목록' },
 ];
 
 
