@@ -196,48 +196,6 @@
 			"evidence": "«사고 한 건» 0 · «사고가 나다» 4(보안 사고 · 데이터 삭제 같은 큰일) / 문제가 생기다 196 · 이슈 466 · 버그 197 · 장애 653"
 		},
 		{
-			"name": "결과물",
-			"aliases": [
-				"산출물(사내 문서)"
-			],
-			"avoid": [
-				"산출물"
-			],
-			"definition": "단계 · Subflow 가 남기는 것. 경로와 절로 가리킬 수 있으면 계획서의 한 줄도 결과물이다.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "산출물 28 / 결과물 208"
-		},
-		{
-			"name": "하위 작업",
-			"aliases": [
-				"갈래(사내 문서)"
-			],
-			"avoid": [
-				"갈래"
-			],
-			"definition": "한 단계 안에서 따로 도는 작업 하나(조사 한 축, 구현 한 조각, 게이트 한 번 실행 등).",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "갈래 7 / 분기 87 · 하위 작업 3"
-		},
-		{
-			"name": "결정 기록",
-			"aliases": [
-				"결정 반출(사내 문서)"
-			],
-			"avoid": [
-				"결정 반출"
-			],
-			"definition": "Subflow 계약 ⑤ 항목. 미판정 · 확정을 계획서의 결정 자리(판정표 등)에 적는다.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "반출 5 / 대체어 실측 없음"
-		},
-		{
 			"name": "소유자 · 담당",
 			"aliases": [],
 			"avoid": [
