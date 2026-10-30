@@ -57,11 +57,11 @@ export const TERMS = [
 	{ id: 'granularity', avoid: /입자/g, use: '단위', decided: 'evidence', evidence: '입자 6 / 단위 603' },
 	{ id: 'field', avoid: /(입력|산출|반출|통과 ?체크|계약)[의 ]* ?칸/g, use: '항목 · 필드', decided: 'evidence', evidence: '«계약 · 입력 · 산출 칸» 1 · 칸 전체 34 / 항목 238 · 필드 271', note: '표의 칸 · «한 칸씩» 같은 쓰임은 해당 없음' },
 	{ id: 'hand-down', avoid: /넘김/g, use: '위임', decided: 'evidence', evidence: '넘김 0 / 위임 50' },
-	{ id: 'tally', avoid: /셈의|셈 ?축|셈[을를]/g, use: '집계', decided: 'evidence', evidence: '«셈의 · 셈을» 3(«~인 셈» 관용구 빼고 · 블로그 세션 17) / 집계 138' },
+	{ id: 'tally', avoid: /셈의|셈 ?축|셈[을를]/g, use: '집계 기준 · 집계 축', decided: 'evidence', evidence: '«셈의 · 셈을» 3(«~인 셈» 관용구 빼고, 두 세션 맞춤) / 집계 138 · 집계 기준 3' },
 	{ id: 'blind', avoid: /못 ?보는/g, use: '검증할 수 없는 · 사각지대 · (축이면) 영역', decided: 'evidence', evidence: '못 보는 0 / 사각지대 · 검증할 수 없는 7 · 영역 467' },
 	{ id: 'checkpoint', avoid: /멈춤 ?지점/g, use: '체크포인트', decided: 'evidence', evidence: '멈춤 지점 0(블로그 세션 1) / 체크포인트 39(37)' },
 	{ id: 'version-up', avoid: /버전 ?올림|버전을 올림/g, use: '버전 업', decided: 'evidence', evidence: '버전 올림 0 / 버전 업 94' },
-	{ id: 'misread', avoid: /오독/g, use: '잘못 읽음', decided: 'evidence', evidence: '오독 0 / «잘못 읽» 2(블로그 세션 48 — 세는 꼴 차이, 맞춰 볼 것)' },
+	{ id: 'misread', avoid: /오독/g, use: '잘못 읽음 · 오해 · (문맥에 따라) 같은 잘못', decided: 'evidence', evidence: '오독 0 / 오해 44 · 잘못 해석 2 · 잘못 읽 2 (두 세션 맞춤)' },
 	// ── 사용자 결정 필요
 	{ id: 'branch', avoid: /갈래/g, use: '(사용자 결정) 분기(코드) · 하위 작업(subflow 정의)', decided: 'ask', evidence: '갈래 7 / 분기 87 · 하위 작업 3' },
 	{ id: 'artifact', avoid: /산출물/g, use: '(사용자 결정) 결과물', decided: 'ask', evidence: '산출물 28 / 결과물 208' },
