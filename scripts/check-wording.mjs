@@ -51,6 +51,22 @@ export const TERMS = [
 	{ id: 'one-door', avoid: /(?<![가-힣])문 하나|하나의 문(?![가-힣])/g, use: '진입점 · 래퍼', decided: 'evidence', evidence: '«문 하나»(진입점 뜻) 0 / 진입점 15 · 래퍼 20' },
 	{ id: 'land', avoid: /착지/g, use: '머지 · 병합', decided: 'evidence', evidence: '착지 5 / 머지 167 · 병합 41' },
 	{ id: 'helper', avoid: /도우미/g, use: '헬퍼', decided: 'user', evidence: '도우미 10(모두 «AI 도우미» 같은 제품 이름, 코드 helper 뜻 0) / 헬퍼 9 · helper 9 · 유틸 32 · 공통 함수 1' },
+	// ── 원천 실측 (2026-10-30 추가 — 블로그 세션 집계와 따로 세어 맞춤, 차이는 evidence 에 적음)
+	{ id: 'adopt', avoid: /[을를] ?들이(며|고|면|는|기|려)|[을를] ?들였/g, use: '도입하다', decided: 'evidence', evidence: '«~를 들이다» 11(블로그 세션 9) / 도입 756', note: '«시간을 들이다» 는 해당 없음' },
+	{ id: 'layer', avoid: /(?<![가-힣])겹(?![치쳐친칠쳤])/g, use: '계층 · 레이어', decided: 'evidence', evidence: '겹 7(블로그 세션 8) / 계층 · 레이어 376(153 · 223)' },
+	{ id: 'granularity', avoid: /입자/g, use: '단위', decided: 'evidence', evidence: '입자 6 / 단위 603' },
+	{ id: 'field', avoid: /(입력|산출|반출|통과 ?체크|계약)[의 ]* ?칸/g, use: '항목 · 필드', decided: 'evidence', evidence: '«계약 · 입력 · 산출 칸» 1 · 칸 전체 34 / 항목 238 · 필드 271', note: '표의 칸 · «한 칸씩» 같은 쓰임은 해당 없음' },
+	{ id: 'hand-down', avoid: /넘김/g, use: '위임', decided: 'evidence', evidence: '넘김 0 / 위임 50' },
+	{ id: 'tally', avoid: /셈의|셈 ?축|셈[을를]/g, use: '집계', decided: 'evidence', evidence: '«셈의 · 셈을» 3(«~인 셈» 관용구 빼고 · 블로그 세션 17) / 집계 138' },
+	{ id: 'blind', avoid: /못 ?보는/g, use: '검증할 수 없는 · 사각지대 · (축이면) 영역', decided: 'evidence', evidence: '못 보는 0 / 사각지대 · 검증할 수 없는 7 · 영역 467' },
+	{ id: 'checkpoint', avoid: /멈춤 ?지점/g, use: '체크포인트', decided: 'evidence', evidence: '멈춤 지점 0(블로그 세션 1) / 체크포인트 39(37)' },
+	{ id: 'version-up', avoid: /버전 ?올림|버전을 올림/g, use: '버전 업', decided: 'evidence', evidence: '버전 올림 0 / 버전 업 94' },
+	{ id: 'misread', avoid: /오독/g, use: '잘못 읽음', decided: 'evidence', evidence: '오독 0 / «잘못 읽» 2(블로그 세션 48 — 세는 꼴 차이, 맞춰 볼 것)' },
+	// ── 사용자 결정 필요
+	{ id: 'branch', avoid: /갈래/g, use: '(사용자 결정) 분기(코드) · 하위 작업(subflow 정의)', decided: 'ask', evidence: '갈래 7 / 분기 87 · 하위 작업 3' },
+	{ id: 'artifact', avoid: /산출물/g, use: '(사용자 결정) 결과물', decided: 'ask', evidence: '산출물 28 / 결과물 208' },
+	{ id: 'export', avoid: /반출/g, use: '(사용자 결정)', decided: 'ask', evidence: '반출 5 / 대체어 실측 없음' },
+	{ id: 'canon', avoid: /원형 ?규칙|(?<=공통 )원형/g, use: '(사용자 결정) 공통 규칙', decided: 'ask', evidence: '원형 1(블로그 세션 2) / 공통 규칙 4 — 둘 다 적음' },
 ];
 
 // 설명 문장(합니다체) 사이에 박힌 규칙형 «~한다.» — 인용 · 표 · 목록 · 제목 · «…» 안은 빼고 본다
