@@ -1,5 +1,5 @@
 {
-	"$comment": "블로그 용어의 정본. /glossary/ 페이지와 용어 검사(check:wording)가 이 파일을 같은 문구로 읽는다. 꼴: 대표 이름 (다른 이름: …) — 정의. kind=concept 은 페이지에 싣고, style 은 검사에만 쓴다.",
+	"$comment": "블로그 용어의 정본. /glossary/ 페이지와 용어 검사(check:wording)가 이 파일을 같은 문구로 읽는다. 꼴: 대표 이름 (다른 이름: …) — 정의. kind=concept 은 페이지에 싣고, style 은 검사에만 쓴다. status=pending 은 harness 의 이름 통일 회신을 기다리는 줄.",
 	"terms": [
 		{
 			"name": "Supervisor",
@@ -575,6 +575,48 @@
 			"decided": "evidence",
 			"status": "decided",
 			"evidence": "오독 0 / 오해 44 · 잘못 해석 2 · 잘못 읽 2 (두 세션 맞춤)"
+		},
+		{
+			"name": "하위 작업",
+			"aliases": [
+				"갈래(사내 문서)"
+			],
+			"avoid": [
+				"갈래"
+			],
+			"definition": "한 단계 안에서 따로 도는 작업 하나(조사 한 축, 구현 한 조각, 게이트 한 번 실행 등).",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "갈래 7 / 분기 87 · 하위 작업 3"
+		},
+		{
+			"name": "결과물",
+			"aliases": [
+				"산출물(사내 문서)"
+			],
+			"avoid": [
+				"산출물"
+			],
+			"definition": "단계 · Subflow 가 남기는 것. 경로와 절로 가리킬 수 있으면 계획서의 한 줄도 결과물이다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "산출물 28 / 결과물 208"
+		},
+		{
+			"name": "결정 기록",
+			"aliases": [
+				"결정 반출(사내 문서)"
+			],
+			"avoid": [
+				"결정 반출"
+			],
+			"definition": "Subflow 계약 ⑤ 항목. 미판정 · 확정을 계획서의 결정 자리(판정표 등)에 적는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "반출 5 / 대체어 실측 없음"
 		}
 	]
 }
