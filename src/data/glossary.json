@@ -660,6 +660,21 @@
 			"decided": "user",
 			"status": "decided",
 			"evidence": "휘발 4 / 일시적 40 — 사용자 결정 우선"
+		},
+		{
+			"name": "공개 인터페이스",
+			"aliases": [
+				"public API surface",
+				"표면(사내 문서)"
+			],
+			"avoid": [
+				"표면"
+			],
+			"definition": "module 이 밖으로 내놓는 부분. 웹 어드민에서는 use<이름>Store() 가 돌려주는 state · actions · snapshot.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "표면 31 / 인터페이스 240"
 		}
 	]
 }
