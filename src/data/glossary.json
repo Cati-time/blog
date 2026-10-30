@@ -586,7 +586,7 @@
 			"kind": "style",
 			"decided": "evidence",
 			"status": "decided",
-			"evidence": "시험 29 / 테스트 2384"
+			"evidence": "시험 27(«시험적» · 연동 시험 빼고, 블로그 세션 29) / 테스트 2,384"
 		},
 		{
 			"name": "숨기다",
@@ -598,7 +598,7 @@
 			"kind": "style",
 			"decided": "evidence",
 			"status": "decided",
-			"evidence": "가리다 12 / 숨기다 36"
+			"evidence": "가리다 15(가리키다 · 가려내다 · 우열을 가리다 · 가리지 않고 빼고, 블로그 세션 12) / 숨기다 36"
 		},
 		{
 			"name": "제거하다",
@@ -610,7 +610,7 @@
 			"kind": "style",
 			"decided": "evidence",
 			"status": "decided",
-			"evidence": "걷어 내 18 / 제거 378"
+			"evidence": "걷어 내다 22(블로그 세션 18) / 제거 378"
 		},
 		{
 			"name": "목록",
@@ -622,7 +622,7 @@
 			"kind": "style",
 			"decided": "evidence",
 			"status": "decided",
-			"evidence": "대장 1 / 목록 329"
+			"evidence": "대장 0(대장간 · 대장균 빼고, 블로그 세션 1) / 목록 329"
 		},
 		{
 			"name": "마스킹",
@@ -634,7 +634,7 @@
 			"kind": "style",
 			"decided": "evidence",
 			"status": "decided",
-			"evidence": "—"
+			"evidence": "개인정보 가리기 0 / 마스킹 17"
 		},
 		{
 			"name": "연동 테스트",
@@ -647,7 +647,7 @@
 			"kind": "style",
 			"decided": "evidence",
 			"status": "decided",
-			"evidence": "배선 1 / 연동 273"
+			"evidence": "배선 · 연결 시험 0(블로그 세션 1) / 연동 273"
 		}
 	]
 }
