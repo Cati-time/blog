@@ -1,6 +1,6 @@
 ---
 // 카테고리 페이지의 하위 메뉴(플랫폼) — 글 개수와 함께
-import { PLATFORMS, categoryUrl, filterPosts, type Post } from '../lib/posts';
+import { categoryUrl, filterPosts, platformsOf, type Post } from '../lib/posts';
 
 interface Props {
 	category: string;
@@ -11,7 +11,7 @@ const { category, active, posts } = Astro.props;
 const total = filterPosts(posts, category).length;
 const items = [
 	{ id: undefined, label: '전체', count: total },
-	...PLATFORMS.map((p) => ({ id: p.id, label: p.label, count: filterPosts(posts, category, p.id).length })),
+	...platformsOf(category).map((p) => ({ id: p.id, label: p.label, count: filterPosts(posts, category, p.id).length })),
 ];
 ---
 

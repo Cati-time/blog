@@ -5,13 +5,13 @@ import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import PostList from '../../components/PostList.astro';
 import { SITE } from '../../consts';
-import { CATEGORIES, PLATFORMS, filterPosts, getPosts, type Category, type Platform } from '../../lib/posts';
+import { CATEGORIES, filterPosts, getPosts, platformsOf, type Category, type Platform } from '../../lib/posts';
 
 // 글이 없는 조합도 페이지를 만든다 — 메뉴 링크가 404 가 되지 않게
 export async function getStaticPaths() {
 	return CATEGORIES.flatMap((category) => [
 		{ params: { category: category.id, platform: undefined }, props: { category, platform: undefined } },
-		...PLATFORMS.map((platform) => ({
+		...platformsOf(category.id).map((platform) => ({
 			params: { category: category.id, platform: platform.id },
 			props: { category, platform },
 		})),

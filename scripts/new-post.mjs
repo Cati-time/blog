@@ -7,7 +7,7 @@
  */
 import { mkdirSync, existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { CATEGORIES, PLATFORMS } from '../site.config.mjs';
+import { CATEGORIES, PLATFORMS, platformsOf } from '../site.config.mjs';
 
 const args = process.argv.slice(2);
 const flags = { tags: '', draft: false, category: '', platform: '' };
@@ -36,7 +36,7 @@ if (!title) {
 	console.error(usage);
 	process.exit(1);
 }
-if (!catIds.includes(flags.category) || !platIds.includes(flags.platform)) {
+if (!catIds.includes(flags.category) || !platformsOf(flags.category).some((p) => p.id === flags.platform)) {
 	console.error(`분류·플랫폼을 목록에서 골라 주세요. (받은 값: category='${flags.category}', platform='${flags.platform}')\n\n${usage}`);
 	process.exit(1);
 }

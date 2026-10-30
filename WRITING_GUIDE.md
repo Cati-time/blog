@@ -134,7 +134,7 @@ npm run new "Compose 상태 관리 정리" compose-state --category architecture
 | `"제목"` | ✅ | 글 제목. 나중에 파일에서 바꿔도 됩니다 |
 | `slug` | 권장 | 주소가 됩니다 → `/blog/posts/compose-state/`. **영문 소문자·숫자·하이픈**만. 생략하면 날짜로 자동 생성 |
 | `--category` | ✅ | 대메뉴: `ax` 또는 `architecture` (아래 표) |
-| `--platform` | ✅ | 하위 메뉴: `android` · `ios` · `spring` · `web` · `back-office` |
+| `--platform` | ✅ | 하위 메뉴: `android` · `ios` · `backend` · `web` · `back-office` · `harness`(AX 에만) |
 | `--tags` | 선택 | 쉼표로 구분 |
 | `--draft` | 권장 | 초안으로 생성. 다 쓰고 발행할 때 해제합니다 |
 
@@ -156,9 +156,10 @@ src/content/blog/compose-state/
 | --- | --- |
 | **Android** | 안드로이드 앱 |
 | **iOS** | iOS 앱 |
-| **Spring** | Spring 기반 서버 |
+| **Back-end** | 서버 · API · DB (Spring 등 프레임워크 무관) |
 | **Web** | 웹 프론트엔드 |
 | **Back-office** | 사내 운영 도구, 어드민 |
+| **Harness Rules** (AX 에만) | 팀 공통 작업 규칙 — Business Flow · subflow · 감독 · 규칙 문서 같은, 플랫폼에 묶이지 않는 AI 작업 방식 자체 |
 
 여러 플랫폼에 걸친 글은 **가장 중심이 되는 플랫폼 하나**를 고르고, 나머지는 태그로 표시합니다.
 
@@ -171,14 +172,14 @@ description: 'remember, ViewModel, StateFlow 를 언제 쓰는지 정리합니�
 pubDate: 2026-09-29                  # 필수. YYYY-MM-DD
 updatedDate: 2026-10-05              # 선택. 수정했을 때
 category: architecture               # 필수. ax | architecture
-platform: android                    # 필수. android | ios | spring | web | back-office
+platform: android                    # 필수. android | ios | backend | web | back-office | harness(AX 에만)
 tags: ['compose', 'state']           # 선택
 draft: true                          # true 면 사이트에 안 나옵니다
 heroImage: './cover.png'             # 선택. 글 폴더 안의 대표 이미지 — 링크 공유 미리보기에도 쓰입니다 (없으면 블로그 기본 이미지)
 ---
 ```
 
-- `category`·`platform` 에 목록에 없는 값을 쓰면 **빌드가 실패**합니다. 오타 방지용입니다.
+- `category`·`platform` 에 목록에 없는 값을 쓰면 **빌드가 실패**합니다. 오타 방지용입니다. `harness` 를 `architecture` 에 쓰는 것처럼 그 대분류에 없는 하위 메뉴를 써도 실패합니다.
 - 태그는 **영문 소문자, 여러 단어는 하이픈**으로 씁니다 (`jetpack-compose`). 기존 태그는 블로그의 **태그** 페이지에서 확인하고 같은 이름을 재사용하세요.
 
 ---
@@ -459,7 +460,7 @@ Claude Code 를 쓰면 명령어를 외우지 않고 **말로** 포스팅할 수
 
 **분류를 알면 처음부터 같이 말하면** 질문이 줄어듭니다.
 
-> `/blog-write` `~/Downloads/회고.html` 을 **Architecture › Spring** 으로, 주소는 `order-service-retro`, 태그는 `spring,retro` 로 옮겨줘
+> `/blog-write` `~/Downloads/회고.html` 을 **Architecture › Back-end** 으로, 주소는 `order-service-retro`, 태그는 `spring,retro` 로 옮겨줘
 
 `/blog-write` 를 빼고 "이 문서 블로그로 옮겨줘" 라고만 해도 Claude 가 스킬을 알아서 씁니다.
 
@@ -597,7 +598,8 @@ Claude 는 명령을 실행하거나 파일을 바꾸기 전에 **허용할지**
 | `npm: command not found` | Node.js 미설치 | [2-2](#2-2-필요한-도구) 참고 후 `./scripts/setup.sh` |
 | `Unsupported engine` / Node 버전 오류 | Node 22.12 미만 | `brew upgrade node` 또는 `nvm install && nvm use` |
 | 빌드 에러 `category: Invalid option` | 분류 오타 | `ax` / `architecture` 중 하나로 |
-| 빌드 에러 `platform: Invalid option` | 플랫폼 오타 | `android` `ios` `spring` `web` `back-office` 중 하나로 |
+| 빌드 에러 `platform: Invalid option` | 플랫폼 오타 | `android` `ios` `backend` `web` `back-office` `harness` 중 하나로 |
+| 빌드 에러 `이 platform 은 이 category 의 하위 메뉴가 아닙니다` | `harness` 를 `architecture` 에 씀 | `category: ax` 로 바꾸거나 다른 플랫폼으로 |
 | 빌드 에러 `check-tokens: … 위반` | 스타일 파일에 색상 값을 직접 씀 | 글 작성과는 무관합니다. 디자인 수정 시 [디자인 토큰 정의서](docs/design-tokens.md) 참고 |
 | `check-posts: … 오류` · `P1` | 비밀값으로 보이는 문자열 | 지우거나 `****` 같은 가짜 값으로 바꾸기. 진짜 키였다면 **즉시 폐기·재발급** |
 | `P2` · `P3` | 금지 HTML 이나 `style` 속성 | [HTML 블록](#html-블록) 표의 허용 태그로 바꾸기 |
@@ -624,7 +626,7 @@ Claude 는 명령을 실행하거나 파일을 바꾸기 전에 **허용할지**
 ```yaml
 name: 홍길동                    # 필수. 공개되는 이름 (본명·닉네임 중 원하는 것)
 role: Android 개발              # 필수. 한 줄 역할
-platforms: [android, back-office]  # 선택. android · ios · spring · web · back-office
+platforms: [android, back-office]  # 선택. android · ios · backend · web · back-office
 bio: 앱 아키텍처와 빌드 자동화를 맡고 있습니다.   # 선택. 한두 문장
 github: octocat                 # 선택. 아이디만 (주소 아님)
 linkedin: https://www.linkedin.com/in/your-id   # 선택. 프로필 주소 전체
