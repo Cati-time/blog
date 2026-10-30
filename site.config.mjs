@@ -66,7 +66,7 @@ export const CATEGORIES = [
 export const PLATFORMS = [
 	{ id: 'android', label: 'Android' },
 	{ id: 'ios', label: 'iOS' },
-	{ id: 'spring', label: 'Spring' },
+	{ id: 'backend', label: 'Back-end' },
 	{ id: 'web', label: 'Web' },
 	{ id: 'back-office', label: 'Back-office' },
 	// categories 가 있으면 그 대분류에만 나온다(없으면 모든 대분류)

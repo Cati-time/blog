@@ -63,7 +63,7 @@ git status -sb && git branch --show-current && ls node_modules >/dev/null 2>&1 &
 | 항목 | 제안 방법 |
 | --- | --- |
 | 대메뉴 `--category` | 내용으로 추천 (AI 로 일하는 방식 → `ax`, 구조·설계·트러블슈팅 → `architecture`). **애매하면 반드시 묻는다** |
-| 하위 메뉴 `--platform` | 중심 플랫폼 하나: `android` `ios` `spring` `web` `back-office` |
+| 하위 메뉴 `--platform` | 중심 플랫폼 하나: `android` `ios` `backend` `web` `back-office` (`harness` 는 AX 에만) |
 | `--slug` | 제목을 영문 kebab-case 로 제안 |
 | `--tags` | 선택. 문서의 핵심 기술 이름 |
 | 제목 | 문서 맨 앞 `#` 제목이나 HTML `<title>` 을 자동으로 쓴다. 없을 때만 `--title` |
