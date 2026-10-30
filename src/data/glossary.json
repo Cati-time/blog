@@ -648,6 +648,18 @@
 			"decided": "evidence",
 			"status": "decided",
 			"evidence": "배선 · 연결 시험 0(블로그 세션 1) / 연동 273"
+		},
+		{
+			"name": "휘발 상태",
+			"aliases": [
+				"volatile state"
+			],
+			"avoid": [],
+			"definition": "화면을 다시 그리면 사라져야 하는 상태(포커스 · 스크롤 · 펼침). useState 에 둔다. 사용자 결정으로 «일시 상태» 로 바꾸지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "휘발 4 / 일시적 40 — 사용자 결정 우선"
 		}
 	]
 }
