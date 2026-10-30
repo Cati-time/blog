@@ -29,6 +29,9 @@ export const TERMS = [
 	  note: '제목은 풀어 쓰지 않는다 — 사용자 결정(2026-10-30): «정본은 한 곳에» → «SSOT 는 한 곳에». 본문의 첫 등장에서 풀어 쓴다' },
 	{ id: 'return', avoid: /반송/g, use: '반려 (반송지 → 반려되는 곳)', decided: 'user', evidence: '반송 1 / 거절 28 · 반려 17' },
 	{ id: 'constitution', avoid: /헌법|조문/g, use: '규칙 · 규칙 문서', decided: 'user', evidence: '헌법 0 · 조문 1 / 규칙 639 · 컨벤션 73 · 가이드라인 54' },
+	{ id: 'incident', avoid: /(?<![가-힣])사고(?!방식|력|하|실험| ?싶|의 ?(틀|단위|과정|전환))/g, use: '문제(가 생기면) · 이슈(N건) · 버그(코드 결함) · 장애(운영 중단만)', decided: 'user',
+	  evidence: '«사고 한 건» 0 · «사고가 나다» 4(보안 사고 · 데이터 삭제 같은 큰일) / 문제가 생기다 196 · 이슈 466 · 버그 197 · 장애 653',
+	  note: '사용자 결정(2026-10-30). 생각 뜻(사고방식 · 사고 과정)은 해당 없음' },
 	// ── 원천 실측
 	{ id: 'version', avoid: /(첫|새|낡은|옛|이전|최신|도구|출시했던|다음)\s?판(?=[은는이을를에의과와도으]|[\s.,)]|$)/g, use: '버전', decided: 'evidence', evidence: '«~ 판»(version) 0 / 버전 1,071' },
 	{ id: 'actual', avoid: /실물/g, use: '실제 구현 · 실제 작업 · 실체', decided: 'evidence', evidence: '실물 3 / 실제 구현 17 · 실체 17 · 실제 작업 7' },
@@ -50,7 +53,8 @@ export const TERMS = [
 	{ id: 'helper', avoid: /도우미/g, use: '헬퍼', decided: 'user', evidence: '도우미 10(모두 «AI 도우미» 같은 제품 이름, 코드 helper 뜻 0) / 헬퍼 9 · helper 9 · 유틸 32 · 공통 함수 1' },
 ];
 
-// 설명 문장(합니다체) 사이에 박힌 규칙형 «~한다.» — 인용 · 표 · 목록 · 제목은 빼고 본다
+// 설명 문장(합니다체) 사이에 박힌 규칙형 «~한다.» — 인용 · 표 · 목록 · 제목 · «…» 안은 빼고 본다
+// 일부러 둔 줄(사람이 한 말을 그대로 옮긴 인용 등)은 줄 끝이나 바로 윗줄에 <!-- wording-ok --> 를 단다
 const PLAIN_END = /(?<![니]|습니)(한다|된다|는다|ㄴ다|간다|온다|둔다|본다|준다|친다|진다)[.)]?(\s|$)/;
 const FORCED_PASSIVE = /고쳐진|고쳐지|고쳐졌|세워져|세워진|되어진|되어지|에 의해(?!서)/g;
 
@@ -97,6 +101,7 @@ for (const file of files) {
 			return;
 		}
 		if (inCode) return;
+		if (/<!-- ?wording-ok ?-->/.test(raw) || /^\s*<!-- ?wording-ok ?-->\s*$/.test(lines[i - 1] ?? '')) return;
 		const line = raw.replace(/`[^`]*`/g, '').replace(/\]\([^)]*\)/g, ']');
 		for (const t of TERMS) {
 			for (const m of line.matchAll(t.avoid)) {
@@ -107,7 +112,7 @@ for (const file of files) {
 		// 규칙형 «~한다»: 같은 줄에 «~니다» 문장이 있는데 «~한다.» 로 끝나는 문장이 섞인 경우
 		const prose = !/^\s*(>|\||#|[-*] |\d+\. )/.test(raw);
 		if (prose && /니다[.!?]/.test(line)) {
-			for (const s of line.split(/(?<=[.!?])\s+/)) {
+			for (const s of line.replace(/«[^»]*»/g, '«»').split(/(?<=[.!?])\s+/)) {
 				if (PLAIN_END.test(s.trim()) && !/니다/.test(s)) out.push(`  ${n}  [plain-rule] «${s.trim().slice(-30)}» — 설명 문장 속 규칙형 «~한다»`);
 			}
 		}
