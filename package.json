@@ -15,6 +15,7 @@
 		"astro": "astro",
 		"check:tokens": "node scripts/check-tokens.mjs",
 		"check:posts": "node scripts/check-posts.mjs",
+		"check:wording": "node scripts/check-wording.mjs",
 		"import": "node scripts/import-doc.mjs"
 	},
 	"dependencies": {
