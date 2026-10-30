@@ -1,5 +1,5 @@
 {
-	"$comment": "블로그 용어의 정본. /glossary/ 페이지와 용어 검사(check:wording)가 이 파일을 같은 문구로 읽는다. 꼴: 대표 이름 (다른 이름: …) — 정의. kind=concept 은 페이지에 싣고, style 은 검사에만 쓴다.",
+	"$comment": "블로그 용어의 정본. /glossary/ 페이지와 용어 검사(check:wording)가 이 파일을 같은 문구로 읽는다. 꼴: 대표 이름 (다른 이름: …) — 정의. kind=concept 은 페이지에 싣고, style 은 검사에만 쓴다. status=pending 은 harness 의 이름 통일 회신을 기다리는 줄.",
 	"terms": [
 		{
 			"name": "Supervisor",
@@ -59,7 +59,8 @@
 			"definition": "저장소마다 두는, AI 세션과 사람이 함께 지키는 규칙 모음.",
 			"kind": "concept",
 			"decided": "user",
-			"status": "decided"
+			"status": "decided",
+			"evidence": "헌법 0 · 조문 1 / 규칙 639 · 컨벤션 73 · 가이드라인 54"
 		},
 		{
 			"name": "공통 규칙",
@@ -74,7 +75,8 @@
 			"definition": "여러 저장소의 규칙 문서가 따르는 팀 공통 규칙. 글마다 본문 첫 등장은 «팀 공통 규칙(canon)», 그 뒤로는 «공통 규칙». 저장소에서 먼저 생기고 두 곳에서 같은 꼴이 확인되면 이리로 올라온다.",
 			"kind": "concept",
 			"decided": "user",
-			"status": "decided"
+			"status": "decided",
+			"evidence": "원형 1 / 공통 규칙 4 — 둘 다 적음(원천 457편)"
 		},
 		{
 			"name": "가드",
@@ -100,7 +102,8 @@
 			"definition": "한 질문에 답하는 곳을 하나만 둔다는 원칙, 또는 그 한 곳. 글마다 본문 첫 등장에서만 풀어 쓰고 그 뒤로는 SSOT.",
 			"kind": "concept",
 			"decided": "user",
-			"status": "decided"
+			"status": "decided",
+			"evidence": "정본 2 / 원본 103 · SSOT 3 · «단일 진실 공급원» 0"
 		},
 		{
 			"name": "이음새",
@@ -138,7 +141,8 @@
 			"definition": "검수에서 실패한 일을 되돌려 보내는 것. 건수를 셀 때도 «반려 N건».",
 			"kind": "style",
 			"decided": "user",
-			"status": "decided"
+			"status": "decided",
+			"evidence": "반송 1 / 거절 28 · 반려 17"
 		},
 		{
 			"name": "확장하다 · 발전시키다",
@@ -147,10 +151,11 @@
 				"키우다",
 				"자라다"
 			],
-			"definition": "코드 · 구조 · 기능이 커지는 것을 말할 때.",
+			"definition": "코드 · 구조 · 기능이 커지는 것을 말할 때. 사람 · 역량 · 조직을 «키우다» 는 그대로 쓴다.",
 			"kind": "style",
 			"decided": "user",
-			"status": "decided"
+			"status": "decided",
+			"evidence": "코드·구조·기능이 목적어인 «키우다» 1(«규모를 키우다») · «~가 자라다» 0 / 같은 목적어 «확장» 16 · «발전시키다» 7"
 		},
 		{
 			"name": "상태를 관리한다",
@@ -161,7 +166,8 @@
 			"definition": "코드가 주어일 때. 사람 · 팀이 주어인 소유자 · 소유권은 그대로 쓴다.",
 			"kind": "style",
 			"decided": "user",
-			"status": "decided"
+			"status": "decided",
+			"evidence": "코드가 주어인 «상태 · 데이터를 소유» 0 / «상태를 관리» 17 · «데이터를 관리» 9"
 		},
 		{
 			"name": "헬퍼",
@@ -174,7 +180,8 @@
 			"definition": "다른 코드를 돕는 작은 함수 · 클래스.",
 			"kind": "style",
 			"decided": "user",
-			"status": "decided"
+			"status": "decided",
+			"evidence": "도우미 10(모두 «AI 도우미» 같은 제품 이름, 코드 helper 뜻 0) / 헬퍼 9 · helper 9 · 유틸 32 · 공통 함수 1"
 		},
 		{
 			"name": "문제 · 이슈 · 버그 · 장애",
@@ -185,20 +192,347 @@
 			"definition": "보통 문장은 «문제가 생기면», 건수 · 제목은 «이슈», 코드 결함은 «버그», 운영 서비스가 멈춘 경우만 «장애».",
 			"kind": "style",
 			"decided": "user",
-			"status": "decided"
+			"status": "decided",
+			"evidence": "«사고 한 건» 0 · «사고가 나다» 4(보안 사고 · 데이터 삭제 같은 큰일) / 문제가 생기다 196 · 이슈 466 · 버그 197 · 장애 653"
 		},
 		{
-			"name": "결과물",
-			"aliases": [
-				"산출물(사내 문서)"
-			],
+			"name": "소유자 · 담당",
+			"aliases": [],
 			"avoid": [
-				"산출물"
+				"주인"
 			],
-			"definition": "단계 · Subflow 가 남기는 것. 경로와 절로 가리킬 수 있으면 계획서의 한 줄도 결과물이다.",
+			"definition": "사람 · 팀이 맡을 때. 코드가 상태를 맡으면 «상태를 관리한다».",
 			"kind": "style",
 			"decided": "user",
-			"status": "decided"
+			"status": "decided",
+			"evidence": "주인 32(대부분 일상 뜻) / 소유자 13 · 소유권 10 · 담당자 213 · «상태를 관리» 17 · «상태를 소유» 0"
+		},
+		{
+			"name": "버전",
+			"aliases": [],
+			"avoid": [
+				"첫 판",
+				"이전 판",
+				"낡은 판"
+			],
+			"definition": "version 뜻의 «판» 대신.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "«~ 판»(version) 0 / 버전 1,071"
+		},
+		{
+			"name": "실제 구현 · 실제 작업",
+			"aliases": [],
+			"avoid": [
+				"실물"
+			],
+			"definition": "실제로 만든 코드 · 실제로 한 작업.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "실물 3 / 실제 구현 17 · 실체 17 · 실제 작업 7"
+		},
+		{
+			"name": "나누다 · 분리",
+			"aliases": [],
+			"avoid": [
+				"갈라지다",
+				"갈랐다"
+			],
+			"definition": "하나를 여럿으로 나눌 때.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "갈라지다 4 / 나누다 507 · 분리 437"
+		},
+		{
+			"name": "분리하다 · 추출하다",
+			"aliases": [],
+			"avoid": [
+				"떼어 내다",
+				"뗐다"
+			],
+			"definition": "모듈 · 코드를 따로 빼낼 때.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "떼어 내다 6 / 분리 437 · 추출 249"
+		},
+		{
+			"name": "통합 · 합치다",
+			"aliases": [],
+			"avoid": [
+				"흡수"
+			],
+			"definition": "따로 있던 것을 하나로 합칠 때.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "흡수 18 / 통합 409 · 합치다 50"
+		},
+		{
+			"name": "고정",
+			"aliases": [],
+			"avoid": [
+				"잠그다",
+				"잠갔다"
+			],
+			"definition": "값 · 동작이 바뀌지 않게 할 때.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "잠그다 5 / 고정 152"
+		},
+		{
+			"name": "재발 · 누수 · 유출",
+			"aliases": [],
+			"avoid": [
+				"샜다",
+				"새어 나가다"
+			],
+			"definition": "문제가 다시 생기면 재발, 자원이 새면 누수, 정보가 새면 유출.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "새다 4 / 재발 18 · 누수 7 · 유출 60"
+		},
+		{
+			"name": "로그 레벨 필터링",
+			"aliases": [],
+			"avoid": [
+				"수준 거르기"
+			],
+			"definition": "로그를 레벨로 거를 때.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "수준 거르기 0 / 로그 레벨 6 · 필터링 145"
+		},
+		{
+			"name": "오탐 · 미탐",
+			"aliases": [],
+			"avoid": [
+				"거짓 경보",
+				"거짓 음성",
+				"거짓 초록"
+			],
+			"definition": "없는 문제를 알리면 오탐, 있는 문제를 놓치면(통과로 잘못 보이면) 미탐.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "거짓 음성·양성·경보 11(2곳) / 미탐·오탐 58(4곳)"
+		},
+		{
+			"name": "의존하다",
+			"aliases": [],
+			"avoid": [
+				"기대는",
+				"기댔다"
+			],
+			"definition": "코드 · 화면이 다른 것에 기댈 때. «기대하다»(expect) 는 해당 없음.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "기대다 7 / 의존 504"
+		},
+		{
+			"name": "실행 · 돌리다",
+			"aliases": [],
+			"avoid": [
+				"주행"
+			],
+			"definition": "스크립트 · 절차 · 테스트를 실행할 때.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "주행 14(자율주행 뜻) / 실행 1,775 · 돌리다 169"
+		},
+		{
+			"name": "버그 수정 · 고치다",
+			"aliases": [],
+			"avoid": [
+				"수리"
+			],
+			"definition": "버그를 고칠 때.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "수리 2 / 버그 수정 20 · 고치다 155"
+		},
+		{
+			"name": "이력 · 변경 이력",
+			"aliases": [],
+			"avoid": [
+				"원장",
+				"계보"
+			],
+			"definition": "바뀐 기록.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "원장 6 · 계보 3 / 이력 135 · 히스토리 60"
+		},
+		{
+			"name": "로거 · 옵저버 · 훅 · 슬롯",
+			"aliases": [],
+			"avoid": [
+				"로거 자리",
+				"관찰 자리",
+				"정해진 자리"
+			],
+			"definition": "코드에 끼우는 지점. 장소 뜻의 «자리» 는 그대로.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "«로거 · 관찰 자리» 0 / 옵저버 45 · 훅 102 · 슬롯 50 · 확장 지점 13"
+		},
+		{
+			"name": "진입점 · 래퍼",
+			"aliases": [],
+			"avoid": [
+				"문 하나"
+			],
+			"definition": "모든 호출이 지나는 한 곳.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "«문 하나»(진입점 뜻) 0 / 진입점 15 · 래퍼 20"
+		},
+		{
+			"name": "머지 · 병합",
+			"aliases": [],
+			"avoid": [
+				"착지"
+			],
+			"definition": "가지를 합칠 때.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "착지 5 / 머지 167 · 병합 41"
+		},
+		{
+			"name": "도입하다",
+			"aliases": [],
+			"avoid": [
+				"를 들이며",
+				"을 들였다"
+			],
+			"definition": "도구 · 방식을 새로 쓸 때. «시간을 들이다» 는 해당 없음.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "«~를 들이다» 11(블로그 세션 9) / 도입 756"
+		},
+		{
+			"name": "계층 · 레이어",
+			"aliases": [],
+			"avoid": [
+				"겹"
+			],
+			"definition": "layer.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "겹 7(블로그 세션 8) / 계층 · 레이어 376(153 · 223)"
+		},
+		{
+			"name": "단위",
+			"aliases": [],
+			"avoid": [
+				"입자"
+			],
+			"definition": "granularity.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "입자 6 / 단위 603"
+		},
+		{
+			"name": "항목 · 필드",
+			"aliases": [],
+			"avoid": [
+				"계약 칸",
+				"입력 칸",
+				"산출 칸"
+			],
+			"definition": "계약 · 표의 한 항목. 표의 칸 · «한 칸씩» 은 해당 없음.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "«계약 · 입력 · 산출 칸» 1 · 칸 전체 34 / 항목 238 · 필드 271"
+		},
+		{
+			"name": "위임",
+			"aliases": [],
+			"avoid": [
+				"넘김"
+			],
+			"definition": "아래 단계에 일을 맡길 때.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "넘김 0 / 위임 50"
+		},
+		{
+			"name": "집계 기준 · 집계 축",
+			"aliases": [],
+			"avoid": [
+				"셈의 축"
+			],
+			"definition": "무엇을 기준으로 셌나.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "«셈의 · 셈을» 3(«~인 셈» 관용구 빼고, 두 세션 맞춤) / 집계 138 · 집계 기준 3"
+		},
+		{
+			"name": "검증할 수 없는 · 사각지대",
+			"aliases": [],
+			"avoid": [
+				"못 보는"
+			],
+			"definition": "검사 · 테스트가 확인하지 못하는 곳. 축이면 «영역».",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "못 보는 0 / 사각지대 · 검증할 수 없는 7 · 영역 467"
+		},
+		{
+			"name": "체크포인트",
+			"aliases": [],
+			"avoid": [
+				"멈춤 지점"
+			],
+			"definition": "사람이 확인하려고 멈추는 곳.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "멈춤 지점 0(블로그 세션 1) / 체크포인트 39(37)"
+		},
+		{
+			"name": "버전 업",
+			"aliases": [],
+			"avoid": [
+				"버전 올림"
+			],
+			"definition": "버전을 올릴 때.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "버전 올림 0 / 버전 업 94"
+		},
+		{
+			"name": "잘못 읽음 · 오해",
+			"aliases": [],
+			"avoid": [
+				"오독"
+			],
+			"definition": "글 · 규칙을 잘못 읽었을 때. 문맥에 따라 «같은 잘못».",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "오독 0 / 오해 44 · 잘못 해석 2 · 잘못 읽 2 (두 세션 맞춤)"
 		},
 		{
 			"name": "하위 작업",
@@ -211,7 +545,22 @@
 			"definition": "한 단계 안에서 따로 도는 작업 하나(조사 한 축, 구현 한 조각, 게이트 한 번 실행 등).",
 			"kind": "style",
 			"decided": "user",
-			"status": "decided"
+			"status": "decided",
+			"evidence": "갈래 7 / 분기 87 · 하위 작업 3"
+		},
+		{
+			"name": "결과물",
+			"aliases": [
+				"산출물(사내 문서)"
+			],
+			"avoid": [
+				"산출물"
+			],
+			"definition": "단계 · Subflow 가 남기는 것. 경로와 절로 가리킬 수 있으면 계획서의 한 줄도 결과물이다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "산출물 28 / 결과물 208"
 		},
 		{
 			"name": "결정 기록",
@@ -224,7 +573,8 @@
 			"definition": "Subflow 계약 ⑤ 항목. 미판정 · 확정을 계획서의 결정 자리(판정표 등)에 적는다.",
 			"kind": "style",
 			"decided": "user",
-			"status": "decided"
+			"status": "decided",
+			"evidence": "반출 5 / 대체어 실측 없음"
 		}
 	]
 }

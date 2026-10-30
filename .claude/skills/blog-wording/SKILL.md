@@ -19,7 +19,7 @@ description: >-
 | 무엇 | 정본 |
 | --- | --- |
 | **용어(대표 이름 · 다른 이름 · 쓰지 않는 말 · 정의)** | **`src/data/glossary.json`** — 블로그 `/glossary/` 페이지 · 이 검사 · 글이 같은 문구로 읽는다 |
-| 찾는 정규식 · 원천 근거(횟수) | `scripts/check-wording.mjs` 의 `TERMS` — 같은 뜻 줄은 `glossary: '<대표 이름>'` 으로 이어 이름을 glossary 에서 가져온다. 표로 보기: `npm run check:wording -- --list` |
+| 찾는 정규식 | `scripts/check-wording.mjs` 의 `TERMS` — 줄마다 `glossary: '<대표 이름>'` 으로 잇는다. 원천 근거(횟수)는 glossary 의 `evidence`. 표로 보기: `npm run check:wording -- --list` |
 | 말투 규칙(규칙형 «~한다» · 억지 피동) | 같은 파일의 `PLAIN_END` · `FORCED_PASSIVE` |
 | 실측 원천 · 수집물 · 집계표 | 저장소 **밖** 노트 폴더 `../blog-notes/style/` (수집물은 공개 금지) |
 
@@ -51,10 +51,10 @@ description: >-
 ## 용어집 고치기
 
 - **용어를 바꾸거나 더할 때는 `src/data/glossary.json` 만 고친다.** 대표 이름 · 다른 이름 · 쓰지 않는 말(avoid) · 정의를 거기 한 번만 적는다. 페이지와 검사가 같은 파일을 읽으므로 문구가 두 곳에 따로 생기지 않는다.
-- glossary 의 avoid 는 글자 그대로 찾는다. 활용형(키우다 → 키워 · 키운)처럼 정규식이 필요하면 `TERMS` 에 줄을 두고 `glossary: '<대표 이름>'` 으로 잇는다 — 그 줄에는 정규식과 원천 근거만 쓰고 바꿀 말은 쓰지 않는다. `--list` 가 avoid 와 정규식이 어긋나면 알린다.
+- glossary 의 avoid 는 글자 그대로 찾는다. 활용형(키우다 → 키워 · 키운)처럼 정규식이 필요하면 `TERMS` 에 줄을 두고 `glossary: '<대표 이름>'` 으로 잇는다 — 그 줄에는 정규식만 쓴다(바꿀 말 · 결정 · 원천 근거는 glossary 에). `--list` 가 avoid 와 정규식이 어긋나면 알린다.
 - 글에서는 대표 이름으로 쓴다. «대표 이름(다른 이름)» 꼴의 괄호 안(예: Supervisor(감독))은 검사가 걸지 않는다.
 
-- 사용자가 새 말을 짚으면(«이 말 안 써»): glossary.json 에 `decided: 'user'` 로 넣고(avoid 에 그 말), 원천 실측을 세어 필요하면 `TERMS` 의 이은 줄 `evidence` 칸을 채운다.
+- 사용자가 새 말을 짚으면(«이 말 안 써»): glossary.json 에 `decided: 'user'` 로 넣고(avoid 에 그 말), 원천 실측을 세어 그 줄의 `evidence` 칸을 채운다. 원천으로 정한 말은 `kind: 'style'` · `decided: 'evidence'`.
 - 실측으로 넣을 때: 안 쓰는 말과 대체어를 **같은 원천에서** 센다. 대체어가 원천에 거의 없으면 넣지 않고 `ask` 로 둔다.
 - 원천은 한국어 기술 블로그 본문(회사 · 개인). 수집할 때 robots.txt 를 지키고 요청 사이를 띄운다. 문장을 옮겨 적지 않고 말의 횟수만 센다. 수집물은 저장소에 넣지 않는다.
 - 이 파일 · glossary.json · `WRITING_GUIDE.md` 의 용어 절은 같은 커밋에서 고친다.
