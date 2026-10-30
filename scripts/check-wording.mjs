@@ -33,9 +33,9 @@ export const TERMS = [
 	{ id: 'own-code', avoid: /(진실|상태|데이터|대상)[을를] ?소유|[이가] 소유한다/g, glossary: '상태를 관리한다', decided: 'user',
 	  evidence: '코드가 주어인 «상태 · 데이터를 소유» 0 / «상태를 관리» 17 · «데이터를 관리» 9',
 	  note: '사람 · 팀이 주어인 «소유(소유자 · 소유권)» 는 그대로' },
-	{ id: 'canonical', avoid: /정본/g, glossary: '단일 진실 원천 (SSOT)', decided: 'user', evidence: '정본 2 / 원본 103 · SSOT 3 · «단일 진실 공급원» 0' ,
+	{ id: 'canonical', avoid: /정본/g, glossary: '단일 진실 원천(SSOT)', decided: 'user', evidence: '정본 2 / 원본 103 · SSOT 3 · «단일 진실 공급원» 0' ,
 	  note: '제목은 풀어 쓰지 않는다 — 사용자 결정(2026-10-30): «정본은 한 곳에» → «SSOT 는 한 곳에». 본문의 첫 등장에서 풀어 쓴다' },
-	{ id: 'return', avoid: /반송/g, glossary: '반려되는 곳', decided: 'user', evidence: '반송 1 / 거절 28 · 반려 17' },
+	{ id: 'return', avoid: /반송(?!지)/g, glossary: '반려', decided: 'user', evidence: '반송 1 / 거절 28 · 반려 17' },
 	{ id: 'constitution', avoid: /헌법|조문/g, glossary: '규칙 문서', decided: 'user', evidence: '헌법 0 · 조문 1 / 규칙 639 · 컨벤션 73 · 가이드라인 54' },
 	{ id: 'incident', avoid: /(?<![가-힣])사고(?!방식|력|하|실험| ?싶|의 ?(틀|단위|과정|전환))/g, glossary: '문제 · 이슈 · 버그 · 장애', decided: 'user',
 	  evidence: '«사고 한 건» 0 · «사고가 나다» 4(보안 사고 · 데이터 삭제 같은 큰일) / 문제가 생기다 196 · 이슈 466 · 버그 197 · 장애 653',
@@ -71,9 +71,9 @@ export const TERMS = [
 	{ id: 'version-up', avoid: /버전 ?올림|버전을 올림/g, use: '버전 업', decided: 'evidence', evidence: '버전 올림 0 / 버전 업 94' },
 	{ id: 'misread', avoid: /오독/g, use: '잘못 읽음 · 오해 · (문맥에 따라) 같은 잘못', decided: 'evidence', evidence: '오독 0 / 오해 44 · 잘못 해석 2 · 잘못 읽 2 (두 세션 맞춤)' },
 	// ── 사용자 결정 필요
-	{ id: 'branch', avoid: /갈래/g, use: '(사용자 결정) 분기(코드) · 하위 작업(subflow 정의)', decided: 'ask', evidence: '갈래 7 / 분기 87 · 하위 작업 3' },
-	{ id: 'artifact', avoid: /산출물/g, use: '(사용자 결정) 결과물', decided: 'ask', evidence: '산출물 28 / 결과물 208' },
-	{ id: 'export', avoid: /반출/g, use: '(사용자 결정)', decided: 'ask', evidence: '반출 5 / 대체어 실측 없음' },
+	{ id: 'branch', avoid: /갈래/g, glossary: '하위 작업', decided: 'user', evidence: '갈래 7 / 분기 87 · 하위 작업 3' },
+	{ id: 'artifact', avoid: /산출물/g, glossary: '결과물', decided: 'user', evidence: '산출물 28 / 결과물 208' },
+	{ id: 'export', avoid: /결정 반출/g, glossary: '결정 기록', decided: 'user', evidence: '반출 5 / 대체어 실측 없음' },
 ];
 
 // glossary.json 과 잇기 — 대표 이름을 가져오고, TERMS 가 맡지 않은 avoid 는 글자 그대로 찾는다
