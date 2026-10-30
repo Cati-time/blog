@@ -26,10 +26,10 @@ export const TERMS = [
 	  evidence: '코드가 주어인 «상태 · 데이터를 소유» 0 / «상태를 관리» 17 · «데이터를 관리» 9',
 	  note: '사람 · 팀이 주어인 «소유(소유자 · 소유권)» 는 그대로' },
 	{ id: 'canonical', avoid: /정본/g, use: '단일 진실 원천(SSOT) — 글에서 처음 한 번 풀어 쓰고 그 뒤로는 SSOT', decided: 'user', evidence: '정본 2 / 원본 103 · SSOT 3 · «단일 진실 공급원» 0' },
-	{ id: 'return', avoid: /반송/g, use: '반려', decided: 'user', evidence: '반송 1 / 거절 28 · 반려 17' },
+	{ id: 'return', avoid: /반송/g, use: '반려 (반송지 → 반려되는 곳)', decided: 'user', evidence: '반송 1 / 거절 28 · 반려 17' },
 	{ id: 'constitution', avoid: /헌법|조문/g, use: '규칙 · 규칙 문서', decided: 'user', evidence: '헌법 0 · 조문 1 / 규칙 639 · 컨벤션 73 · 가이드라인 54' },
 	// ── 원천 실측
-	{ id: 'version', avoid: /(첫|새|낡은|옛|이전|최신|도구|출시했던|다음)\s?판(?![가-힣])/g, use: '버전', decided: 'evidence', evidence: '«~ 판»(version) 0 / 버전 1,071' },
+	{ id: 'version', avoid: /(첫|새|낡은|옛|이전|최신|도구|출시했던|다음)\s?판(?=[은는이을를에의과와도으]|[\s.,)]|$)/g, use: '버전', decided: 'evidence', evidence: '«~ 판»(version) 0 / 버전 1,071' },
 	{ id: 'actual', avoid: /실물/g, use: '실제 구현 · 실제 작업 · 실체', decided: 'evidence', evidence: '실물 3 / 실제 구현 17 · 실체 17 · 실제 작업 7' },
 	{ id: 'split', avoid: /갈라|갈랐|갈린/g, use: '나누다 · 분리', decided: 'evidence', evidence: '갈라지다 4 / 나누다 507 · 분리 437' },
 	{ id: 'extract', avoid: /떼어 ?내|떼어 ?냈|떼어냈|(?<![가-힣])뗀|(?<![가-힣])뗐/g, use: '분리 · 추출', decided: 'evidence', evidence: '떼어 내다 6 / 분리 437 · 추출 249' },
@@ -45,8 +45,7 @@ export const TERMS = [
 	{ id: 'slot', avoid: /(로거|관찰|로그|정해진|끼울) ?자리/g, use: '로거 · 옵저버 · 훅 · 슬롯 (정해진 자리 → 정해진 곳)', decided: 'evidence', evidence: '«로거 · 관찰 자리» 0 / 옵저버 45 · 훅 102 · 슬롯 50 · 확장 지점 13', note: '장소 뜻의 «자리» 는 그대로' },
 	{ id: 'one-door', avoid: /(?<![가-힣])문 하나|하나의 문(?![가-힣])/g, use: '진입점 · 래퍼', decided: 'evidence', evidence: '«문 하나»(진입점 뜻) 0 / 진입점 15 · 래퍼 20' },
 	{ id: 'land', avoid: /착지/g, use: '머지 · 병합', decided: 'evidence', evidence: '착지 5 / 머지 167 · 병합 41' },
-	// ── 사용자 결정 필요 (원천 차이가 작거나 팀 용어)
-	{ id: 'helper', avoid: /도우미/g, use: '(사용자 결정) 헬퍼 · 유틸', decided: 'ask', evidence: '도우미 10(모두 «AI 도우미» 같은 제품 이름, 코드 helper 뜻 0) / 헬퍼 9 · helper 9 · 유틸 32 · 공통 함수 1' },
+	{ id: 'helper', avoid: /도우미/g, use: '헬퍼', decided: 'user', evidence: '도우미 10(모두 «AI 도우미» 같은 제품 이름, 코드 helper 뜻 0) / 헬퍼 9 · helper 9 · 유틸 32 · 공통 함수 1' },
 ];
 
 // 설명 문장(합니다체) 사이에 박힌 규칙형 «~한다.» — 인용 · 표 · 목록 · 제목은 빼고 본다
