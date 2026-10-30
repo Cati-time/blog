@@ -9,7 +9,7 @@ draft: false
 ---
 
 > **안드로이드 아키텍처 시리즈**
-> ① 지금의 구조 — SSOT 는 한 곳에 (이 글) · [② 새로 만들고 고치기](../android-architecture-2-build-and-fix/) · [③ 어떻게 옮겨 왔나 — subflow 로](../android-architecture-3-how-we-moved/)
+> ① 지금의 구조 — SSOT 는 한 곳에 (이 글) · [② 새로 만들고 고치기](../android-architecture-2-build-and-fix/) · [③ 어떻게 옮겨 왔나 — Subflow 로](../android-architecture-3-how-we-moved/)
 
 [셋이 남았을 때](../business-flow-story/) 에서 우리 팀이 AI 와 함께 일하는 방식에 정착하기까지를 적었습니다. 이번 글은 그 일이 실제로 벌어지는 자리, 안드로이드 앱의 구조 이야기입니다.
 
@@ -19,7 +19,7 @@ draft: false
 
 단일 진실 원천(SSOT, Single Source of Truth)은 그 질문에 답할 자격이 있는 유일한 곳입니다. 이 글은 이 원칙 하나에서 규칙들이 어떻게 나오는지, 그리고 원칙만으로는 설명되지 않는 곁가지 원리 셋이 무엇인지를 실제 코드와 함께 봅니다.
 
-시리즈는 세 편입니다. 이 글은 지금의 구조와 그 이유를 다룹니다. [②편](../android-architecture-2-build-and-fix/) 은 이 구조로 새 기능을 만들고 고칠 때 무엇이 좋아졌는지를, [③편](../android-architecture-3-how-we-moved/) 은 subflow 로 일하면서 이 구조까지 어떻게 옮겨 왔는지를 다룹니다.
+시리즈는 세 편입니다. 이 글은 지금의 구조와 그 이유를 다룹니다. [②편](../android-architecture-2-build-and-fix/) 은 이 구조로 새 기능을 만들고 고칠 때 무엇이 좋아졌는지를, [③편](../android-architecture-3-how-we-moved/) 은 Subflow 로 일하면서 이 구조까지 어떻게 옮겨 왔는지를 다룹니다.
 
 ## 구조 한 장
 

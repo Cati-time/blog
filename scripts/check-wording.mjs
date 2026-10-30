@@ -59,9 +59,9 @@ export const TERMS = [
 	{ id: 'checkpoint', avoid: /멈춤 ?지점/g, glossary: '체크포인트' },
 	{ id: 'version-up', avoid: /버전 ?올림|버전을 올림/g, glossary: '버전 업' },
 	{ id: 'misread', avoid: /오독/g, glossary: '잘못 읽음 · 오해' },
-	{ id: 'branch', avoid: /갈래/g, glossary: '분기 · 하위 작업 (결정 대기)' },
-	{ id: 'artifact', avoid: /산출물/g, glossary: '결과물 (결정 대기)' },
-	{ id: 'export', avoid: /반출/g, glossary: '반출 (대체어 결정 대기)' },
+	{ id: 'branch', avoid: /갈래/g, glossary: '하위 작업' },
+	{ id: 'artifact', avoid: /산출물/g, glossary: '결과물' },
+	{ id: 'export', avoid: /결정 반출/g, glossary: '결정 기록' },
 ];
 
 
