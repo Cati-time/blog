@@ -9,27 +9,35 @@
  *   «원천 0 · 대체어 N» 은 그 말이 원천에 0번, 대체어가 N번 나왔다는 뜻이다.
  *   decided: 'user' = 사용자 결정(근거보다 우선) · 'evidence' = 원천 실측 · 'ask' = 사용자 결정 필요(후보만 제시)
  *
- * --list : 용어집을 표로 출력한다.
+ * 용어의 정본은 src/data/glossary.json(블로그 /glossary/ 페이지와 같은 파일). 글에 쓸 말(대표 이름)은 거기서 가져오고,
+ * 이 파일에는 찾는 정규식 · 원천 근거만 둔다. 용어를 바꾸거나 더할 때는 glossary.json 을 고친다.
+ *   - TERMS 의 glossary: '<대표 이름>' 줄은 그 이름을 그대로 제안한다.
+ *   - glossary.json 의 avoid 가운데 TERMS 가 맡지 않은 말은 글자 그대로 찾는 규칙을 자동으로 만든다.
+ *   - «대표 이름(다른 이름)» 꼴의 괄호 안(예: Supervisor(감독))은 걸지 않는다.
+ *
+ * --list : 용어집을 표로 출력한다(glossary.json 의 avoid 를 정규식이 못 잡으면 함께 알린다).
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
+const GLOSSARY = JSON.parse(readFileSync(new URL('../src/data/glossary.json', import.meta.url), 'utf8')).terms;
+
 export const TERMS = [
 	// ── 사용자 결정
-	{ id: 'grow', avoid: /(?<![가-힣])(자라|자랐|자란|자랄)|키우|키워(?!드)|키운|키울/g, use: '확장한다 · 발전시킨다', decided: 'user',
+	{ id: 'grow', avoid: /(?<![가-힣])(자라|자랐|자란|자랄)|키우|키워(?!드)|키운|키울/g, glossary: '확장하다 · 발전시키다', decided: 'user',
 	  evidence: '코드·구조·기능이 목적어인 «키우다» 1(«규모를 키우다») · «~가 자라다» 0 / 같은 목적어 «확장» 16 · «발전시키다» 7',
 	  note: '코드 · 구조 · 기능 · 시스템에 쓴 경우만 고친다(사람 · 역량 · 조직은 그대로)' },
 	{ id: 'owner', avoid: /주인/g, use: '소유자 · 담당(사람 · 팀) / «상태를 관리하는»(코드)', decided: 'user',
 	  evidence: '주인 32(대부분 일상 뜻) / 소유자 13 · 소유권 10 · 담당자 213 · «상태를 관리» 17 · «상태를 소유» 0',
 	  note: 'own → 소유(사용자 결정). 원천의 «소유» 는 주어가 사람 · 팀 · 조직일 때만 쓰였다' },
-	{ id: 'own-code', avoid: /(진실|상태|데이터|대상)[을를] ?소유|[이가] 소유한다/g, use: '상태를 관리한다', decided: 'user',
+	{ id: 'own-code', avoid: /(진실|상태|데이터|대상)[을를] ?소유|[이가] 소유한다/g, glossary: '상태를 관리한다', decided: 'user',
 	  evidence: '코드가 주어인 «상태 · 데이터를 소유» 0 / «상태를 관리» 17 · «데이터를 관리» 9',
 	  note: '사람 · 팀이 주어인 «소유(소유자 · 소유권)» 는 그대로' },
-	{ id: 'canonical', avoid: /정본/g, use: '단일 진실 원천(SSOT) — 글에서 처음 한 번 풀어 쓰고 그 뒤로는 SSOT', decided: 'user', evidence: '정본 2 / 원본 103 · SSOT 3 · «단일 진실 공급원» 0' ,
+	{ id: 'canonical', avoid: /정본/g, glossary: '단일 진실 원천 (SSOT)', decided: 'user', evidence: '정본 2 / 원본 103 · SSOT 3 · «단일 진실 공급원» 0' ,
 	  note: '제목은 풀어 쓰지 않는다 — 사용자 결정(2026-10-30): «정본은 한 곳에» → «SSOT 는 한 곳에». 본문의 첫 등장에서 풀어 쓴다' },
-	{ id: 'return', avoid: /반송/g, use: '반려 (반송지 → 반려되는 곳)', decided: 'user', evidence: '반송 1 / 거절 28 · 반려 17' },
-	{ id: 'constitution', avoid: /헌법|조문/g, use: '규칙 · 규칙 문서', decided: 'user', evidence: '헌법 0 · 조문 1 / 규칙 639 · 컨벤션 73 · 가이드라인 54' },
-	{ id: 'incident', avoid: /(?<![가-힣])사고(?!방식|력|하|실험| ?싶|의 ?(틀|단위|과정|전환))/g, use: '문제(가 생기면) · 이슈(N건) · 버그(코드 결함) · 장애(운영 중단만)', decided: 'user',
+	{ id: 'return', avoid: /반송/g, glossary: '반려되는 곳', decided: 'user', evidence: '반송 1 / 거절 28 · 반려 17' },
+	{ id: 'constitution', avoid: /헌법|조문/g, glossary: '규칙 문서', decided: 'user', evidence: '헌법 0 · 조문 1 / 규칙 639 · 컨벤션 73 · 가이드라인 54' },
+	{ id: 'incident', avoid: /(?<![가-힣])사고(?!방식|력|하|실험| ?싶|의 ?(틀|단위|과정|전환))/g, glossary: '문제 · 이슈 · 버그 · 장애', decided: 'user',
 	  evidence: '«사고 한 건» 0 · «사고가 나다» 4(보안 사고 · 데이터 삭제 같은 큰일) / 문제가 생기다 196 · 이슈 466 · 버그 197 · 장애 653',
 	  note: '사용자 결정(2026-10-30). 생각 뜻(사고방식 · 사고 과정)은 해당 없음' },
 	// ── 원천 실측
@@ -50,7 +58,7 @@ export const TERMS = [
 	{ id: 'slot', avoid: /(로거|관찰|로그|정해진|끼울) ?자리/g, use: '로거 · 옵저버 · 훅 · 슬롯 (정해진 자리 → 정해진 곳)', decided: 'evidence', evidence: '«로거 · 관찰 자리» 0 / 옵저버 45 · 훅 102 · 슬롯 50 · 확장 지점 13', note: '장소 뜻의 «자리» 는 그대로' },
 	{ id: 'one-door', avoid: /(?<![가-힣])문 하나|하나의 문(?![가-힣])/g, use: '진입점 · 래퍼', decided: 'evidence', evidence: '«문 하나»(진입점 뜻) 0 / 진입점 15 · 래퍼 20' },
 	{ id: 'land', avoid: /착지/g, use: '머지 · 병합', decided: 'evidence', evidence: '착지 5 / 머지 167 · 병합 41' },
-	{ id: 'helper', avoid: /도우미/g, use: '헬퍼', decided: 'user', evidence: '도우미 10(모두 «AI 도우미» 같은 제품 이름, 코드 helper 뜻 0) / 헬퍼 9 · helper 9 · 유틸 32 · 공통 함수 1' },
+	{ id: 'helper', avoid: /도우미/g, glossary: '헬퍼', decided: 'user', evidence: '도우미 10(모두 «AI 도우미» 같은 제품 이름, 코드 helper 뜻 0) / 헬퍼 9 · helper 9 · 유틸 32 · 공통 함수 1' },
 	// ── 원천 실측 (2026-10-30 추가 — 블로그 세션 집계와 따로 세어 맞춤, 차이는 evidence 에 적음)
 	{ id: 'adopt', avoid: /[을를] ?들이(며|고|면|는|기|려)|[을를] ?들였/g, use: '도입하다', decided: 'evidence', evidence: '«~를 들이다» 11(블로그 세션 9) / 도입 756', note: '«시간을 들이다» 는 해당 없음' },
 	{ id: 'layer', avoid: /(?<![가-힣])겹(?![치쳐친칠쳤])/g, use: '계층 · 레이어', decided: 'evidence', evidence: '겹 7(블로그 세션 8) / 계층 · 레이어 376(153 · 223)' },
@@ -66,8 +74,30 @@ export const TERMS = [
 	{ id: 'branch', avoid: /갈래/g, use: '(사용자 결정) 분기(코드) · 하위 작업(subflow 정의)', decided: 'ask', evidence: '갈래 7 / 분기 87 · 하위 작업 3' },
 	{ id: 'artifact', avoid: /산출물/g, use: '(사용자 결정) 결과물', decided: 'ask', evidence: '산출물 28 / 결과물 208' },
 	{ id: 'export', avoid: /반출/g, use: '(사용자 결정)', decided: 'ask', evidence: '반출 5 / 대체어 실측 없음' },
-	{ id: 'canon', avoid: /원형 ?규칙|(?<=공통 )원형/g, use: '(사용자 결정) 공통 규칙', decided: 'ask', evidence: '원형 1(블로그 세션 2) / 공통 규칙 4 — 둘 다 적음' },
 ];
+
+// glossary.json 과 잇기 — 대표 이름을 가져오고, TERMS 가 맡지 않은 avoid 는 글자 그대로 찾는다
+const byName = new Map(GLOSSARY.map((g) => [g.name, g]));
+const escapeRx = (w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+for (const t of TERMS) {
+	if (!t.glossary) continue;
+	const g = byName.get(t.glossary);
+	if (!g) throw new Error(`check-wording: glossary.json 에 «${t.glossary}» 가 없습니다`);
+	t.use = g.name;
+	t.names = [g.name, ...g.aliases];
+}
+for (const g of GLOSSARY) {
+	if (TERMS.some((t) => t.glossary === g.name)) continue;
+	const words = g.avoid.filter((w) => !/[()]/.test(w));
+	if (!words.length) continue;
+	TERMS.push({ id: 'glossary', avoid: new RegExp(words.map(escapeRx).join('|'), 'g'), glossary: g.name, use: g.name, names: [g.name, ...g.aliases],
+		decided: g.decided === 'ask' ? 'ask' : 'user', evidence: 'glossary.json' + (g.status === 'pending' ? ' (이름 통일 대기)' : '') });
+}
+// «대표 이름(다른 이름)» — 괄호 바로 앞이 그 용어의 이름이면(굵게 · 따옴표 표시는 무시) 건너뛴다
+const inAliasParen = (t, line, at) => {
+	const before = line.slice(0, at);
+	return before.endsWith('(') && (t.names ?? []).some((nm) => before.slice(0, -1).replace(/[\s*_»`]+$/, '').endsWith(nm));
+};
 
 // 설명 문장(합니다체) 사이에 박힌 규칙형 «~한다.» — 인용 · 표 · 목록 · 제목 · «…» 안은 빼고 본다
 // 일부러 둔 줄(사람이 한 말을 그대로 옮긴 인용 등)은 줄 끝이나 바로 윗줄에 <!-- wording-ok --> 를 단다
@@ -81,7 +111,13 @@ const args = process.argv.slice(2);
 if (args.includes('--list')) {
 	const label = { user: '사용자 결정', evidence: '원천 실측', ask: '사용자 결정 필요' };
 	console.log('| 안 쓰는 말(정규식) | 쓰는 말 | 근거(원천 횟수) | 결정 |\n|---|---|---|---|');
-	for (const t of TERMS) console.log(`| \`${t.avoid.source}\` | ${t.use} | ${t.evidence} | ${label[t.decided]} |`);
+	for (const t of TERMS) console.log(`| \`${t.avoid.source}\` | ${t.use}${t.glossary ? ' ⟵ glossary.json' : ''} | ${t.evidence} | ${label[t.decided]} |`);
+	// glossary.json 의 avoid 를 정규식이 실제로 잡는지 — 두 곳이 어긋나면 알린다
+	for (const t of TERMS.filter((x) => x.glossary)) {
+		for (const w of byName.get(t.glossary).avoid.filter((x) => !/[()]/.test(x))) {
+			if (!new RegExp(t.avoid.source).test(w)) console.log(`\n주의: glossary «${t.glossary}» 의 avoid «${w}» 를 [${t.id}] 정규식이 잡지 못합니다`);
+		}
+	}
 	process.exit(0);
 }
 
@@ -121,6 +157,7 @@ for (const file of files) {
 		const line = raw.replace(/`[^`]*`/g, '').replace(/\]\([^)]*\)/g, ']');
 		for (const t of TERMS) {
 			for (const m of line.matchAll(t.avoid)) {
+				if (inAliasParen(t, line, m.index)) continue;
 				out.push(`  ${n}  [${t.id}] «${m[0]}» → ${t.use}${t.decided === 'ask' ? '  (사용자 확인)' : ''}`);
 			}
 		}
