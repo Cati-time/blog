@@ -21,6 +21,8 @@ draft: true
 
 ## 네 계층과 각자 모르는 것
 
+![웹 어드민 구조. app 이 feature 의 Entry 를 마운트하고, feature 안에는 Entry · View · ViewModel 이 있다. 휘발 상태는 View 의 useState, 화면 지속 상태는 uiAtoms 에 둔다. Store 는 ViewModel 만 부르고 state · actions · snapshot 을 받는다. module 은 도메인 상태(SSOT)를 관리하며 actions 가 service 를 불러 결과를 atoms 에 저장한다. data 는 REST 호출 · DTO 만 하고, 권한은 게이트웨이 · 서버가 강제한다. core(useApiQuery · antd 파사드)는 계층 밖에서 가로지른다](./architecture.svg)
+
 | 계층 | 하는 일 | 모르는 것 |
 | --- | --- | --- |
 | **app** | 진입 · 라우트 · 내비게이션. 화면의 Entry 를 마운트만 한다 | module 도 data 도 모른다 |

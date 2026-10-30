@@ -54,10 +54,10 @@ const W = 600;
 		['3', 231, ['하네스']],
 		['4', 65],
 		['5', 175, ['백엔드', '퇴사']],
-		['6', 918, ['헌법 정비']],
+		['6', 918, ['규칙 문서', '정비']],
 		['7', 1082],
-		['8', 941, ['비즈니스', '플로우']],
-		['9', 2083, ['감독·티켓', 'CI/CD']],
+		['8', 941, ['Business', 'Flow']],
+		['9', 2083, ['Supervisor', '티켓·CI/CD']],
 	];
 	const H = 400, L = 48, R = 8, T = 92, B = 44;
 	const pw = W - L - R, ph = H - T - B, max = 2100;
@@ -83,7 +83,7 @@ const W = 600;
 	b += text(16, H - 8, '연.월 · 짙은 막대 = 글의 표에 나온 달', { size: 12, fill: C.subtle });
 	out(
 		'src/content/blog/business-flow-story/commits-by-month.svg',
-		svg(W, H, '안드로이드 저장소 월별 커밋 수', '2025년 11월 13개에서 2026년 9월 2,083개까지 월별 커밋 수 막대그래프. 12월 프롬프트·페르소나, 3월 하네스, 5월 백엔드 퇴사, 6월 헌법 정비, 8월 비즈니스 플로우, 9월 감독·티켓·CI/CD.', b),
+		svg(W, H, '안드로이드 저장소 월별 커밋 수', '2025년 11월 13개에서 2026년 9월 2,083개까지 월별 커밋 수 막대그래프. 12월 프롬프트·페르소나, 3월 하네스, 5월 백엔드 퇴사, 6월 규칙 문서 정비, 8월 Business Flow, 9월 Supervisor·티켓·CI/CD.', b),
 	);
 }
 
@@ -442,8 +442,8 @@ const W = 600;
 	// module
 	b += box(16, 304, 432, 184, tint.module, GREEN, { sw: 2 });
 	b += text(32, 328, 'module', { size: 14, fill: C.text, weight: 700 });
-	b += text(96, 328, '도메인 상태의 주인', { size: 12, fill: C.muted });
-	b += box(350, 313, 84, 22, GREEN, GREEN, { rx: 11, sw: 1 }) + text(392, 328, '정본 (SSOT)', { size: 11, anchor: 'middle', fill: '#ffffff', weight: 700 });
+	b += text(96, 328, '도메인 상태를 관리', { size: 12, fill: C.muted });
+	b += box(350, 313, 84, 22, GREEN, GREEN, { rx: 11, sw: 1 }) + text(392, 328, 'SSOT', { size: 11, anchor: 'middle', fill: '#ffffff', weight: 700 });
 	b += chip2(32, 342, 100, 44, 'Action', '일어난 일', GREEN);
 	b += chip2(176, 342, 122, 44, 'Reducer', '상태는 여기서만 바뀐다', GREEN);
 	b += chip2(340, 342, 92, 44, 'State', 'Store 가 든다', GREEN);
@@ -500,20 +500,20 @@ const W = 600;
 
 	out(
 		'src/content/blog/android-architecture-1-one-truth/architecture.svg',
-		svg(W, H, '우리 안드로이드 구조', 'app 아래 feature(View·ViewModel), 그 아래 module(정본의 주인 — Action 은 Middleware 를 거쳐 결과 Action 이 되어 Reducer 로 가고 State 가 바뀐다. 일부 module 에는 bridge 신호를 Flow 로 바꿔 Middleware 에 넘기는 Runtime Observer 가 있다), 맨 아래 data(서버·DB)와 bridge(안드로이드 프레임워크). feature 와 module 은 알리기(dispatch), 구독하기(StateReader·Selector), 받기(SideEffectReader) 세 통로로만 대화한다. bridge 의 신호는 Runtime Observer 가 받는다. core(디자인 시스템·로거·유틸)는 층 순서 밖에서 가로지르며 화면이 디자인 시스템을 바로 쓴다. feature 는 data·bridge 를 직접 부르지 않는다.', b),
+		svg(W, H, '우리 안드로이드 구조', 'app 아래 feature(View·ViewModel), 그 아래 module(SSOT 를 관리 — Action 은 Middleware 를 거쳐 결과 Action 이 되어 Reducer 로 가고 State 가 바뀐다. 일부 module 에는 bridge 신호를 Flow 로 바꿔 Middleware 에 넘기는 Runtime Observer 가 있다), 맨 아래 data(서버·DB)와 bridge(안드로이드 프레임워크). feature 와 module 은 알리기(dispatch), 구독하기(StateReader·Selector), 받기(SideEffectReader) 세 통로로만 대화한다. bridge 의 신호는 Runtime Observer 가 받는다. core(디자인 시스템·로거·유틸)는 층 순서 밖에서 가로지르며 화면이 디자인 시스템을 바로 쓴다. feature 는 data·bridge 를 직접 부르지 않는다.', b),
 	);
 }
 
 // ── 11. 앱 정보 화면이 지난 길 (안드로이드 아키텍처 ③) ───────────────────────
-// 설정 화면 전체를 옮긴 비즈니스 플로우 안에서 «앱 정보» 몫. 단계마다 독립 검수 — 최대 세 라운드.
+// 설정 화면 전체를 옮긴 Business Flow 안에서 «앱 정보» 몫. 단계마다 독립 검수 — 최대 세 라운드.
 {
 	const H = 360;
 	const steps = [
 		['조사', '검수 세 라운드', '지적 약 24 → 10 → 7'],
 		['아키텍처', '한 번 반려', '원장을 다시 씀'],
-		['BDD', '반송 1 · 세 라운드', '시나리오 177'],
+		['BDD', '반려 1 · 세 라운드', '시나리오 177'],
 		['SDD', '세 라운드', '어긋난 사본을 하나로'],
-		['계획', '세 라운드 · 반송 13', '슬라이스 22'],
+		['계획', '세 라운드 · 반려 13', '슬라이스 22'],
 		['완료 기준', '세 번 반려', '고친 뒤 통과'],
 		['실행', '독립 검수 · 반려', '명세 → Store → 화면'],
 		['검증', '아직 열려 있음', '설정 화면 전체'],
@@ -546,7 +546,7 @@ const W = 600;
 	b += text(16, 346, '설정 화면 전체는 약 86시간 — AI 작업이 겹친 커밋 기준이라 사람의 시간이 아니다', { size: 12, fill: C.muted });
 	out(
 		'src/content/blog/android-architecture-3-how-we-moved/app-info-flow.svg',
-		svg(W, H, '앱 정보 화면이 지난 길', '조사부터 완료 기준까지는 설정 화면 전체 기준이고 실행이 앱 정보 몫. 조사(검수 세 라운드, 설정 전체 지적 약 24 → 10 → 7) → 아키텍처(한 번 반려, 원장을 다시 씀) → BDD(반송 1, 세 라운드, 시나리오 177) → SDD(세 라운드, 어긋난 사본을 하나로) → 계획(세 라운드, 반송 13, 슬라이스 22) → 완료 기준(세 번 반려 뒤 통과) → 실행(독립 검수, 명세 → Store → 화면) → 검증(설정 화면 전체 기준으로 아직 열려 있음). 앱 정보 화면 쪽 작업은 커밋 시각으로 약 4시간 반(실행 단계만 약 3시간), 설정 화면 전체는 약 86시간(AI 작업이 겹친 커밋 기준).', b),
+		svg(W, H, '앱 정보 화면이 지난 길', '조사부터 완료 기준까지는 설정 화면 전체 기준이고 실행이 앱 정보 몫. 조사(검수 세 라운드, 설정 전체 지적 약 24 → 10 → 7) → 아키텍처(한 번 반려, 원장을 다시 씀) → BDD(반려 1, 세 라운드, 시나리오 177) → SDD(세 라운드, 어긋난 사본을 하나로) → 계획(세 라운드, 반려 13, 슬라이스 22) → 완료 기준(세 번 반려 뒤 통과) → 실행(독립 검수, 명세 → Store → 화면) → 검증(설정 화면 전체 기준으로 아직 열려 있음). 앱 정보 화면 쪽 작업은 커밋 시각으로 약 4시간 반(실행 단계만 약 3시간), 설정 화면 전체는 약 86시간(AI 작업이 겹친 커밋 기준).', b),
 	);
 }
 
@@ -639,8 +639,8 @@ const W = 600;
 	// module
 	b += box(16, 304, 432, 184, tint.module, GREEN, { sw: 2 });
 	b += text(32, 328, 'module', { size: 14, fill: C.text, weight: 700 });
-	b += text(96, 328, '도메인 상태의 주인', { size: 12, fill: C.muted });
-	b += box(350, 313, 84, 22, GREEN, GREEN, { rx: 11, sw: 1 }) + text(392, 328, '정본 (SSOT)', { size: 11, anchor: 'middle', fill: '#ffffff', weight: 700 });
+	b += text(96, 328, '도메인 상태를 관리', { size: 12, fill: C.muted });
+	b += box(350, 313, 84, 22, GREEN, GREEN, { rx: 11, sw: 1 }) + text(392, 328, 'SSOT', { size: 11, anchor: 'middle', fill: '#ffffff', weight: 700 });
 	b += chip2(32, 342, 100, 44, 'Action', '일어난 일', GREEN);
 	b += chip2(176, 342, 122, 44, 'Reducer', '상태는 여기서만 바뀐다', GREEN);
 	b += chip2(340, 342, 92, 44, 'State', 'Store 가 든다', GREEN);
@@ -655,8 +655,8 @@ const W = 600;
 	b += arrow(280, 442, 154, 442, GREEN, 'a-green', '4 3');
 	b += text(217, 435, '변화를 넘긴다', { size: 11, anchor: 'middle', fill: C.muted });
 	b += text(390, 480, '플랫폼 신호를 받는 module 에만', { size: 11, anchor: 'end', fill: C.muted });
-	// Store 가 커밋한 전이(Action · 이전 · 다음 상태)를 받는 두 자리 — 진단 로거와 그 옆 관찰 자리
-	b += text(436, 405, '전이 → StoreLogger · 관찰 자리', { size: 10.5, anchor: 'end', fill: C.muted });
+	// Store 가 커밋한 전이(Action · 이전 · 다음 상태)를 받는 두 자리 — 진단 로거와 그 옆 옵저버
+	b += text(436, 405, '전이 → StoreLogger · 옵저버', { size: 10.5, anchor: 'end', fill: C.muted });
 
 	// data · bridge
 	b += arrow(80, 464, 80, 526, ORANGE, 'a-orange');
@@ -679,27 +679,27 @@ const W = 600;
 	b += text(478, 160, '관찰 · 기록', { size: 14, fill: C.text, weight: 700 });
 	b += text(478, 178, '흐름을 바꾸지', { size: 11, fill: C.muted });
 	b += text(478, 193, '않는다', { size: 11, fill: C.muted });
-	// 분석 이벤트 (GA) — 화면은 ViewModel 의 onEvent, module 은 StoreLogger 옆 관찰 자리
+	// 분석 이벤트 (GA) — 화면은 ViewModel 의 onEvent, module 은 StoreLogger 옆 옵저버
 	b += box(474, 212, 100, 140, C.surface, VIOLET, { rx: 7, sw: 1.4 });
 	b += text(482, 231, '분석 이벤트', { size: 12, fill: C.text, weight: 700 });
 	b += text(482, 249, '← 탭 (화면)', { size: 11, fill: C.text });
 	b += text(490, 264, 'onEvent 에서', { size: 10.5, fill: C.muted });
 	b += text(482, 284, '← 전이 (module)', { size: 11, fill: C.text });
 	b += text(490, 299, 'StoreLogger 옆', { size: 10.5, fill: C.muted });
-	b += text(490, 313, '관찰 자리', { size: 10.5, fill: C.muted });
+	b += text(490, 313, '옵저버', { size: 10.5, fill: C.muted });
 	b += text(482, 341, '→ GA (firebase)', { size: 10.5, fill: C.subtle });
 	// 화면의 입력(탭) → GA
 	b += path('M432,196 H466 V245 H472', VIOLET, 'a-violet', '5 4');
 	// module 의 전이(State) → GA
 	b += path('M432,370 H466 V280 H472', VIOLET, 'a-violet', '5 4');
-	// 디버그 로그 — 모든 층에서 로거의 문 하나로 (module 은 StoreLogger 자리 옆에서 잇는다)
+	// 디버그 로그 — 모든 층에서 로거의 진입점 하나로 (module 은 StoreLogger 자리 옆에서 잇는다)
 	b += `<line x1="456" x2="456" y1="160" y2="578" stroke="${GRAY}" stroke-width="1.4" stroke-dasharray="3 3"/>`;
 	for (const yy of [168, 401, 578]) b += `<line x1="448" x2="456" y1="${yy}" y2="${yy}" stroke="${GRAY}" stroke-width="1.4" stroke-dasharray="3 3"/>`;
 	b += arrow(456, 452, 472, 452, GRAY, 'a-gray', '3 3');
 	b += box(474, 402, 100, 124, C.surface, GRAY, { rx: 7, sw: 1.4 });
 	b += text(482, 421, '디버그 로그', { size: 12, fill: C.text, weight: 700 });
-	b += text(482, 438, '로거의 문 하나', { size: 11, fill: C.muted });
-	b += text(482, 454, '수준 거르기', { size: 11, fill: C.muted });
+	b += text(482, 438, '로거의 진입점 하나', { size: 11, fill: C.muted });
+	b += text(482, 454, '로그 레벨 필터링', { size: 11, fill: C.muted });
 	b += text(482, 469, '+ 개인정보', { size: 11, fill: C.muted });
 	b += text(482, 484, '가리기 (core)', { size: 11, fill: C.muted });
 	b += text(482, 503, 'Store 전이는', { size: 10.5, fill: C.text });
@@ -717,6 +717,111 @@ const W = 600;
 
 	out(
 		'src/content/blog/android-architecture-2-build-and-fix/architecture-telemetry.svg',
-		svg(W, H, '분석 이벤트와 로그가 나오는 자리', '①편의 구조 그림 위에 관찰과 기록을 덧그린 그림. 분석 이벤트는 화면에서는 ViewModel 의 onEvent 로 들어온 입력(탭)을, module 에서는 StoreLogger 옆 관찰 자리가 받는 상태 전이를 GA 로 보낸다(이름은 이음새를 가진 층이 짓고, 싱크는 firebase module). Store 의 전이 기록은 StoreLogger 에서 남고, 모든 층의 디버그 로그는 core 로거의 문 하나에서 수준 거르기와 개인정보 가리기를 거친다. 관찰은 흐름을 바꾸지 않는다. 의도와 전후가 있으면 이벤트, 없으면 로그.', b),
+		svg(W, H, '분석 이벤트와 로그가 나오는 자리', '①편의 구조 그림 위에 관찰과 기록을 덧그린 그림. 분석 이벤트는 화면에서는 ViewModel 의 onEvent 로 들어온 입력(탭)을, module 에서는 StoreLogger 옆 옵저버가 받는 상태 전이를 GA 로 보낸다(이름은 이음새를 가진 층이 짓고, 싱크는 firebase module). Store 의 전이 기록은 StoreLogger 에서 남고, 모든 층의 디버그 로그는 core 로거의 진입점 하나에서 로그 레벨 필터링과 개인정보 가리기를 거친다. 관찰은 흐름을 바꾸지 않는다. 의도와 전후가 있으면 이벤트, 없으면 로그.', b),
+	);
+}
+
+// ── 12. 웹 어드민 구조 (웹 어드민 아키텍처 ①) ────────────────────────
+// 계층(app → feature → module → data) + 상태 세 단계(useState · uiAtoms · module atom) + ViewModel 만 Store 를 부른다 + 가로지르는 core.
+{
+	const H = 660;
+	const BLUE = C.s2, GREEN = C.s1, ORANGE = C.s3, GRAY = '#9ca3af';
+	const tint = { app: '#f3f4f6', feature: '#eaf2fc', module: '#e8f5ef', io: '#fdf0e8', core: '#fafafa' };
+	const marker = (id, color) =>
+		`<marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${color}"/></marker>`;
+	const box = (x, y, w, h, fill, stroke, o = {}) =>
+		`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.rx ?? 10}" fill="${fill}" stroke="${stroke}" stroke-width="${o.sw ?? 1.5}"${o.dash ? ` stroke-dasharray="${o.dash}"` : ''}/>`;
+	const arrow = (x1, y1, x2, y2, color, id, dash = '') =>
+		`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="1.8"${dash ? ` stroke-dasharray="${dash}"` : ''} marker-end="url(#${id})"/>`;
+	const chip2 = (x, y, w, h, label, sub, stroke, dash = '') =>
+		box(x, y, w, h, C.surface, stroke, { rx: 7, sw: 1.2, dash }) +
+		text(x + w / 2, y + 19, label, { size: 12, anchor: 'middle', fill: C.text, weight: 600 }) +
+		text(x + w / 2, y + 35, sub, { size: 11, anchor: 'middle', fill: C.muted });
+	const tag = (x, y, w, label, stroke) =>
+		box(x, y, w, 22, C.surface, stroke, { rx: 11, sw: 1 }) + text(x + w / 2, y + 15, label, { size: 11, anchor: 'middle', fill: C.muted });
+
+	let b = `<defs>${marker('w-blue', BLUE)}${marker('w-green', GREEN)}${marker('w-gray', GRAY)}${marker('w-orange', ORANGE)}</defs>`;
+	b += text(16, 30, '웹 어드민 구조', { size: 18, fill: C.text, weight: 700 });
+	b += text(16, 50, '의존은 위에서 아래로 한 방향 · 계층마다 모르는 것이 있다', { size: 12, fill: C.subtle });
+
+	// app
+	b += box(16, 70, 432, 46, tint.app, GRAY);
+	b += text(32, 99, 'app', { size: 14, fill: C.text, weight: 700 });
+	b += text(78, 99, '라우트 · 내비게이션 · 권한 게이트', { size: 12, fill: C.muted });
+	b += arrow(88, 116, 88, 136, GRAY, 'w-gray');
+	b += text(96, 131, 'Entry 를 마운트', { size: 11, fill: C.muted });
+
+	// feature
+	b += box(16, 140, 432, 124, tint.feature, BLUE);
+	b += text(32, 160, 'feature', { size: 14, fill: C.text, weight: 700 });
+	b += text(98, 160, '화면', { size: 12, fill: C.muted });
+	b += chip2(32, 172, 112, 44, 'Entry', '생명주기', BLUE);
+	b += chip2(164, 172, 112, 44, 'View', '그리기만', BLUE);
+	b += chip2(304, 172, 128, 44, 'ViewModel', '판정 · 화면 상태', BLUE);
+	b += arrow(146, 194, 160, 194, BLUE, 'w-blue');
+	b += arrow(278, 186, 300, 186, BLUE, 'w-blue');
+	b += arrow(302, 204, 280, 204, BLUE, 'w-blue');
+	b += tag(164, 230, 112, 'useState · 휘발', BLUE);
+	b += tag(304, 230, 128, 'uiAtoms · 화면 지속', BLUE);
+
+	// feature ↔ module — ViewModel 만
+	b += arrow(338, 268, 338, 330, BLUE, 'w-blue');
+	b += arrow(408, 330, 408, 268, GREEN, 'w-green');
+	b += text(330, 290, 'actions', { size: 11, anchor: 'end', fill: C.muted });
+	b += text(416, 290, 'state', { size: 11, fill: C.muted });
+	b += text(416, 305, 'snapshot', { size: 11, fill: C.muted });
+	b += text(32, 290, 'Store 는 ViewModel 만 부른다', { size: 12, fill: C.text, weight: 700 });
+	b += text(32, 307, 'use<이름>Store() → { state, actions, snapshot }', { size: 11, fill: C.muted });
+
+	// module
+	b += box(16, 334, 432, 158, tint.module, GREEN, { sw: 2 });
+	b += text(32, 358, 'module', { size: 14, fill: C.text, weight: 700 });
+	b += text(96, 358, '도메인 상태를 관리', { size: 12, fill: C.muted });
+	b += box(380, 343, 52, 22, GREEN, GREEN, { rx: 11, sw: 1 }) + text(406, 358, 'SSOT', { size: 11, anchor: 'middle', fill: '#ffffff', weight: 700 });
+	b += chip2(32, 372, 132, 44, 'actions', '변경 · 재조회까지', GREEN);
+	b += chip2(300, 372, 132, 44, 'atoms', '도메인 상태', GREEN);
+	b += arrow(166, 394, 296, 394, GREEN, 'w-green');
+	b += text(231, 388, '결과를 저장', { size: 11, anchor: 'middle', fill: C.muted });
+	b += chip2(32, 438, 132, 44, 'service', 'API 를 감싼다', GREEN);
+	b += chip2(300, 438, 132, 44, 'snapshot', '파생된 답 · can(권한)', GREEN);
+	b += arrow(98, 417, 98, 435, GREEN, 'w-green');
+	b += arrow(366, 417, 366, 435, GREEN, 'w-green');
+
+	// data · 서버
+	b += arrow(98, 484, 98, 532, ORANGE, 'w-orange');
+	b += text(106, 514, '부른다', { size: 11, fill: C.muted });
+	b += box(16, 536, 260, 62, tint.io, ORANGE);
+	b += text(32, 560, 'data', { size: 14, fill: C.text, weight: 700 });
+	b += text(76, 560, 'REST 호출 · DTO · 직렬화', { size: 12, fill: C.muted });
+	b += text(32, 581, '상태는 없다', { size: 11, fill: C.muted });
+	b += arrow(278, 567, 294, 567, ORANGE, 'w-orange');
+	b += box(298, 536, 150, 62, C.surface, ORANGE, { dash: '5 4' });
+	b += text(312, 560, '게이트웨이 · 서버', { size: 13, fill: C.text, weight: 700 });
+	b += text(312, 581, '권한은 여기서 강제', { size: 11, fill: C.muted });
+
+	// core (가로지른다)
+	b += box(464, 140, 120, 458, tint.core, GRAY, { dash: '6 4' });
+	b += text(478, 164, 'core', { size: 14, fill: C.text, weight: 700 });
+	b += text(478, 182, '계층 밖에서', { size: 11, fill: C.muted });
+	b += text(478, 197, '가로지른다', { size: 11, fill: C.muted });
+	b += chip2(474, 214, 100, 44, 'useApiQuery', '토큰 · 401/403', GRAY);
+	b += chip2(474, 270, 100, 44, 'antd 파사드', '화면이 바로 쓴다', GRAY);
+	b += `<line x1="474" x2="574" y1="478" y2="478" stroke="${GRAY}" stroke-dasharray="3 3"/>`;
+	b += text(478, 500, '경로가 아니라', { size: 11, fill: C.muted });
+	b += text(478, 515, '내용으로 판정 —', { size: 11, fill: C.muted });
+	b += text(478, 530, 'I/O 를 하면', { size: 11, fill: C.muted });
+	b += text(478, 545, 'data 몫이다', { size: 11, fill: C.muted });
+
+	// 금지
+	const no = (y, s) =>
+		`<circle cx="25" cy="${y - 4}" r="8" fill="#fbeaea" stroke="${C.critical}" stroke-width="1.5"/>` +
+		text(25, y, '✕', { size: 11, anchor: 'middle', fill: C.critical, weight: 700 }) +
+		text(40, y, s, { size: 12, fill: C.text });
+	b += no(626, 'feature 는 data 를 직접 부르지 않는다 — 남은 예외는 줄어들기만 한다');
+	b += no(650, 'View 는 Store 를 부르지 않고, 화면은 역할 이름 대신 권한 키로 묻는다');
+
+	out(
+		'src/content/blog/web-admin-architecture-1-structure/architecture.svg',
+		svg(W, H, '웹 어드민 구조', 'app(라우트 · 내비게이션 · 권한 게이트)이 feature 의 Entry 를 마운트한다. feature 안에는 Entry(생명주기) · View(그리기만) · ViewModel(판정 · 화면 상태)이 있고, View 의 휘발 상태는 useState, 화면 지속 상태는 ViewModel 옆 uiAtoms 에 둔다. Store 는 ViewModel 만 부르며 use<이름>Store() 로 state · actions · snapshot 을 받는다. module 은 도메인 상태(SSOT)를 관리한다 — actions 가 service 를 불러 결과를 atoms 에 저장하고, snapshot 이 권한 같은 파생된 답을 낸다. data 는 REST 호출 · DTO 만 하고 상태가 없으며, 권한은 게이트웨이 · 서버가 강제한다. core(useApiQuery · antd 파사드)는 계층 밖에서 가로지르고, I/O 를 하면 data 몫으로 본다. feature 는 data 를 직접 부르지 않고, View 는 Store 를 부르지 않는다.', b),
 	);
 }
