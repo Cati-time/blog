@@ -575,6 +575,79 @@
 			"decided": "user",
 			"status": "decided",
 			"evidence": "반출 5 / 대체어 실측 없음"
+		},
+		{
+			"name": "테스트",
+			"aliases": [],
+			"avoid": [
+				"시험"
+			],
+			"definition": "코드를 검증하는 test. 연동 테스트 · 단위 테스트.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "시험 29 / 테스트 2384"
+		},
+		{
+			"name": "숨기다",
+			"aliases": [],
+			"avoid": [
+				"가리다(화면에서)"
+			],
+			"definition": "권한이 없을 때 버튼 · 메뉴를 화면에서 안 보이게 하는 것.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "가리다 12 / 숨기다 36"
+		},
+		{
+			"name": "제거하다",
+			"aliases": [],
+			"avoid": [
+				"걷어 내다"
+			],
+			"definition": "코드 · 화면 · 방식을 없애는 것.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "걷어 내 18 / 제거 378"
+		},
+		{
+			"name": "목록",
+			"aliases": [],
+			"avoid": [
+				"대장"
+			],
+			"definition": "결정 · 예외 · 숨긴 쓰기처럼 줄 단위로 모아 둔 표.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "대장 1 / 목록 329"
+		},
+		{
+			"name": "마스킹",
+			"aliases": [],
+			"avoid": [
+				"(개인정보) 가리기"
+			],
+			"definition": "로그 등에 나가는 개인정보를 가려 쓰는 것.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "—"
+		},
+		{
+			"name": "연동 테스트",
+			"aliases": [],
+			"avoid": [
+				"배선 시험",
+				"연결 시험"
+			],
+			"definition": "여러 부분이 실제로 이어져 동작하는지 보는 테스트.",
+			"kind": "style",
+			"decided": "evidence",
+			"status": "decided",
+			"evidence": "배선 1 / 연동 273"
 		}
 	]
 }
