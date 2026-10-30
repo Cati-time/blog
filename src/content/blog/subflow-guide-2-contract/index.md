@@ -5,7 +5,7 @@ pubDate: 2026-10-30
 category: ax
 platform: harness
 tags: ['subflow', 'business-flow', 'ai-agent', 'workflow', 'harness']
-draft: true
+draft: false
 ---
 
 > **Subflow 해설 시리즈**

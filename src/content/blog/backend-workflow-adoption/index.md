@@ -5,7 +5,7 @@ pubDate: 2026-10-30
 category: ax
 platform: backend
 tags: ['business-flow', 'workflow', 'ai-agent', 'spring', 'testing']
-draft: true
+draft: false
 ---
 
 > 이 글은 [셋이 남았을 때 — 우리 팀이 Business Flow 에 정착하기까지](../business-flow-story/) 의 백엔드 편입니다. Subflow 가 무엇인지는 [Subflow 해설 ①](../subflow-guide-1-what/) 에 따로 정리했습니다.

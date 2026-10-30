@@ -5,7 +5,7 @@ pubDate: 2026-10-30
 category: architecture
 platform: web
 tags: ['web', 'react', 'recoil', 'architecture', 'permission']
-draft: true
+draft: false
 ---
 
 > **웹 어드민 아키텍처 시리즈**
