@@ -295,6 +295,13 @@ val state by viewModel.uiState.collectAsStateWithLifecycle()
 ## 정리        — 다른 사람이 가져갈 교훈 한두 줄
 ```
 
+### 용어 — 한 곳에서 정하고 같은 문구로
+
+- 블로그의 용어는 **`src/data/glossary.json` 한 곳**에서 정합니다. 꼴은 «**대표 이름** (다른 이름: …) — 정의» 입니다.
+- 같은 파일을 블로그의 [용어](https://cati-time.github.io/blog/glossary/) 페이지와 용어 검사(`check:wording`)가 읽습니다. 그래서 페이지 · 검사 · 글이 언제나 같은 이름을 씁니다.
+- 글에서는 **대표 이름**으로 씁니다(예: 감독이 아니라 Supervisor). 괄호 안의 다른 이름은 다른 문서에서 만났을 때 같은 것임을 알리기 위한 것입니다.
+- 용어를 바꾸거나 더할 때는 이 파일만 고칩니다. `status: pending` 은 이름 통일을 기다리는 줄입니다.
+
 ### 작은 팁
 
 - **제목**은 검색될 말로 구체적으로: "상태 관리 이야기" 보다 "Compose 에서 StateFlow 와 remember 구분하기"

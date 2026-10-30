@@ -1,0 +1,122 @@
+{
+	"$comment": "블로그 용어의 정본. /glossary/ 페이지와 용어 검사(check:wording)가 이 파일을 같은 문구로 읽는다. 꼴: 대표 이름 (다른 이름: …) — 정의. kind=concept 은 페이지에 싣고, style 은 검사에만 쓴다. status=pending 은 harness 의 이름 통일 회신을 기다리는 줄.",
+	"terms": [
+		{
+			"name": "Supervisor",
+			"aliases": ["감독", "supervisor", "감독 세션"],
+			"avoid": ["감독"],
+			"definition": "여러 BF 위에서 일을 나누고, 부르고, 지켜보고, 판정하고, 닫는 계층. BF 안의 일(단계 · subflow · 커밋)은 하지 않는다.",
+			"kind": "concept",
+			"decided": "user",
+			"status": "pending"
+		},
+		{
+			"name": "Business Flow (BF)",
+			"aliases": ["BF", "비즈니스 플로우", "rootflow(BF 를 적어 둔 문서의 이름)"],
+			"avoid": [],
+			"definition": "일 한 건의 생애. 조사부터 검증까지 단계로 나누고, 단계마다 산출물을 남겨 다음 단계가 받아 쓴다.",
+			"kind": "concept",
+			"decided": "user",
+			"status": "pending"
+		},
+		{
+			"name": "subflow",
+			"aliases": ["SUBF", "SBF", "서브플로우"],
+			"avoid": [],
+			"definition": "BF 의 단계 하나, 또는 그 안의 한 갈래. 산출물을 남기고, 위 단계와는 계약으로만 잇는다. 단위는 저장소가 행마다 적는다.",
+			"kind": "concept",
+			"decided": "user",
+			"status": "pending"
+		},
+		{
+			"name": "규칙 문서",
+			"aliases": ["헌법(사내 문서에서 쓰는 이름)", "규칙"],
+			"avoid": ["헌법", "조문"],
+			"definition": "저장소마다 두는, AI 세션과 사람이 함께 지키는 규칙 모음.",
+			"kind": "concept",
+			"decided": "user",
+			"status": "decided"
+		},
+		{
+			"name": "원형 규칙",
+			"aliases": ["canon", "팀 공통 규칙"],
+			"avoid": [],
+			"definition": "여러 저장소의 규칙 문서가 따르는 팀 공통 규칙. 저장소에서 먼저 생기고 두 곳에서 같은 꼴이 확인되면 이리로 올라온다.",
+			"kind": "concept",
+			"decided": "ask",
+			"status": "pending"
+		},
+		{
+			"name": "가드",
+			"aliases": ["guard", "검사 스크립트"],
+			"avoid": [],
+			"definition": "규칙을 기계로 판정하는 검사 스크립트. 어기면 실패한다.",
+			"kind": "concept",
+			"decided": "user",
+			"status": "decided"
+		},
+		{
+			"name": "단일 진실 원천 (SSOT)",
+			"aliases": ["SSOT", "Single Source of Truth"],
+			"avoid": ["정본"],
+			"definition": "한 질문에 답하는 곳을 하나만 둔다는 원칙, 또는 그 한 곳. 글마다 본문 첫 등장에서만 풀어 쓰고 그 뒤로는 SSOT.",
+			"kind": "concept",
+			"decided": "user",
+			"status": "decided"
+		},
+		{
+			"name": "이음새",
+			"aliases": ["seam"],
+			"avoid": [],
+			"definition": "경계와 경계를 잇는 곳.",
+			"kind": "concept",
+			"decided": "user",
+			"status": "decided"
+		},
+		{
+			"name": "반려되는 곳",
+			"aliases": ["반려", "FAIL 반송지(사내 문서)"],
+			"avoid": ["반송지", "반송"],
+			"definition": "검수에서 실패한 일을 되돌려 보낼 곳. 검수한 곳도 발견한 곳도 아니라, 틀린 판정을 처음 만든 곳이다.",
+			"kind": "concept",
+			"decided": "user",
+			"status": "decided"
+		},
+		{
+			"name": "확장하다 · 발전시키다",
+			"aliases": [],
+			"avoid": ["키우다", "자라다"],
+			"definition": "코드 · 구조 · 기능이 커지는 것을 말할 때.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided"
+		},
+		{
+			"name": "상태를 관리한다",
+			"aliases": [],
+			"avoid": ["(코드가 주어인) 소유한다"],
+			"definition": "코드가 주어일 때. 사람 · 팀이 주어인 소유자 · 소유권은 그대로 쓴다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided"
+		},
+		{
+			"name": "헬퍼",
+			"aliases": ["helper"],
+			"avoid": ["도우미"],
+			"definition": "다른 코드를 돕는 작은 함수 · 클래스.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided"
+		},
+		{
+			"name": "문제 · 이슈 · 버그 · 장애",
+			"aliases": [],
+			"avoid": ["사고"],
+			"definition": "보통 문장은 «문제가 생기면», 건수 · 제목은 «이슈», 코드 결함은 «버그», 운영 서비스가 멈춘 경우만 «장애».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided"
+		}
+	]
+}
