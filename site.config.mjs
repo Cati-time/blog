@@ -69,7 +69,12 @@ export const PLATFORMS = [
 	{ id: 'spring', label: 'Spring' },
 	{ id: 'web', label: 'Web' },
 	{ id: 'back-office', label: 'Back-office' },
+	// categories 가 있으면 그 대분류에만 나온다(없으면 모든 대분류)
+	{ id: 'harness', label: 'Harness Rules', categories: ['ax'] },
 ];
+
+/** 대분류 하나에 보이는 하위 메뉴 */
+export const platformsOf = (categoryId) => PLATFORMS.filter((p) => !p.categories || p.categories.includes(categoryId));
 
 /**
  * giscus 댓글 설정 (GitHub Discussions 기반)

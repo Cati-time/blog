@@ -1,7 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { CATEGORIES, PLATFORMS } from '../site.config.mjs';
+import { CATEGORIES, PLATFORMS, platformsOf } from '../site.config.mjs';
 
 const categoryIds = CATEGORIES.map((c) => c.id) as [string, ...string[]];
 const platformIds = PLATFORMS.map((p) => p.id) as [string, ...string[]];
@@ -25,6 +25,11 @@ const blog = defineCollection({
 			tags: z.array(z.string()).default([]),
 			draft: z.boolean().default(false),
 			heroImage: z.optional(image()),
+		})
+		// 대분류 전용 하위 메뉴(예: Harness Rules 는 AX 에만)를 다른 대분류에 쓰면 빌드를 멈춘다
+		.refine((d) => platformsOf(d.category).some((p) => p.id === d.platform), {
+			message: '이 platform 은 이 category 의 하위 메뉴가 아닙니다 (site.config.mjs PLATFORMS 의 categories)',
+			path: ['platform'],
 		}),
 });
 

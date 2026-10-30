@@ -1,6 +1,6 @@
 ---
 import { SITE } from '../consts';
-import { CATEGORIES, PLATFORMS, categoryUrl } from '../lib/posts';
+import { CATEGORIES, categoryUrl, platformsOf } from '../lib/posts';
 import HeaderLink from './HeaderLink.astro';
 const base = import.meta.env.BASE_URL;
 ---
@@ -23,7 +23,7 @@ const base = import.meta.env.BASE_URL;
 								<li>
 									<a href={categoryUrl(c.id)}>전체 보기</a>
 								</li>
-								{PLATFORMS.map((p) => (
+								{platformsOf(c.id).map((p) => (
 									<li>
 										<a href={categoryUrl(c.id, p.id)}>{p.label}</a>
 									</li>

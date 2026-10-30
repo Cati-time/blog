@@ -19,7 +19,7 @@ import { basename, dirname, extname, join, resolve } from 'node:path';
 import domino from '@mixmark-io/domino';
 import TurndownService from 'turndown';
 import gfmPlugin from 'turndown-plugin-gfm';
-import { CATEGORIES, PLATFORMS } from '../site.config.mjs';
+import { CATEGORIES, PLATFORMS, platformsOf } from '../site.config.mjs';
 
 // ── 인자 ─────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
@@ -47,7 +47,7 @@ const die = (msg, code = 1) => {
 const src = pos[0] && resolve(pos[0]);
 if (!src || !existsSync(src)) die(`문서를 찾을 수 없습니다: ${pos[0] ?? '(없음)'}\n\n${usage}`);
 if (!opt.slug || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(opt.slug)) die(`--slug 는 영문 소문자·숫자·하이픈만 됩니다 (받은 값: '${opt.slug ?? ''}')\n\n${usage}`);
-if (!catIds.includes(opt.category) || !platIds.includes(opt.platform))
+if (!catIds.includes(opt.category) || !platformsOf(opt.category).some((p) => p.id === opt.platform))
 	die(`분류·플랫폼을 목록에서 골라 주세요 (받은 값: category='${opt.category ?? ''}', platform='${opt.platform ?? ''}')\n\n${usage}`);
 if (opt.date && !/^\d{4}-\d{2}-\d{2}$/.test(opt.date)) die(`--date 는 YYYY-MM-DD 형식입니다 (받은 값: '${opt.date}')`);
 

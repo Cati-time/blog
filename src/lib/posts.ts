@@ -1,10 +1,10 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { CATEGORIES, PLATFORMS } from '../../site.config.mjs';
+import { CATEGORIES, PLATFORMS, platformsOf } from '../../site.config.mjs';
 
 export type Post = CollectionEntry<'blog'>;
 export type Category = (typeof CATEGORIES)[number];
 export type Platform = (typeof PLATFORMS)[number];
-export { CATEGORIES, PLATFORMS };
+export { CATEGORIES, PLATFORMS, platformsOf };
 
 const base = import.meta.env.BASE_URL;
 

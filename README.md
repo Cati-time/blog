@@ -37,7 +37,7 @@ npm run new "Compose 상태 관리 정리" compose-state --category architecture
 
 | 메뉴 | 하위 메뉴 |
 | --- | --- |
-| **AX** — AI 로 개발·업무 방식을 바꾼 기록 | Android · iOS · Spring · Web · Back-office |
+| **AX** — AI 로 개발·업무 방식을 바꾼 기록 | Android · iOS · Spring · Web · Back-office · Harness Rules |
 | **Architecture** — 구조와 설계, 기술 의사결정 | Android · iOS · Spring · Web · Back-office |
 
 자세한 내용은 **[블로그 작성 가이드](WRITING_GUIDE.md)** 를 보세요.
