@@ -27,10 +27,10 @@ const { posts, showCategory = true } = Astro.props;
 					<div class="post-meta">
 						{showCategory && (
 							<a class="where" href={categoryUrl(post.data.category, post.data.platform)}>
-								{getCategory(post.data.category).label} · {getPlatform(post.data.platform).label}
+								{getCategory(post.data.category).label} · {[post.data.platform, ...post.data.alsoIn].map((id) => getPlatform(id).label).join(' · ')}
 							</a>
 						)}
-						{!showCategory && <span class="where">{getPlatform(post.data.platform).label}</span>}
+						{!showCategory && <span class="where">{[post.data.platform, ...post.data.alsoIn].map((id) => getPlatform(id).label).join(' · ')}</span>}
 						<FormattedDate date={post.data.pubDate} />
 						<Tags tags={post.data.tags} />
 					</div>

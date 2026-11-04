@@ -22,12 +22,14 @@ const blog = defineCollection({
 			// 메뉴 위치 (필수) — site.config.mjs 의 CATEGORIES · PLATFORMS id
 			category: z.enum(categoryIds),
 			platform: z.enum(platformIds),
+			// 다른 하위 메뉴에도 같은 글을 싣는다(예: 웹과 안드로이드 둘 다에 걸친 글) — 주 메뉴는 platform
+			alsoIn: z.array(z.enum(platformIds)).default([]),
 			tags: z.array(z.string()).default([]),
 			draft: z.boolean().default(false),
 			heroImage: z.optional(image()),
 		})
 		// 대분류 전용 하위 메뉴(예: Harness Rules 는 AX 에만)를 다른 대분류에 쓰면 빌드를 멈춘다
-		.refine((d) => platformsOf(d.category).some((p) => p.id === d.platform), {
+		.refine((d) => [d.platform, ...d.alsoIn].every((id) => platformsOf(d.category).some((p) => p.id === id)), {
 			message: '이 platform 은 이 category 의 하위 메뉴가 아닙니다 (site.config.mjs PLATFORMS 의 categories)',
 			path: ['platform'],
 		}),

@@ -19,7 +19,9 @@ export async function getPosts(): Promise<Post[]> {
 
 /** 카테고리(＋플랫폼)로 거른 글 */
 export function filterPosts(posts: Post[], category: string, platform?: string): Post[] {
-	return posts.filter((p) => p.data.category === category && (!platform || p.data.platform === platform));
+	return posts.filter(
+		(p) => p.data.category === category && (!platform || p.data.platform === platform || p.data.alsoIn.includes(platform)),
+	);
 }
 
 /** 태그별 글 개수 (많은 순) */

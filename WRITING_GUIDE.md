@@ -173,6 +173,7 @@ pubDate: 2026-09-29                  # 필수. YYYY-MM-DD
 updatedDate: 2026-10-05              # 선택. 수정했을 때
 category: architecture               # 필수. ax | architecture
 platform: android                    # 필수. android | ios | backend | web | back-office | harness(AX 에만)
+alsoIn: ['web']                      # 선택. 같은 글을 다른 하위 메뉴에도 싣는다(주 메뉴는 platform)
 tags: ['compose', 'state']           # 선택
 draft: true                          # true 면 사이트에 안 나옵니다
 heroImage: './cover.png'             # 선택. 글 폴더 안의 대표 이미지 — 링크 공유 미리보기에도 쓰입니다 (없으면 블로그 기본 이미지)
