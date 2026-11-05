@@ -947,3 +947,83 @@ const W = 600;
 			svg(W, H, 'AI 의 선택지를 좁힌다', '규칙이 없으면 화면에서 목록을 보여 주는 길이 API 직접 호출, 다른 화면 상태 복사, 공용 유틸, 옛 코드의 판정 복사 등 여러 개로 열려 있다. 규칙이 있으면 화면 → ViewModel → module 의 한 길만 남고, 틀린 길은 빌드가 막는다.', b));
 	}
 }
+
+// ── 16~18. 백엔드 워크플로우 적용기 — 처음과 지금 · mock 이 못 보는 영역 · 감사 라운드 ─────────────
+{
+	const BLUE = C.s2, GREEN = C.s1, ORANGE = C.s3, GRAY = '#9ca3af', RED = C.critical;
+	const marker = (id, color) =>
+		`<marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${color}"/></marker>`;
+	const box = (x, y, w, h, fill, stroke, o = {}) =>
+		`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.rx ?? 8}" fill="${fill}" stroke="${stroke}" stroke-width="${o.sw ?? 1.5}"${o.dash ? ` stroke-dasharray="${o.dash}"` : ''}/>`;
+	const arrow = (x1, y1, x2, y2, color, id) =>
+		`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="1.8" marker-end="url(#${id})"/>`;
+
+	// 16. 처음과 지금 — 규칙 · 가드 · 결정 기록
+	{
+		const H = 300, base = 236, top = 86, max = 50;
+		const data = [['규칙', 42, 48], ['가드', 7, 9], ['결정 기록', 3, 48]];
+		let b = text(16, 30, '처음 도입했을 때와 지금', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '같은 정의로 센 개수 · 결정 기록이 가장 많이 늘었다', { size: 12, fill: C.subtle });
+		b += `<rect x="404" y="64" width="12" height="12" rx="2" fill="${GRAY}"/>` + text(422, 74, '처음', { size: 12 });
+		b += `<rect x="470" y="64" width="12" height="12" rx="2" fill="${GREEN}"/>` + text(488, 74, '지금', { size: 12 });
+		b += `<line x1="40" x2="580" y1="${base}" y2="${base}" stroke="${C.grid}"/>`;
+		const hOf = (v) => ((base - top) * v) / max;
+		data.forEach(([n, a, z], i) => {
+			const cx = 120 + i * 180;
+			b += bar(cx - 48, base - hOf(a), 44, hOf(a), GRAY);
+			b += bar(cx + 4, base - hOf(z), 44, hOf(z), GREEN);
+			b += text(cx - 26, base - hOf(a) - 6, a, { size: 12, anchor: 'middle', fill: C.text });
+			b += text(cx + 26, base - hOf(z) - 6, z, { size: 12, anchor: 'middle', fill: C.text, weight: 700 });
+			b += text(cx, base + 22, n, { size: 13, anchor: 'middle', fill: C.text });
+		});
+		b += text(16, H - 14, '규칙 = 규칙 문서에 제목으로 선 규칙 · 가드 = 검사 스크립트', { size: 12, fill: C.muted });
+		out('src/content/blog/backend-workflow-adoption/before-after.svg',
+			svg(W, H, '처음 도입했을 때와 지금', '규칙 42에서 48, 가드 7에서 9, 결정 기록 3에서 48. 결정 기록이 가장 많이 늘었다.', b));
+	}
+
+	// 17. mock 이 못 보는 영역 — 끝났다 vs 검증됐다
+	{
+		const H = 290;
+		let b = `<defs>${marker('m-g', GREEN)}${marker('m-o', ORANGE)}${marker('m-gray', GRAY)}</defs>`;
+		b += text(16, 30, '«끝났다» 와 «검증됐다» 는 다르다', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, 'mock 테스트가 보는 영역과 실제 DB 에서만 드러나는 영역', { size: 12, fill: C.subtle });
+		b += box(16, 70, 270, 150, '#e8f5ef', GREEN);
+		b += text(32, 96, 'mock 테스트가 보는 것', { size: 13, fill: C.text, weight: 700 });
+		['비즈니스 로직 · 분기', '응답의 형태와 값', '예외 처리', '호출 순서'].forEach((t, i) => (b += text(40, 124 + i * 26, '✓  ' + t, { size: 12, fill: C.text })));
+		b += box(314, 70, 270, 150, '#fdf0e8', ORANGE);
+		b += text(330, 96, '실제 DB 에서만 보이는 것', { size: 13, fill: C.text, weight: 700 });
+		['JPA 매핑이 실제 컬럼과 맞나', '트랜잭션 경계', '페이징 · collation', 'DDL 이 만드는 제약(유니크 · 외래 키)'].forEach((t, i) => (b += text(338, 124 + i * 26, '?  ' + t, { size: 12, fill: C.text })));
+		// 흐름
+		const fy = 240;
+		b += box(16, fy, 150, 40, C.surface, GREEN, { rx: 7, sw: 1.2 }) + text(91, fy + 25, 'mock 테스트 통과', { size: 12, anchor: 'middle', fill: C.text, weight: 600 });
+		b += arrow(168, fy + 20, 206, fy + 20, GRAY, 'm-gray');
+		b += box(210, fy, 170, 40, C.surface, ORANGE, { rx: 7, sw: 1.2 }) + text(295, fy + 25, '확인 SQL 을 사람에게 넘김', { size: 12, anchor: 'middle', fill: C.text, weight: 600 });
+		b += text(295, fy - 8, '여기서 «끝났다»', { size: 11, anchor: 'middle', fill: C.muted });
+		b += arrow(382, fy + 20, 420, fy + 20, GRAY, 'm-gray');
+		b += box(424, fy, 160, 40, C.surface, GREEN, { rx: 7, sw: 1.8 }) + text(504, fy + 25, '결과 기록 → «검증됐다»', { size: 12, anchor: 'middle', fill: C.text, weight: 700 });
+		out('src/content/blog/backend-workflow-adoption/mock-blind-spots.svg',
+			svg(W, H, '끝났다와 검증됐다는 다르다', 'mock 테스트는 비즈니스 로직, 응답의 형태와 값, 예외 처리, 호출 순서를 본다. JPA 매핑, 트랜잭션 경계, 페이징과 collation, DDL 이 만드는 제약은 실제 DB 에서만 보인다. mock 테스트를 통과하고 확인 SQL 을 사람에게 넘기면 작업은 끝나고, 그 결과가 기록되어야 검증된 것으로 본다.', b));
+	}
+
+	// 18. 사례의 감사 라운드 — 6곳 × 3라운드
+	{
+		const H = 300;
+		const stages = ['조사', '설계', 'BDD', '계약', '계획', '완료 게이트'];
+		const red = { 'BDD-2': 2, 'BDD-3': 1, '계약-1': 1, '계획-1': 1 };
+		let b = text(16, 30, '감사 18라운드 — 심각한 문제는 4라운드에서 5건', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '계약을 만드는 여섯 곳에서 각각 최대 3라운드 · 칸 = 그 라운드에서 나온 심각한 문제 수', { size: 12, fill: C.subtle });
+		const X0 = 150, CW = 140, RH = 32, Y0 = 92;
+		['1라운드', '2라운드', '3라운드'].forEach((t, j) => (b += text(X0 + j * CW + CW / 2, Y0 - 10, t, { size: 12, anchor: 'middle', fill: C.muted })));
+		stages.forEach((s, i) => {
+			const y = Y0 + i * RH;
+			b += text(X0 - 14, y + 21, s, { size: 12.5, anchor: 'end', fill: C.text });
+			for (let j = 0; j < 3; j++) {
+				const n = red[`${s}-${j + 1}`];
+				b += box(X0 + j * CW + 4, y + 3, CW - 8, RH - 6, n ? '#fbeaea' : '#f3f4f6', n ? RED : C.grid, { rx: 5, sw: 1 });
+				b += text(X0 + j * CW + CW / 2, y + 21, n ? `${n}건` : '0', { size: 12, anchor: 'middle', fill: n ? RED : C.subtle, weight: n ? 700 : 400 });
+			}
+		});
+		out('src/content/blog/backend-workflow-adoption/audit-rounds.svg',
+			svg(W, H, '감사 18라운드 — 심각한 문제는 4라운드에서 5건', '조사 · 설계 · BDD · 계약 · 계획 · 완료 게이트 여섯 곳에서 각각 최대 3라운드, 모두 18라운드. 그대로 두면 틀린 결과가 나오는 문제는 BDD 2라운드 2건, BDD 3라운드 1건, 계약 1라운드 1건, 계획 1라운드 1건으로 모두 5건이었다.', b));
+	}
+}
