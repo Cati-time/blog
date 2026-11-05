@@ -1027,3 +1027,140 @@ const W = 600;
 			svg(W, H, '감사 18라운드 — 심각한 문제는 4라운드에서 5건', '조사 · 설계 · BDD · 계약 · 계획 · 완료 게이트 여섯 곳에서 각각 최대 3라운드, 모두 18라운드. 그대로 두면 틀린 결과가 나오는 문제는 BDD 2라운드 2건, BDD 3라운드 1건, 계약 1라운드 1건, 계획 1라운드 1건으로 모두 5건이었다.', b));
 	}
 }
+
+// ── 19~22. 표준 하나가 판단을 바꾼다 — 공유 컴포넌트 10개 · 경계 두 형태 · 코치마크 전후 · 제공 함수 ─────────────
+{
+	const BLUE = C.s2, GREEN = C.s1, ORANGE = C.s3, GRAY = '#9ca3af', RED = C.critical;
+	const marker = (id, color) =>
+		`<marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${color}"/></marker>`;
+	const box = (x, y, w, h, fill, stroke, o = {}) =>
+		`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.rx ?? 8}" fill="${fill}" stroke="${stroke}" stroke-width="${o.sw ?? 1.5}"${o.dash ? ` stroke-dasharray="${o.dash}"` : ''}/>`;
+	const arrow = (x1, y1, x2, y2, color, id, dash = '') =>
+		`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="1.8"${dash ? ` stroke-dasharray="${dash}"` : ''} marker-end="url(#${id})"/>`;
+	const node = (x, y, w, h, fill, stroke, name, sub, o = {}) =>
+		box(x, y, w, h, fill, stroke, o) +
+		text(x + w / 2, y + (sub ? 19 : 24), name, { size: 12, anchor: 'middle', fill: C.text, weight: 700 }) +
+		(sub ? text(x + w / 2, y + 35, sub, { size: 10.5, anchor: 'middle', fill: C.muted }) : '');
+	const tint = { feature: '#eaf2fc', module: '#e8f5ef', io: '#fdf0e8', top: '#f3f4f6' };
+	const dir = 'src/content/blog/android-ui-joint-spec/';
+
+	// 19. 공유 컴포넌트 10개의 형태
+	{
+		const H = 476;
+		const cols = ['닫힌 형태', '명령형 메서드', '화면 이름별 함수', 'Render 추가 입력'];
+		const rows = [
+			['팝업', [1, 0, 0, 0]], ['로딩', [1, 0, 0, 0]],
+			['토스트', [0, 1, 0, 1]], ['코치마크', [0, 1, 0, 1]], ['블루투스 연결', [0, 1, 1, 0]],
+			['대화 속도', [0, 0, 1, 0]], ['블루투스 상태', [0, 0, 1, 0]], ['회원가입', [0, 0, 1, 0]],
+			['약관 동의', [0, 0, 0, 1]], ['기기 활성화', [0, 0, 0, 1]],
+		];
+		let b = text(16, 30, '공유 컴포넌트 10개, 닫힌 형태는 2개', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '표준을 정하기 직전 · 칸 = 그 컴포넌트의 공개 인터페이스에 해당 형태가 있음', { size: 12, fill: C.subtle });
+		const X0 = 150, CW = 110, RH = 34, Y0 = 96;
+		cols.forEach((c, j) => (b += text(X0 + j * CW + CW / 2, Y0 - 12, c, { size: 11.5, anchor: 'middle', fill: j === 0 ? GREEN : C.muted, weight: 700 })));
+		rows.forEach(([n, v], i) => {
+			const y = Y0 + i * RH;
+			b += text(X0 - 12, y + 22, n, { size: 12, anchor: 'end', fill: C.text });
+			v.forEach((on, j) => {
+				const ok = j === 0;
+				b += box(X0 + j * CW + 6, y + 4, CW - 12, RH - 8, on ? (ok ? '#e8f5ef' : '#fdf0e8') : '#fafafa', on ? (ok ? GREEN : ORANGE) : C.grid, { rx: 5, sw: 1 });
+				if (on) b += text(X0 + j * CW + CW / 2, y + 22, ok ? '✓' : '●', { size: 12, anchor: 'middle', fill: ok ? GREEN : ORANGE, weight: 700 });
+			});
+		});
+		b += text(16, H - 14, '명령형 메서드 12개(컴포넌트 3개) · 화면 이름별 함수 10개(컴포넌트 4개) · Render 추가 입력 컴포넌트 4개', { size: 11.5, fill: C.muted });
+		out(dir + 'shared-components.svg',
+			svg(W, H, '공유 컴포넌트 10개, 닫힌 형태는 2개', '표준을 정하기 직전 공유 컴포넌트 10개 중 Render(modifier) 하나만 가진 닫힌 형태는 팝업과 로딩 2개였다. 명령형 메서드는 토스트 · 코치마크 · 블루투스 연결에 모두 12개, 화면 이름별 그리기 함수는 블루투스 연결 · 대화 속도 · 블루투스 상태 · 회원가입에 모두 10개, Render 에 modifier 밖 입력을 받는 것은 토스트 · 코치마크 · 약관 동의 · 기기 활성화 4개였다.', b));
+	}
+
+	// 20. 경계는 두 가지 형태
+	{
+		const H = 330;
+		let b = `<defs>${marker('j-b', BLUE)}${marker('j-g', GREEN)}${marker('j-gray', GRAY)}</defs>`;
+		b += text(16, 30, '경계는 두 가지 형태로만', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, 'feature 사이의 경계에만 표준을 두고, 안쪽 UI 는 자유', { size: 12, fill: C.subtle });
+		// 삽입형
+		b += text(150, 84, '삽입형 — RouteEntry', { size: 13.5, anchor: 'middle', fill: C.text, weight: 700 });
+		b += box(20, 98, 260, 170, tint.feature, BLUE);
+		b += text(34, 120, '화면 A', { size: 12, fill: C.text, weight: 700 });
+		b += box(50, 136, 200, 84, C.surface, GREEN, { dash: '5 4', sw: 1.5 });
+		b += text(150, 166, 'feature B 의 화면', { size: 12, anchor: 'middle', fill: C.text, weight: 700 });
+		b += text(150, 186, 'Render(navigation, modifier)', { size: 11, anchor: 'middle', fill: C.muted });
+		b += text(150, 206, '자리(Slot)에 통째로 넣는다', { size: 11, anchor: 'middle', fill: C.muted });
+		b += text(150, 290, 'Page · Slot', { size: 11.5, anchor: 'middle', fill: C.muted });
+		// 호출형
+		b += text(450, 84, '호출형 — Component + dispatch', { size: 13.5, anchor: 'middle', fill: C.text, weight: 700 });
+		b += box(320, 98, 260, 170, tint.feature, BLUE);
+		b += text(334, 120, '화면 A', { size: 12, fill: C.text, weight: 700 });
+		b += node(338, 140, 104, 44, C.surface, BLUE, 'ViewModel', 'sideEffect');
+		b += node(338, 208, 104, 44, C.surface, BLUE, 'Route', 'dispatch(Request)');
+		b += arrow(390, 186, 390, 204, BLUE, 'j-b');
+		b += node(470, 140, 96, 112, '#e8f5ef', GREEN, 'feature B', '');
+		b += text(518, 190, 'Render(modifier)', { size: 10.5, anchor: 'middle', fill: C.muted });
+		b += text(518, 206, '보일지는', { size: 10.5, anchor: 'middle', fill: C.muted });
+		b += text(518, 220, 'module 이 판정', { size: 10.5, anchor: 'middle', fill: C.muted });
+		b += arrow(444, 230, 466, 230, GREEN, 'j-g');
+		b += text(450, 290, 'Overlay — 팝업 · 토스트 · 로딩', { size: 11.5, anchor: 'middle', fill: C.muted });
+		b += `<line x1="300" x2="300" y1="74" y2="300" stroke="${C.grid}"/>`;
+		out(dir + 'two-joints.svg',
+			svg(W, H, '경계는 두 가지 형태로만', '삽입형은 다른 feature 의 화면을 화면 A 의 자리(Slot)에 RouteEntry.Render(navigation, modifier) 로 통째로 넣는다. 호출형은 화면 A 의 ViewModel 이 sideEffect 로 시점을 알리면 Route 가 dispatch(Request) 로 feature B 에 요청하고, feature B 는 Render(modifier) 로 그리며 보일지는 module 이 판정한다.', b));
+	}
+
+	// 21. 코치마크 전과 후
+	{
+		const H = 360;
+		let b = `<defs>${marker('c-r', RED)}${marker('c-g', GREEN)}${marker('c-gray', GRAY)}</defs>`;
+		b += text(16, 30, '코치마크 — 전과 후', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '쓰는 화면은 «언제» 만 말하고, 보일지는 module 이 정한다', { size: 12, fill: C.subtle });
+		// 전
+		b += text(150, 84, '전', { size: 14, anchor: 'middle', fill: C.text, weight: 700 });
+		b += node(20, 100, 120, 44, tint.feature, BLUE, '쓰는 화면 ×5', '헤더 · 하트 · 플로팅');
+		b += node(170, 100, 120, 64, '#fdf0e8', ORANGE, '코치마크', 'show · dismiss ·');
+		b += text(230, 152, 'consume · …', { size: 10.5, anchor: 'middle', fill: C.muted });
+		b += arrow(142, 116, 166, 116, RED, 'c-r');
+		b += arrow(142, 130, 166, 130, RED, 'c-r');
+		b += text(80, 168, '명령형 호출 10곳', { size: 11, anchor: 'middle', fill: RED, weight: 700 });
+		b += node(170, 196, 120, 44, '#fdf0e8', ORANGE, '노출 판정', '컴포넌트가 다시 함');
+		b += arrow(230, 166, 230, 192, GRAY, 'c-gray');
+		b += node(170, 266, 120, 44, '#fdf0e8', ORANGE, 'Render(kind)', 'ViewModel 쥐고 그림');
+		b += arrow(230, 242, 230, 262, GRAY, 'c-gray');
+		// 후
+		const R = 310;
+		b += text(R + 140, 84, '후', { size: 14, anchor: 'middle', fill: C.text, weight: 700 });
+		b += node(R, 100, 120, 44, tint.feature, BLUE, '쓰는 화면', '요청만 보냄');
+		b += node(R + 150, 100, 120, 44, '#e8f5ef', GREEN, '코치마크', 'dispatch 한 길');
+		b += arrow(R + 122, 122, R + 146, 122, GREEN, 'c-g');
+		b += text(R + 60, 168, 'dispatch(Request)', { size: 11, anchor: 'middle', fill: GREEN, weight: 700 });
+		b += node(R + 150, 196, 120, 44, '#e8f5ef', GREEN, 'module', '보일지 판정');
+		b += arrow(R + 210, 146, R + 210, 192, GREEN, 'c-g');
+		b += node(R, 266, 120, 44, tint.feature, BLUE, '앵커 Slot', '쓰는 화면 안 자리');
+		b += node(R + 150, 266, 120, 44, '#e8f5ef', GREEN, 'CoachmarkView', '상태 없음');
+		b += arrow(R + 122, 288, R + 146, 288, GREEN, 'c-g');
+		b += `<line x1="300" x2="300" y1="74" y2="320" stroke="${C.grid}"/>`;
+		b += text(16, H - 14, '마이그레이션용 메서드 1개는 홈 화면 조각까지 남긴다 · 골든마스터 테스트 단언은 그대로', { size: 11.5, fill: C.muted });
+		out(dir + 'coachmark-before-after.svg',
+			svg(W, H, '코치마크 — 전과 후', '전: 쓰는 화면 다섯 곳이 코치마크의 show · dismiss · consume 같은 명령형 메서드를 10곳에서 부르고, 컴포넌트가 노출 판정을 다시 하고, Render(kind) 가 ViewModel 을 쥐고 직접 그렸다. 후: 쓰는 화면은 dispatch(Request) 한 길로 요청만 보내고, 보일지는 module 이 판정하며, 그림은 쓰는 화면 안 앵커 Slot 에서 상태 없는 CoachmarkView 가 그린다. 마이그레이션용 메서드 1개는 홈 화면 조각까지 남는다.', b));
+	}
+
+	// 22. 제공 함수 하나
+	{
+		const H = 300;
+		let b = `<defs>${marker('p-r', RED)}${marker('p-g', GREEN)}</defs>`;
+		b += text(16, 30, '«한 번만 제공» → «제공 함수 하나»', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, 'Compose 루트가 여럿이라 «한 번» 은 지킬 수 없었다 · 루트와 제공 목록은 예시', { size: 12, fill: C.subtle });
+		b += text(150, 84, '전 — 루트마다 따로 제공', { size: 13, anchor: 'middle', fill: C.text, weight: 700 });
+		const roots = [['루트 A', 'A · B · C 제공'], ['루트 B', 'A · C 제공'], ['루트 C', 'B 제공']];
+		roots.forEach(([n, s], i) => (b += node(30, 100 + i * 56, 240, 44, '#fdf0e8', ORANGE, n, s)));
+		b += text(150, 282, '빠뜨려도 NoOp 이 조용히 아무것도 안 그림', { size: 11, anchor: 'middle', fill: RED, weight: 700 });
+		const R = 320;
+		b += text(R + 130, 84, '후 — 모든 루트가 한 함수를 부름', { size: 13, anchor: 'middle', fill: C.text, weight: 700 });
+		roots.forEach(([n], i) => {
+			b += node(R, 100 + i * 56, 100, 44, tint.feature, BLUE, n, '');
+			b += arrow(R + 102, 122 + i * 56, R + 146, 178, GREEN, 'p-g');
+		});
+		b += node(R + 150, 150, 110, 56, '#e8f5ef', GREEN, '제공 함수', 'app 이 가짐');
+		b += text(R + 130, 282, '그 밖에서 제공하면 규칙 위반', { size: 11, anchor: 'middle', fill: C.muted });
+		b += `<line x1="300" x2="300" y1="74" y2="290" stroke="${C.grid}"/>`;
+		out(dir + 'provision-function.svg',
+			svg(W, H, '한 번만 제공에서 제공 함수 하나로', '전: Compose 루트마다 공유 컴포넌트를 따로 제공해서, 한 루트에서 빠뜨려도 NoOp 기본값이 조용히 아무것도 그리지 않았다. 후: 모든 루트가 app 이 가진 제공 함수 하나를 부르고, 그 밖에서 제공하면 규칙 위반이다.', b));
+	}
+}
