@@ -1,11 +1,11 @@
 ---
 title: '규격 하나가 판단을 바꾼다 — feature 가 만나는 곳에만 규격을 두기'
 description: '규칙상 «완료» 로 닫은 작업이 끝나지 않았던 일에서 시작해, 화면끼리 다른 모양을 세어 보고, 이미 있던 좋은 예에서 규격을 골라, feature 가 만나는 곳을 두 가지 모양으로 정하기까지. 기준이 생기자 «다르다» 가 «무엇을 고칠지» 로 바뀐 이야기입니다.'
-pubDate: 2026-11-04
+pubDate: 2026-11-05
 category: architecture
 platform: android
 tags: ['android', 'compose', 'architecture', 'interface', 'refactoring']
-draft: true
+draft: false
 ---
 
 > 이 글은 [안드로이드 아키텍처 시리즈](../android-architecture-1-one-truth/) 다음 이야기입니다. 시리즈가 «도메인 상태를 한 곳에서 관리하는 구조» 를 다뤘다면, 이번에는 그 위의 **화면(UI) 계층**, 그중에서도 feature 와 feature 가 만나는 곳 이야기입니다.
