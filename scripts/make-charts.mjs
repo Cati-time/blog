@@ -825,3 +825,125 @@ const W = 600;
 		svg(W, H, '웹 어드민 구조', 'app(라우트 · 내비게이션 · 권한 게이트)이 feature 의 Entry 를 마운트한다. feature 안에는 Entry(생명주기) · View(그리기만) · ViewModel(판정 · 화면 상태)이 있고, View 의 휘발 상태는 useState, 화면 지속 상태는 ViewModel 옆 uiAtoms 에 둔다. Store 는 ViewModel 만 부르며 use<이름>Store() 로 state · actions · snapshot 을 받는다. module 은 도메인 상태(SSOT)를 관리한다 — actions 가 service 를 불러 결과를 atoms 에 저장하고, snapshot 이 권한 같은 파생된 답을 낸다. data 는 REST 호출 · DTO 만 하고 상태가 없으며, 권한은 게이트웨이 · 서버가 강제한다. core(useApiQuery · antd 파사드)는 계층 밖에서 가로지르고, I/O 를 하면 data 몫으로 본다. feature 는 data 를 직접 부르지 않고, View 는 Store 를 부르지 않는다.', b),
 	);
 }
+
+// ── 13~15. 왜 아키텍처인가 — 세 저장소의 계층 · 의존 방향 · 선택지 좁히기 ─────────────
+{
+	const BLUE = C.s2, GREEN = C.s1, ORANGE = C.s3, GRAY = '#9ca3af', RED = C.critical;
+	const tint = { top: '#f3f4f6', feature: '#eaf2fc', module: '#e8f5ef', io: '#fdf0e8', core: '#fafafa' };
+	const marker = (id, color) =>
+		`<marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${color}"/></marker>`;
+	const box = (x, y, w, h, fill, stroke, o = {}) =>
+		`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.rx ?? 8}" fill="${fill}" stroke="${stroke}" stroke-width="${o.sw ?? 1.5}"${o.dash ? ` stroke-dasharray="${o.dash}"` : ''}/>`;
+	const arrow = (x1, y1, x2, y2, color, id, dash = '') =>
+		`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="1.8"${dash ? ` stroke-dasharray="${dash}"` : ''} marker-end="url(#${id})"/>`;
+	const curve = (d, color, id, dash = '') =>
+		`<path d="${d}" fill="none" stroke="${color}" stroke-width="1.8"${dash ? ` stroke-dasharray="${dash}"` : ''} marker-end="url(#${id})"/>`;
+	const defs = (p) => `<defs>${marker(p + '-g', GREEN)}${marker(p + '-gray', GRAY)}${marker(p + '-r', RED)}${marker(p + '-b', BLUE)}</defs>`;
+	const layer = (x, y, w, h, fill, stroke, name, sub) =>
+		box(x, y, w, h, fill, stroke) +
+		text(x + w / 2, y + (sub ? 21 : 27), name, { size: 13, anchor: 'middle', fill: C.text, weight: 700 }) +
+		(sub ? text(x + w / 2, y + 38, sub, { size: 11, anchor: 'middle', fill: C.muted }) : '');
+	const xmark = (cx, cy) =>
+		`<circle cx="${cx}" cy="${cy}" r="9" fill="#fbeaea" stroke="${RED}" stroke-width="1.5"/>` + text(cx, cy + 4, '✕', { size: 11, anchor: 'middle', fill: RED, weight: 700 });
+
+	// 13. 세 저장소의 계층
+	{
+		const H = 470;
+		let b = defs('l');
+		b += text(16, 30, '세 저장소의 계층', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '위에서 아래로만 의존한다 · 가로로 놓인 core 는 계층이 아니라 공통 코드', { size: 12, fill: C.subtle });
+		const cols = [
+			{ x: 16, title: '안드로이드 앱', rows: [['app', '진입 · 조립 · 화면 이동', 'top'], ['feature', '화면 — View · ViewModel', 'feature'], ['module', '도메인 상태 (SSOT)', 'module'], ['data · bridge', '서버 · DB · OS 신호', 'io']] },
+			{ x: 212, title: '웹 어드민', rows: [['app', '라우트 · 내비게이션', 'top'], ['feature', '화면 — View · ViewModel', 'feature'], ['module', '도메인 상태 (SSOT)', 'module'], ['data', 'REST 호출 · DTO', 'io']] },
+			{ x: 408, title: '백엔드 서버', rows: [['controller', '요청 → 서비스 DTO', 'top'], ['service · usecase', '업무 흐름 조율', 'feature'], ['repository', '저장 · 조회', 'module'], ['domain', '엔티티 · 규칙', 'io']] },
+		];
+		const W2 = 176, LH = 52, GAP = 22, Y0 = 92;
+		const strokeOf = { top: GRAY, feature: BLUE, module: GREEN, io: ORANGE };
+		for (const c of cols) {
+			b += text(c.x + W2 / 2, 80, c.title, { size: 13, anchor: 'middle', fill: C.text, weight: 700 });
+			c.rows.forEach(([n, s, k], i) => {
+				const y = Y0 + i * (LH + GAP);
+				b += layer(c.x, y, W2, LH, tint[k], strokeOf[k], n, s);
+				if (i < c.rows.length - 1) b += arrow(c.x + W2 / 2, y + LH + 2, c.x + W2 / 2, y + LH + GAP - 2, GREEN, 'l-g');
+			});
+		}
+		const coreY = Y0 + 4 * (LH + GAP) - 8;
+		b += box(16, coreY, 372, 40, tint.core, GRAY, { dash: '6 4' });
+		b += text(202, coreY + 25, 'core — 디자인 시스템 · 로거 · HTTP 클라이언트 등 (계층 밖 공통)', { size: 11.5, anchor: 'middle', fill: C.muted });
+		b += box(408, coreY, W2, 40, tint.core, GRAY, { dash: '6 4' });
+		b += text(408 + W2 / 2, coreY + 25, '앱 화면이 없어 계층 넷', { size: 11.5, anchor: 'middle', fill: C.muted });
+		b += text(16, H - 14, '화살표 = «이 계층은 아래 계층만 안다(import 한다)» · 거꾸로나 건너뛰기는 막는다', { size: 12, fill: C.text });
+		out('src/content/blog/why-architecture-in-ai-era/layers-three-repos.svg',
+			svg(W, H, '세 저장소의 계층', '안드로이드 앱은 app → feature → module → data·bridge, 웹 어드민은 app → feature → module → data, 백엔드 서버는 controller → service·usecase → repository → domain 으로 위에서 아래로만 의존한다. 앱 두 곳에는 계층 밖에서 가로지르는 공통 코드 core 가 있다.', b));
+	}
+
+	// 14. 의존은 한 방향 — 허용 · 금지 · 누가 막나
+	{
+		const H = 430;
+		let b = defs('d');
+		b += text(16, 30, '의존은 한 방향으로만', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '허용되는 화살표는 하나 · 건너뛰기와 거꾸로는 기계가 막는다', { size: 12, fill: C.subtle });
+		const X = 40, Wd = 200;
+		b += layer(X, 78, Wd, 54, tint.feature, BLUE, '화면 계층', 'feature · controller');
+		b += layer(X, 192, Wd, 54, tint.module, GREEN, '상태 · 업무 계층', 'module · service');
+		b += layer(X, 306, Wd, 54, tint.io, ORANGE, '데이터 계층', 'data · repository');
+		b += arrow(X + 70, 134, X + 70, 188, GREEN, 'd-g');
+		b += arrow(X + 70, 248, X + 70, 302, GREEN, 'd-g');
+		b += text(X + 78, 166, '허용', { size: 11, fill: GREEN, weight: 700 });
+		b += text(X + 78, 280, '허용', { size: 11, fill: GREEN, weight: 700 });
+		// 건너뛰기
+		b += curve(`M${X + Wd},105 C${X + Wd + 60},150 ${X + Wd + 60},290 ${X + Wd},333`, RED, 'd-r', '5 4');
+		b += xmark(X + Wd + 45, 219);
+		b += text(X + Wd + 58, 214, '건너뛰기', { size: 11.5, fill: RED, weight: 700 });
+		b += text(X + Wd + 58, 230, '화면 → 데이터', { size: 11, fill: C.muted });
+		// 거꾸로
+		b += curve(`M${X},333 C${X - 34},290 ${X - 34},150 ${X},105`, RED, 'd-r', '5 4');
+		b += xmark(X - 26, 219);
+		b += text(X - 34, 246, '거꾸로', { size: 11.5, fill: RED, weight: 700 });
+		b += text(X + 8, 392, '거꾸로: 아래 계층이 위 계층을 import (예: 도메인이 서비스를, 서비스가 컨트롤러의 요청 클래스를)', { size: 11, fill: C.muted });
+		// 누가 막나
+		const TX = 384;
+		b += text(TX, 92, '누가 막나', { size: 13, fill: C.text, weight: 700 });
+		const rows = [['안드로이드', 'Gradle 모듈 의존 + 검사 스크립트'], ['웹 어드민', 'ESLint 규칙 → CI 빌드 실패'], ['백엔드 A', '모듈 의존 방향 — 컴파일 오류'], ['백엔드 B', 'import 방향 가드 — 빌드 전 실패']];
+		rows.forEach(([k, v], i) => {
+			const y = 108 + i * 56;
+			b += box(TX, y, 200, 46, C.surface, GRAY, { rx: 7, sw: 1.2 });
+			b += text(TX + 12, y + 19, k, { size: 12, fill: C.text, weight: 700 });
+			b += text(TX + 12, y + 36, v, { size: 11, fill: C.muted });
+		});
+		out('src/content/blog/why-architecture-in-ai-era/dependency-direction.svg',
+			svg(W, H, '의존은 한 방향으로만', '화면 계층은 상태·업무 계층을, 상태·업무 계층은 데이터 계층을 부르는 것만 허용한다. 화면이 데이터 계층을 바로 부르는 건너뛰기와, 아래 계층이 위 계층을 import 하는 거꾸로는 막는다. 안드로이드는 Gradle 모듈 의존과 검사 스크립트, 웹 어드민은 ESLint 규칙을 CI 빌드가, 백엔드 A 는 모듈 의존 방향의 컴파일 오류가, 백엔드 B 는 import 방향 가드가 막는다.', b));
+	}
+
+	// 15. 선택지 좁히기 — 규칙이 없을 때 vs 있을 때
+	{
+		const H = 330;
+		let b = defs('o');
+		b += text(16, 30, 'AI 의 선택지를 좁힌다', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '같은 요구(«목록을 보여 줘»)에 AI 가 고를 수 있는 길', { size: 12, fill: C.subtle });
+		// 왼쪽
+		b += text(150, 82, '규칙이 없을 때', { size: 13, anchor: 'middle', fill: C.text, weight: 700 });
+		b += layer(16, 168, 110, 40, tint.feature, BLUE, '화면');
+		const dests = ['API 직접 호출', '다른 화면 상태 복사', '공용 유틸', '옛 코드의 판정 복사'];
+		dests.forEach((n, k) => {
+			const y = 98 + k * 50;
+			b += box(160, y, 128, 36, C.surface, RED, { rx: 7, sw: 1.2, dash: '4 3' });
+			b += text(224, y + 23, n, { size: 11, anchor: 'middle', fill: C.text });
+			b += curve(`M126,188 C143,188 140,${y + 18} 157,${y + 18}`, RED, 'o-r', '4 3');
+		});
+		b += text(152, 310, '모두 «돌아가는» 코드 — 판단이 흩어진다', { size: 11, anchor: 'middle', fill: C.muted });
+		// 오른쪽
+		const R0 = 330;
+		b += text(R0 + 130, 82, '규칙이 있을 때', { size: 13, anchor: 'middle', fill: C.text, weight: 700 });
+		b += layer(R0 + 70, 98, 120, 40, tint.feature, BLUE, '화면');
+		b += layer(R0 + 70, 168, 120, 40, tint.module, GREEN, 'ViewModel');
+		b += layer(R0 + 70, 238, 120, 40, tint.module, GREEN, 'module (SSOT)');
+		b += arrow(R0 + 130, 140, R0 + 130, 164, GREEN, 'o-g');
+		b += arrow(R0 + 130, 210, R0 + 130, 234, GREEN, 'o-g');
+		b += text(R0 + 196, 190, '길이 하나', { size: 11.5, fill: GREEN, weight: 700 });
+		b += text(R0 + 130, 310, '틀린 길은 빌드가 막는다', { size: 11, anchor: 'middle', fill: C.muted });
+		b += `<line x1="300" x2="300" y1="74" y2="310" stroke="${C.grid}" stroke-width="1"/>`;
+		out('src/content/blog/why-architecture-in-ai-era/narrowing-choices.svg',
+			svg(W, H, 'AI 의 선택지를 좁힌다', '규칙이 없으면 화면에서 목록을 보여 주는 길이 API 직접 호출, 다른 화면 상태 복사, 공용 유틸, 옛 코드의 판정 복사 등 여러 개로 열려 있다. 규칙이 있으면 화면 → ViewModel → module 의 한 길만 남고, 틀린 길은 빌드가 막는다.', b));
+	}
+}
