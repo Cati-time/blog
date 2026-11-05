@@ -5,7 +5,7 @@ pubDate: 2026-11-05
 category: architecture
 platform: android
 tags: ['android', 'compose', 'architecture', 'interface', 'refactoring']
-draft: false
+draft: true
 ---
 
 > 이 글은 [안드로이드 아키텍처 시리즈](../android-architecture-1-one-truth/) 다음 이야기입니다. 시리즈가 «도메인 상태를 한 곳에서 관리하는 구조» 를 다뤘다면, 이번에는 그 위의 **화면(UI) 계층**, 그중에서도 feature 와 feature 가 만나는 곳 이야기입니다.
