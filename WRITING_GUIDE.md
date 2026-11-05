@@ -315,7 +315,8 @@ val state by viewModel.uiState.collectAsStateWithLifecycle()
 
 - 제목은 60자 안, 설명은 40~160자(앞 80자에 핵심). 본문은 «## 한 줄로» 결론으로 시작합니다.
 - 그림 alt 는 그림이 말하는 내용을 숫자까지 문장으로 씁니다(AI 는 그림 대신 alt 를 읽습니다).
-- 발행 전 `npm run build` 뒤 `npm run check:seo` 가 오류 0 이어야 합니다. 자세한 기준은 `.claude/skills/blog-seo/SKILL.md`.
+- 절은 혼자 읽어도 뜻이 통하게, 팀 용어는 처음 나올 때 한 문장으로 정의합니다(AI 는 글을 절 단위로 가져갑니다).
+- 초안을 마칠 때 `npm run check:seo -- <slug>`, 발행 전에는 `npm run build` 뒤 `npm run check:seo` 가 오류 0 이어야 합니다. 자세한 기준은 `.claude/skills/blog-seo/SKILL.md`.
 - 글마다 사람용 페이지와 함께 원문 마크다운(`/posts/<slug>.md`)과 `/llms.txt` 목차가 자동으로 만들어집니다.
 
 ### 작은 팁
