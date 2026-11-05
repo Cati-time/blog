@@ -36,5 +36,6 @@ Consult these guides before working on related tasks:
 - 소개 페이지의 팀원(`src/content/team/*.yaml`)·프로젝트(`src/content/projects/*.yaml`)는 **실존 인물·실제 업무 정보**다. 이름·역할·소개·프로젝트 내용을 지어내지 않고 사용자에게 받은 그대로 넣는다. 형식은 WRITING_GUIDE.md §11 "소개 페이지에 팀원·프로젝트 추가".
 - 새 글은 기본 `draft: true` 로 만들고, 사용자가 "발행" 이라고 할 때만 `draft: false` 로 바꾼다.
 - `gh api` 로 저장소 설정(Pages, Discussions 등)을 바꾸는 작업은 실행 전에 사용자에게 확인한다. 조회(`gh run list`, graphql 읽기)는 바로 해도 된다.
+- **검색 · AI 전달은 `blog-seo` 스킬(`.claude/skills/blog-seo/`)을 따른다.** 발행 전 `npm run check:seo`(build 뒤) 오류 0. AI 용 출력은 `/llms.txt` · `/llms-full.txt` · `/posts/<slug>.md`(`src/lib/llms.ts`).
 - 토큰·비밀값은 파일이나 채팅에 남기지 않는다.
 - **스타일은 디자인 토큰으로만 쓴다.** 정본 `src/styles/tokens.css`, 정의서 [docs/design-tokens.md](docs/design-tokens.md) (두 파일은 같은 커밋에서 수정). 컴포넌트에 색상 값·원시 토큰(`--p-*`)·정의 안 된 토큰을 쓰면 `npm run check:tokens` 가 빌드를 막는다. **다크 모드는 지원하지 않는다**(사용자 결정 2026-09-29) — 다크 테마·토글을 다시 넣지 않는다.

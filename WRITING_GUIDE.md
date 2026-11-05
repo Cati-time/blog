@@ -311,6 +311,13 @@ val state by viewModel.uiState.collectAsStateWithLifecycle()
 - 글에서는 **대표 이름**으로 씁니다(예: 감독이 아니라 Supervisor). 괄호 안의 다른 이름은 다른 문서에서 만났을 때 같은 것임을 알리기 위한 것입니다.
 - 용어를 바꾸거나 더할 때는 이 파일만 고칩니다. `status: pending` 은 이름 통일을 기다리는 줄입니다.
 
+### 검색과 AI 에 잘 전달되게
+
+- 제목은 60자 안, 설명은 40~160자(앞 80자에 핵심). 본문은 «## 한 줄로» 결론으로 시작합니다.
+- 그림 alt 는 그림이 말하는 내용을 숫자까지 문장으로 씁니다(AI 는 그림 대신 alt 를 읽습니다).
+- 발행 전 `npm run build` 뒤 `npm run check:seo` 가 오류 0 이어야 합니다. 자세한 기준은 `.claude/skills/blog-seo/SKILL.md`.
+- 글마다 사람용 페이지와 함께 원문 마크다운(`/posts/<slug>.md`)과 `/llms.txt` 목차가 자동으로 만들어집니다.
+
 ### 작은 팁
 
 - **제목**은 검색될 말로 구체적으로: "상태 관리 이야기" 보다 "Compose 에서 StateFlow 와 remember 구분하기"

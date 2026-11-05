@@ -16,7 +16,8 @@
 		"check:tokens": "node scripts/check-tokens.mjs",
 		"check:posts": "node scripts/check-posts.mjs",
 		"check:wording": "node scripts/check-wording.mjs",
-		"import": "node scripts/import-doc.mjs"
+		"import": "node scripts/import-doc.mjs",
+		"check:seo": "node scripts/check-seo.mjs"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^8.0.1",
