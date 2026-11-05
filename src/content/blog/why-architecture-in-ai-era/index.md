@@ -1,12 +1,12 @@
 ---
 title: '왜 아키텍처인가 — AI 가 코드를 쓰는 시대에'
 description: 'AI 가 코드를 빠르게 많이 쓰게 되면서 오히려 아키텍처가 더 중요해졌습니다. 아키텍처가 AI 의 선택지를 좁혀 슬롭 코드를 줄이는 방식을 안드로이드 · 웹 사례로 보고, 백엔드에서 DDD 를 전부 믿되 도메인을 아는 만큼만 적용하는 이유를 정리합니다.'
-pubDate: 2026-11-04
+pubDate: 2026-11-05
 category: architecture
 platform: android
 alsoIn: ['web', 'backend']
 tags: ['architecture', 'ai-agent', 'ddd', 'llm']
-draft: true
+draft: false
 ---
 
 ## 한 줄로
