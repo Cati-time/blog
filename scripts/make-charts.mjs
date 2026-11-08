@@ -1164,3 +1164,118 @@ const W = 600;
 			svg(W, H, '한 번만 제공에서 제공 함수 하나로', '전: Compose 루트마다 공유 컴포넌트를 따로 제공해서, 한 루트에서 빠뜨려도 NoOp 기본값이 조용히 아무것도 그리지 않았다. 후: 모든 루트가 app 이 가진 제공 함수 하나를 부르고, 그 밖에서 제공하면 규칙 위반이다.', b));
 	}
 }
+
+// ── 23~25. 어드민 서버 아키텍처 — 계층 · 거꾸로 가던 의존 · 규칙이 들어온 순서 ─────────────
+// 기준: 통합선 2026-11-08 판. 파일 수는 계층 가드의 판정 함수(layer_of)로 센 값(블로그 세션 · 원천 세션이 같은 값).
+{
+	const BLUE = C.s2, GREEN = C.s1, ORANGE = C.s3, GRAY = '#9ca3af', RED = C.critical;
+	const tint = { top: '#f3f4f6', feature: '#eaf2fc', module: '#e8f5ef', io: '#fdf0e8', core: '#fafafa' };
+	const marker = (id, color) =>
+		`<marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${color}"/></marker>`;
+	const box = (x, y, w, h, fill, stroke, o = {}) =>
+		`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.rx ?? 8}" fill="${fill}" stroke="${stroke}" stroke-width="${o.sw ?? 1.5}"${o.dash ? ` stroke-dasharray="${o.dash}"` : ''}/>`;
+	const arrow = (x1, y1, x2, y2, color, id, dash = '') =>
+		`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="1.8"${dash ? ` stroke-dasharray="${dash}"` : ''} marker-end="url(#${id})"/>`;
+	const xmark = (cx, cy) =>
+		`<circle cx="${cx}" cy="${cy}" r="9" fill="#fbeaea" stroke="${RED}" stroke-width="1.5"/>` + text(cx, cy + 4, '✕', { size: 11, anchor: 'middle', fill: RED, weight: 700 });
+	const dir1 = 'src/content/blog/admin-server-architecture-1-one-way/';
+	const dir2 = 'src/content/blog/admin-server-architecture-2-what-went-wrong/';
+	const dir3 = 'src/content/blog/admin-server-architecture-3-how-we-moved/';
+
+	// 23. 계층과 의존 방향
+	{
+		const H = 560;
+		let b = `<defs>${marker('a-g', GREEN)}${marker('a-gray', GRAY)}</defs>`;
+		b += text(16, 30, '어드민 서버의 계층', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '의존은 아래로만 · 괄호는 파일 수(자바 파일 1,321개 기준)', { size: 12, fill: C.subtle });
+		const L = 16, LW = 340, LH = 70, GAP = 30;
+		const rows = [
+			['controller (412)', 'HTTP 입출력 · 요청 검증 · 요청 → 서비스 DTO 변환', 'top', GRAY],
+			['service (476)', '업무 흐름 조율 · 트랜잭션 경계 · 엔티티 ↔ DTO', 'feature', BLUE],
+			['repository (82)', 'JPA · QueryDSL 로 저장 · 조회', 'module', GREEN],
+			['domain (127)', '엔티티 · 값 · 도메인 규칙 · 도메인 예외', 'io', ORANGE],
+		];
+		const Y0 = 80;
+		rows.forEach(([n, s, k, st], i) => {
+			const y = Y0 + i * (LH + GAP);
+			b += box(L, y, LW, LH, tint[k], st, { sw: 2 });
+			b += text(L + 16, y + 28, n, { size: 14, fill: C.text, weight: 700 });
+			b += text(L + 16, y + 50, s, { size: 11.5, fill: C.muted });
+			if (i < rows.length - 1) b += arrow(L + LW / 2, y + LH + 2, L + LW / 2, y + LH + GAP - 3, GREEN, 'a-g');
+		});
+		// usecase 는 service 안
+		const sy = Y0 + LH + GAP;
+		b += box(L + 236, sy + 10, 92, 26, '#ffffff', BLUE, { rx: 13, sw: 1, dash: '4 3' });
+		b += text(L + 282, sy + 27, 'usecase 포함', { size: 11, anchor: 'middle', fill: BLUE, weight: 700 });
+		// client — service 와 같은 높이
+		b += box(392, sy, 192, LH, tint.feature, BLUE, { dash: '6 4' });
+		b += text(408, sy + 28, 'client (63)', { size: 14, fill: C.text, weight: 700 });
+		b += text(408, sy + 50, '다른 서비스로 가는 어댑터', { size: 11.5, fill: C.muted });
+		b += arrow(L + LW + 2, sy + LH / 2, 388, sy + LH / 2, GREEN, 'a-g');
+		// exception 잎
+		const ey = Y0 + 3 * (LH + GAP);
+		b += box(392, ey, 192, LH, tint.core, GRAY, { dash: '4 3' });
+		b += text(408, ey + 28, 'exception 잎 (59)', { size: 14, fill: C.text, weight: 700 });
+		b += text(408, ey + 50, '오류 코드 · 예외 — 아무도 안 부름', { size: 11.5, fill: C.muted });
+		b += arrow(L + LW + 2, ey + LH / 2, 388, ey + LH / 2, GRAY, 'a-gray', '4 3');
+		b += text(488, ey - 10, '모든 계층이 쓸 수 있다', { size: 11, anchor: 'middle', fill: C.muted });
+		// 금지
+		const ny = Y0 + 4 * (LH + GAP) - 4;
+		const no = (y, s) => xmark(25, y - 4) + text(42, y, s, { size: 12, fill: C.text });
+		b += no(ny + 6, '위로 가는 의존 — domain → service, client → controller 등');
+		b += no(ny + 30, 'controller 가 repository · domain 을 바로 쓰기');
+		b += text(16, ny + 56, '설정 · 보안 · 로깅(102)은 계층 밖 — 가드가 재지 않고 리뷰로 본다', { size: 11.5, fill: C.muted });
+		out(dir1 + 'layers.svg',
+			svg(W, H, '어드민 서버의 계층', '자바 파일 1,321개 기준. controller(412) → service(476, usecase 포함) → repository(82) → domain(127) 순서로 아래로만 의존한다. client(63)는 다른 서비스로 가는 어댑터로 service 와 같은 높이에 있고, exception 잎(59)은 오류 코드 · 예외로 모든 계층이 쓸 수 있지만 다른 계층을 부르지 않는다. 위로 가는 의존과 controller 가 repository · domain 을 바로 쓰는 것은 금지다. 설정 · 보안 · 로깅 102개는 계층 밖이라 가드가 재지 않는다.', b));
+	}
+
+	// 24. 거꾸로 가던 의존 19건
+	{
+		const data = [
+			['domain → service', 9, '조율 코드가 domain 에 있었다'],
+			['domain → client', 6, '같은 조율 코드가 바깥도 불렀다'],
+			['service → controller', 3, '서비스 DTO 가 요청 클래스를 받았다'],
+			['client → controller', 1, '바깥 응답이 화면 응답 클래스를 썼다'],
+		];
+		const H = 330, L = 168, max = 10, pw = 250;
+		let b = text(16, 30, '거꾸로 가던 의존 19건 → 0', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '계층 규칙과 가드를 넣은 날 함께 정리 · 지금 가드 위반 0', { size: 12, fill: C.subtle });
+		data.forEach(([n, v, why], i) => {
+			const y = 80 + i * 52;
+			b += text(L - 10, y + 17, n, { size: 12.5, anchor: 'end', fill: C.text, weight: 700 });
+			const w = (v / max) * pw;
+			b += `<rect x="${L}" y="${y}" width="${w}" height="24" rx="4" fill="${i < 2 ? ORANGE : BLUE}"/>`;
+			b += text(L + w + 8, y + 17, `${v}건`, { size: 13, fill: C.text, weight: 700 });
+			b += text(L, y + 42, why, { size: 11.5, fill: C.muted });
+		});
+		b += `<line x1="16" x2="${W - 16}" y1="292" y2="292" stroke="${C.grid}"/>`;
+		b += text(16, 316, '같은 날 controller → domain 직접 참조 49곳도 정리 — 대부분 오류 코드 enum · 안 쓰는 import', { size: 11.5, fill: C.muted });
+		out(dir2 + 'reverse-imports.svg',
+			svg(W, H, '거꾸로 가던 의존 19건', '계층 규칙과 가드를 넣은 날 정리한 거꾸로 가던 의존 19건. domain → service 9건과 domain → client 6건은 domain 패키지에 있던 조율 코드 때문이었고, service → controller 3건은 서비스 DTO 가 controller 요청 클래스를 받아서, client → controller 1건은 바깥 응답이 화면 응답 클래스를 써서 생겼다. 지금 가드 위반은 0이다. 같은 날 controller 가 domain 을 바로 참조하던 49곳도 정리했는데 대부분 오류 코드 enum 과 안 쓰는 import 였다.', b));
+	}
+
+	// 25. AI 공동 작성 커밋과 규칙이 들어온 때
+	{
+		const data = [['6월', 17, ['코딩 규약']], ['7월', 2], ['8월', 13], ['9월', 2], ['10월', 76, ['규칙 문서', '첫 규칙 · 가드']], ['11월', 24, ['8일까지']]];
+		const H = 380, L = 48, R = 16, T = 100, B = 44;
+		const pw = W - L - R, ph = H - T - B, max = 80;
+		const y = (v) => T + ph - (v / max) * ph;
+		const step = pw / data.length, bw = step - 24;
+		let b = text(16, 30, 'AI 공동 작성 커밋 — 달마다', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '2026년 · 커밋에 AI 공동 작성 표시가 있는 것만 · 표시 없는 AI 작업은 빠짐', { size: 12, fill: C.subtle });
+		for (const g of [0, 20, 40, 60, 80]) {
+			b += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="${C.grid}" stroke-width="1"/>`;
+			b += text(L - 6, y(g) + 4, String(g), { size: 12, anchor: 'end', fill: C.subtle });
+		}
+		data.forEach(([m, v, ev], i) => {
+			const x = L + i * step + 12, cx = x + bw / 2;
+			b += bar(x, y(v), bw, y(0) - y(v), ev ? C.s1 : '#86c9ad');
+			b += text(cx, H - B + 18, m, { size: 12, anchor: 'middle', fill: C.subtle });
+			const top = y(v) - 8 - (ev ? ev.length * 14 : 0);
+			b += text(cx, top - 4, String(v), { size: 13, anchor: 'middle', fill: C.text, weight: 700 });
+			(ev ?? []).forEach((line, k) => (b += text(cx, top + 12 + k * 14, line, { size: 11.5, anchor: 'middle', fill: C.muted })));
+		});
+		out(dir3 + 'ai-commits.svg',
+			svg(W, H, 'AI 공동 작성 커밋 — 달마다', '2026년 어드민 서버에서 AI 공동 작성 표시가 있는 커밋 수. 6월 17(첫 AI 커밋과 같은 날 코딩 규약 문서), 7월 2, 8월 13, 9월 2, 10월 76(규칙 문서 뼈대, 첫 규칙과 가드), 11월 8일까지 24. 모두 134개이고, 표시 없는 AI 작업은 빠져 있다.', b));
+	}
+}

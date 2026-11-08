@@ -22,6 +22,7 @@ const fm = (src) => {
 	return { title: get('title'), description: get('description'), draft: get('draft') === 'true', tags: get('tags') };
 };
 
+const only = process.argv.slice(2).filter((a) => !a.startsWith('-'));
 // 원문만 보는 점검 — 발행 글과 초안이 같이 쓴다
 const checkSource = (slug, src, f) => {
 	// 1. 제목 · 설명 — 검색 결과에서 잘리지 않게
@@ -34,12 +35,12 @@ const checkSource = (slug, src, f) => {
 	// 3. 글 사이 링크 — 없는 글 · 초안으로 가는 링크는 발행하면 깨진다
 	for (const m of src.matchAll(/\]\(\.\.\/([a-z0-9-]+)\/\)/g)) {
 		const target = join(BLOG, m[1], 'index.md');
-		if (!existsSync(target) || fm(readFileSync(target, 'utf8')).draft) err(slug, `깨진 글 링크 ../${m[1]}/ (초안이거나 없음)`);
+		const together = only.includes(m[1]) && existsSync(target); // 함께 점검하는 초안끼리는 같이 발행된다
+		if (!together && (!existsSync(target) || fm(readFileSync(target, 'utf8')).draft)) err(slug, `깨진 글 링크 ../${m[1]}/ (초안이거나 없음 — 함께 발행하면 슬러그를 같이 주기)`);
 	}
 };
 
-// 초안 점검 — 슬러그를 주면 그 글의 원문만 본다
-const only = process.argv.slice(2).filter((a) => !a.startsWith('-'));
+// 초안 점검 — 슬러그를 주면 그 글의 원문만 본다 (시리즈는 슬러그를 함께 준다)
 if (only.length) {
 	for (const slug of only) {
 		const path = join(BLOG, slug, 'index.md');
