@@ -1279,3 +1279,132 @@ const W = 600;
 			svg(W, H, 'AI 공동 작성 커밋 — 달마다', '2026년 어드민 서버에서 AI 공동 작성 표시가 있는 커밋 수. 6월 17(첫 AI 커밋과 같은 날 코딩 규약 문서), 7월 2, 8월 13, 9월 2, 10월 76(규칙 문서 뼈대, 첫 규칙과 가드), 11월 8일까지 24. 모두 134개이고, 표시 없는 AI 작업은 빠져 있다.', b));
 	}
 }
+
+// ── 26~29. Business Flow 를 내 저장소에 — 세 층 · 여섯 단계 · 새 버전 받는 고리 · 단계별 졸업 수 ─────────────
+// 원천: 공통 규칙 쪽 조사 회신(2026-11-12) · 단계별 졸업 수 = 도입 실측표(저장소 10곳 · 2026-10-22 판) — 블로그 세션이 다시 셈 일치.
+{
+	const BLUE = C.s2, GREEN = C.s1, ORANGE = C.s3, GRAY = '#9ca3af';
+	const tint = { top: '#f3f4f6', feature: '#eaf2fc', module: '#e8f5ef', io: '#fdf0e8' };
+	const marker = (id, color) =>
+		`<marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${color}"/></marker>`;
+	const box = (x, y, w, h, fill, stroke, o = {}) =>
+		`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.rx ?? 8}" fill="${fill}" stroke="${stroke}" stroke-width="${o.sw ?? 1.5}"${o.dash ? ` stroke-dasharray="${o.dash}"` : ''}/>`;
+	const arrow = (x1, y1, x2, y2, color, id, dash = '') =>
+		`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="1.8"${dash ? ` stroke-dasharray="${dash}"` : ''} marker-end="url(#${id})"/>`;
+	const curve = (d, color, id, dash = '') =>
+		`<path d="${d}" fill="none" stroke="${color}" stroke-width="1.8"${dash ? ` stroke-dasharray="${dash}"` : ''} marker-end="url(#${id})"/>`;
+	const node = (x, y, w, h, fill, stroke, name, sub, o = {}) =>
+		box(x, y, w, h, fill, stroke, o) +
+		text(x + w / 2, y + (sub ? 20 : 25), name, { size: 12.5, anchor: 'middle', fill: C.text, weight: 700 }) +
+		(sub ? text(x + w / 2, y + 37, sub, { size: 10.5, anchor: 'middle', fill: C.muted }) : '');
+	const dir = 'src/content/blog/business-flow-adoption-guide/';
+
+	// 26. 세 층
+	{
+		const H = 430;
+		let b = `<defs>${marker('t-g', GREEN)}${marker('t-o', ORANGE)}</defs>`;
+		b += text(16, 30, '틀 하나, 값은 저장소마다', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '위는 «무엇을 갖춰야 하나», 아래로 갈수록 «그 저장소의 값»', { size: 12, fill: C.subtle });
+		b += node(150, 74, 300, 52, tint.top, GRAY, '팀 전파용 틀', '어떤 칸이 있어야 하나 — 인터페이스');
+		b += arrow(300, 128, 300, 150, GREEN, 't-g');
+		b += node(150, 154, 300, 52, tint.module, GREEN, '공통 규칙', '칸마다 최소선 — 틀의 구현', { sw: 2 });
+		const repos = ['앱', '웹', '서버', '인프라'];
+		repos.forEach((r, i) => {
+			const x = 24 + i * 142;
+			b += curve(`M300,208 C300,240 ${x + 62},236 ${x + 62},262`, GREEN, 't-g');
+			b += node(x, 266, 124, 52, tint.feature, BLUE, `${r} 규칙 문서`, '저장소의 값 · 문장');
+		});
+		b += text(300, 246, '인스턴스', { size: 11, anchor: 'middle', fill: C.muted });
+		// 새 버전 고리
+		b += box(24, 340, 552, 72, '#fff7f1', ORANGE, { dash: '5 4' });
+		b += text(40, 362, '새 버전을 받는 고리 (상시)', { size: 13, fill: C.text, weight: 700 });
+		const steps = ['공포', '한 장', '위임', '수령', '대조', '개정', '심사', '머지 · 보고'];
+		steps.forEach((s2, i) => {
+			const x = 40 + i * 66;
+			b += text(x + 26, 394, s2, { size: 11, anchor: 'middle', fill: C.muted });
+			if (i < steps.length - 1) b += arrow(x + 50, 390, x + 62, 390, ORANGE, 't-o');
+		});
+		out(dir + 'three-layers.svg',
+			svg(W, H, '틀 하나, 값은 저장소마다', '맨 위 팀 전파용 틀(어떤 칸이 있어야 하나)을 공통 규칙이 구현하고(칸마다 최소선), 앱 · 웹 · 서버 · 인프라 저장소의 규칙 문서가 공통 규칙의 인스턴스가 되어 그 저장소의 값과 문장을 채운다. 공통 규칙에 새 버전이 나오면 공포 → 한 장 → 위임 → 수령 → 대조 → 개정 → 심사 → 머지 · 보고 고리로 저장소에 들어간다.', b));
+	}
+
+	// 27. 여섯 단계
+	{
+		const H = 560;
+		const steps = [
+			['S0', '저장소를 잰다', '빌드 · 테스트 · 못 하는 일 실측', '규칙 문서 폴더 첫 커밋'],
+			['S1', '머지되는 길', '규칙 문서 머리 + 계층 표 · 통합 브랜치', '첫 결정 기록이 초록으로 머지'],
+			['S2', '받는 창구', 'Supervisor 세션 · 티켓 · 명부', '왕복 1회 · 묵은 위임 0'],
+			['S3', '지금 버전 받기', '지금 문면 한 장으로 한 번에', '인용 버전 = 지금 버전'],
+			['S4', '첫 Subflow', '실제 일 하나 · 규칙마다 집행 수단', '계약 표 1행 · 대상 0 = 실패'],
+			['S5', '첫 Business Flow', 'Subflow 를 묶어 끝까지 · 정지점 하나', 'Report · Supervisor 가 닫음 1회'],
+		];
+		let b = `<defs>${marker('s-g', GREEN)}</defs>`;
+		b += text(16, 30, 'Business Flow 를 도입하는 여섯 단계', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '다음 단계는 앞 단계가 실제로 돌았다는 증거가 있을 때 연다', { size: 12, fill: C.subtle });
+		b += text(200, 78, '할 일', { size: 11.5, fill: C.subtle, weight: 700 });
+		b += text(404, 78, '다 됐다는 신호', { size: 11.5, fill: C.subtle, weight: 700 });
+		steps.forEach(([id, name, todo, done], i) => {
+			const y = 88 + i * 74;
+			const col = i < 3 ? GRAY : i < 4 ? BLUE : GREEN;
+			b += box(16, y, 568, 56, i % 2 ? '#ffffff' : '#fafafa', C.grid, { sw: 1 });
+			b += `<circle cx="44" cy="${y + 28}" r="17" fill="${col}"/>` + text(44, y + 32, id, { size: 11.5, anchor: 'middle', fill: '#ffffff', weight: 700 });
+			b += text(72, y + 33, name, { size: 13, fill: C.text, weight: 700 });
+			b += text(200, y + 33, todo, { size: 11.5, fill: C.muted });
+			b += text(404, y + 33, '✓ ' + done, { size: 11.5, fill: GREEN });
+			if (i < steps.length - 1) b += arrow(44, y + 47, 44, y + 72, GREEN, 's-g');
+		});
+		b += text(16, H - 22, 'S0 ~ S2 운영 배선 · S3 공통 규칙 맞추기 · S4 ~ S5 실제 일 — 그 뒤(여러 작업 · 지표)는 계기가 있을 때만', { size: 11.5, fill: C.muted });
+		out(dir + 'six-steps.svg',
+			svg(W, H, 'Business Flow 를 도입하는 여섯 단계', 'S0 저장소를 잰다(빌드 · 테스트 · 에이전트가 못 하는 일 실측, 신호: 규칙 문서 폴더 첫 커밋) → S1 머지되는 길(규칙 문서 머리와 계층 표, 통합 브랜치, 신호: 첫 결정 기록이 초록으로 머지) → S2 받는 창구(Supervisor 세션 · 티켓 · 명부, 신호: 왕복 1회 · 묵은 위임 0) → S3 지금 버전 받기(신호: 인용 버전이 지금 버전) → S4 첫 Subflow(실제 일 하나 · 규칙마다 집행 수단, 신호: 계약 표 1행 · 대상 0 이면 실패) → S5 첫 Business Flow(신호: Report · Supervisor 가 닫음 1회). 그 뒤 단계는 계기가 있을 때만 연다.', b));
+	}
+
+	// 28. 새 버전 받는 고리
+	{
+		const H = 360;
+		let b = `<defs>${marker('r-o', ORANGE)}${marker('r-b', BLUE)}</defs>`;
+		b += text(16, 30, '새 버전 하나가 저장소에 들어가는 여덟 걸음', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '위 줄은 공통 규칙 쪽, 아래 줄은 저장소 쪽', { size: 12, fill: C.subtle });
+		const top = [['0 공포', '바뀐 행동'], ['1 한 장', '문면 · 함정'], ['2 위임', 'Supervisor 마다'], ['6 심사', '적합 · 조건부'], ['8 다시 재기', '통합 브랜치']];
+		const bot = [['3 수령', '세 줄'], ['4 대조', '있다 · 일부 · 없다'], ['5 개정', '저장소 절차'], ['7 머지', '초록 · 보고']];
+		b += box(16, 66, 568, 104, '#fff7f1', ORANGE, { dash: '5 4' });
+		b += box(16, 222, 568, 108, tint.feature, BLUE, { dash: '5 4' });
+		top.forEach(([n, s2], i) => (b += node(32 + i * 110, 96, 96, 50, '#ffffff', ORANGE, n, s2)));
+		bot.forEach(([n, s2], i) => (b += node(87 + i * 120, 252, 100, 50, '#ffffff', BLUE, n, s2)));
+		b += arrow(128, 121, 140, 121, ORANGE, 'r-o') + arrow(238, 121, 250, 121, ORANGE, 'r-o');
+		b += curve('M298,148 C298,200 137,200 137,248', ORANGE, 'r-o');
+		b += arrow(189, 277, 205, 277, BLUE, 'r-b') + arrow(309, 277, 325, 277, BLUE, 'r-b');
+		b += curve('M377,250 C377,200 408,200 408,150', BLUE, 'r-b');
+		b += curve('M420,150 C460,200 480,210 480,248', ORANGE, 'r-o');
+		b += curve('M489,250 C500,200 518,200 518,150', BLUE, 'r-b');
+		b += text(32, 88, '공통 규칙 쪽', { size: 11.5, fill: ORANGE, weight: 700 });
+		b += text(32, 318, '저장소 쪽 (Supervisor · 규칙 개정 작업)', { size: 11.5, fill: BLUE, weight: 700 });
+		b += text(16, H - 14, '최근 버전 하나: 열네 곳 모두 머지 · 저장소 한 곳과 왕복 최소 5번', { size: 11.5, fill: C.muted });
+		out(dir + 'receive-loop.svg',
+			svg(W, H, '새 버전 하나가 저장소에 들어가는 여덟 걸음', '공통 규칙 쪽이 새 버전을 공포하고(0 · 바뀐 행동) 지금 문면과 함정을 한 장으로 묶어(1) 저장소 Supervisor 마다 위임한다(2). 저장소 쪽은 Supervisor 가 세 줄로 수령하고(3) 규칙 개정 작업이 항목마다 있다 · 일부 · 없다로 대조(4)하고 저장소 절차로 개정(5)한다. 공통 규칙 쪽이 심사(6)하면 저장소가 통합 브랜치에 초록으로 머지하고 보고(7)하며, 공통 규칙 쪽이 통합 브랜치에서 다시 잰다(8). 최근 버전 하나는 열네 곳 모두 머지했고 저장소 한 곳과의 왕복은 최소 다섯 번이었다.', b));
+	}
+
+	// 29. 단계별 졸업 수
+	{
+		const data = [['S0', '재기', 10], ['S1', '머지되는 길', 5], ['S2', '받는 창구', 2], ['S3', '지금 버전', 1], ['S4', '첫 Subflow', 4], ['S5', '첫 완주', 4]];
+		const H = 340, L = 48, R = 16, T = 80, B = 56;
+		const pw = W - L - R, ph = H - T - B, max = 10;
+		const y = (v) => T + ph - (v / max) * ph;
+		const step = pw / data.length, bw = step - 26;
+		let b = text(16, 30, '단계마다 졸업 증거가 나온 저장소 수', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '저장소 10곳 · 도입 실측표 기준 · 졸업 = 그 단계의 «다 됐다는 신호» 가 실제로 있음', { size: 12, fill: C.subtle });
+		for (const g of [0, 5, 10]) {
+			b += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="${C.grid}" stroke-width="1"/>`;
+			b += text(L - 6, y(g) + 4, String(g), { size: 12, anchor: 'end', fill: C.subtle });
+		}
+		data.forEach(([id, n, v], i) => {
+			const x = L + i * step + 13, cx = x + bw / 2;
+			b += bar(x, y(v), bw, y(0) - y(v), v >= 4 ? C.s1 : '#86c9ad');
+			b += text(cx, y(v) - 8, String(v), { size: 13, anchor: 'middle', fill: C.text, weight: 700 });
+			b += text(cx, H - B + 18, id, { size: 12, anchor: 'middle', fill: C.text, weight: 700 });
+			b += text(cx, H - B + 34, n, { size: 11, anchor: 'middle', fill: C.subtle });
+		});
+		out(dir + 'adoption-progress.svg',
+			svg(W, H, '단계마다 졸업 증거가 나온 저장소 수', '저장소 10곳 기준 도입 실측표. S0 저장소 재기 10, S1 머지되는 길 5, S2 받는 창구 2, S3 지금 버전 받기 1, S4 첫 Subflow 4, S5 첫 Business Flow 완주 4.', b));
+	}
+}
