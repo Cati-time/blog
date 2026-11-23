@@ -22,4 +22,7 @@ expect 1 bash scripts/guards/base-url.sh "$tmp/bad-brace.astro"
 expect 1 bash scripts/guards/base-url.sh "$tmp/bad-brace-single.astro"
 expect 1 bash scripts/guards/base-url.sh "$tmp/bad-tmpl.astro"
 expect 0 bash scripts/guards/base-url.sh "$tmp/good-base.astro"
+expect 1 env DOCS_GLOB='*.md' bash scripts/guards/docs-glob.sh docs/a.md src/content/blog/x/index.md
+expect 1 env DOCS_GLOB='*.md' bash scripts/guards/docs-glob.sh docs/a.md SRC/Content/blog/x/README.md
+expect 0 bash scripts/guards/docs-glob.sh docs/a.md README.md src/content/blog/x/index.md
 exit $fail
