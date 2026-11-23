@@ -27,7 +27,7 @@ Consult these guides before working on related tasks:
 - **일하는 길**: 레인 가지(`post/<slug>` · `docs/<slug>` 등) → 로컬 CI(`localci`) 초록 → 통합선 `main-cicd`. **`main` 머지 · push(= 공개 배포)는 사용자** — WORKFLOW 칸 6. «push 하면 배포됩니다» 대신 «main-cicd 에 착지했습니다 · main 머지 · push 하면 배포됩니다» 라고 알린다.
 - 완료 기준은 WORKFLOW 칸 5 — 글 초안은 build · `check:seo -- <slug> --strict` · `check:wording --strict` 0 · 사실 확인 막음 0.
 - 커밋 메시지 접두어: `post:` 새 글 · 발행 · `edit:` 글 수정 · `fix:` 버그 · `style:` 디자인 · `config:` 설정 · `chore:` 의존성 · 도구 · `docs(constitution):` 헌법.
-- 글 흐름: 취재해서 쓰는 글 = WORKFLOW 칸 2 루트 플로우(스킬 `blog-compose` 가 절차) · 받은 문서 = R-BLOG-VERBATIM(스킬 `blog-write`) · 용어 = R-BLOG-WORDING(`blog-wording`) · 검색 · AI = R-BLOG-SEO(`blog-seo`) · 숫자 = R-BLOG-FACTS · 인용 = R-BLOG-QUOTES.
+- 글 흐름: 취재해서 쓰는 글 = WORKFLOW 칸 2 루트 플로우(스킬 `blog-compose` 가 절차) · 받은 문서 = R-BLOG-VERBATIM(스킬 `blog-write`) · 용어 = R-BLOG-WORDING(`blog-wording`) · AI 티 걷어내기 · 새 패턴 배우기 = `blog-humanize`(서브에이전트가 고치고 본체가 판정) · 검색 · AI = R-BLOG-SEO(`blog-seo`) · 숫자 = R-BLOG-FACTS · 인용 = R-BLOG-QUOTES.
 - 팀원 · 프로젝트는 받은 그대로 — R-BLOG-REAL-PEOPLE.
 - 공개 글 안전 · 비밀값 — R-BLOG-PUBLIC-SAFE. 저장소 설정(`gh api`) 변경은 사용자 확인 — RULES §7.
 - 스타일은 토큰으로만 · 다크 모드 없음(사용자 2026-09-29) — R-BLOG-TOKENS · RULES §5 지향.
