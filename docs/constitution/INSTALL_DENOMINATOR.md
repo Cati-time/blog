@@ -7,79 +7,79 @@
 
 ## 1. 분모 표
 
-| 행 | 칸 | 등급 | 지금(blog) | 설치 뒤 자리 | 집행 | 메모 · 처분 |
-| --- | --- | --- | --- | --- | --- | --- |
-| H1 | 판 표지 canon 0.44.0 · web-kind 0.1.0 | MUST | 없다 | W · R 머리 한 줄 · `AGENTS.md` 판 포인터 | 확인기 정규식(보급과) | 0.45.0 공포 뒤 판 올림 |
-| W1 | 칸 1 `wf.layer` 흐름 층 | MUST | 없다 | W §흐름 층 — Subflow ⊂ Business Flow(글 한 편) ⊂ Supervisor · 감독 레인 «설치 PASS 뒤» | 리뷰 | 사용자 합의 2026-11-23 |
-| W2 | 칸 2 `wf.bf-stages` 단계 · 정지점 | MUST | 일부 — `blog-compose` 다섯 단계 · AGENTS.md 초안 순서 줄 | W §루트 플로우 «글 한 편»(0 sync ~ 8 검증 · 정지점 = 사용자 «발행») | 리뷰 + check:seo · build | 대응표는 `INSTALL_PLAN.md` §사용자 결정 |
-| W3 | 칸 3 `wf.layout` 문서 자리 | MUST | 일부 — 글 = `src/content/blog/<slug>/` · 조사 = `../blog-notes/`(저장소 밖) | W §문서 자리 — BF 대상 폴더 = `src/content/blog/<slug>/` · 전역 `docs/` 허용 목록 | 리뷰 | 사실 확인 표는 저장소 밖 유지 |
-| W4 | 칸 4 `wf.roles` 역할 · 등급 | MUST | 없다 | W §역할 | 리뷰 | canon 표 가리킴 |
-| W5 | 칸 5 `wf.done` 완료 기준 · 변경 책임 | MUST | 일부 — «커밋 전 build 통과» · 초안 순서 | W §완료 기준 — 초안 = build · wording · seo 0 · 사실 확인 닫힘 / 발행 = build · check:seo 오류 0 | localci · check:* | |
-| W6 | 칸 6 `wf.lane-line` 레인 선 | MUST | 없다 — main 하나 | W §레인 선 — base `main` · 통합선 `main-cicd` · 레인 가지 `post/<slug>` · `docs/<slug>` 등 | localci | 판정 T-002697 |
-| W7 | 칸 7 `wf.audit-loop` 감사 고리 | MUST | 일부 — 사실 확인 회차(R1 · R2) | W §감사 — 사실 확인 회차 = 감사 · 상한 · 합격선 | 리뷰 | 값은 7 Execute 전 합의 |
-| W8 | 칸 8 `wf.supervisor` | MUST | 없다 | W §감독 → SUPERVISOR 절(V 행) | 리뷰 | 감독은 PASS 뒤 |
-| W9 | 칸 9 `wf.kickoff` 착수 3문 | MUST | 없다 | W §착수 | 리뷰 | |
-| W10 | 칸 10 `wf.human-decision` | MUST | 일부 — «분류가 애매하면 묻는다» · «발행은 사용자» | W §사람 결정 길 | 리뷰 | canon 그대로 |
-| W11 | 칸 11 `wf.metrics` 지표 | MUST | 없다 | W §지표 — BF 층 열둘(축마다 셋) · SUBF 층 | 안 잼 행 표기 | C246 ⑷ — 층마다 행은 세운다 |
-| W12 | 칸 12 `wf.seam-rules` 이음매 | MUST | 없다 | W → R 섹터 맵(S7) 가리킴 | 리뷰 | |
-| W13 | 칸 13 `wf.systems` 공용 시스템 | MUST | 없다 | W §시스템 — svts · localci 단계 표 | 리뷰 | |
-| W14 | 칸 14 `wf.receive` 개정 수신 | MUST | 없다 | W §개정 수신 · A §5 | 리뷰 | |
-| W15 | 칸 15 `wf.verify` 실환경 검증 | MUST | 일부 — dev 서버 미리보기 · 공개 페이지 확인 | W §검증 — V0 build · V1 3310 ~ 3319 · V2 3300 · V3 사람 push 뒤 공개 페이지 | localci · 리뷰 | 포트는 판정 · SYSTEMS 표 행 청(민원과) |
-| W16 | 칸 16 `wf.subflow` Subflow 계약 | MUST | 없다 | W §Subflow 계약 표 — 조사 요청 · 다시 세기 · 그림 · 사실 확인 · 용어 · SEO 등 | 선언 수 = 행 수 가드 | |
-| W17 | 칸 17 `wf.collab` 협업 | MUST | 일부 — 원천 세션 조사 · 사실 확인(다른 저장소 읽기만) | W §협업 — 블로그는 코어가 아님 · 원천 레포 가리킴 | 리뷰 | |
-| W18 | 칸 18 `wf.install` (PENDING · 지금 효력) | MUST | 진행 중 | 이 설치 · W §설치 가리킴 | 감수 ② | |
-| S1 | M1 `rules.layer` 계층 · 의존 | MUST | 없다 | R 몸통 — K2 와 한 절 | 가드 후보 | |
-| S2 | M1-S `rules.layer-body` | MUST(server 만) | 해당 없음 | — | — | 해당 없음 — web kind · server 몸통 없음 |
-| S3 | M1 지향 기본값 | MUST | 없다 | R §지향 — K6 | 리뷰 | |
-| S4 | M2 `rules.boundary` 바깥 접점 | MUST | 일부 — GitHub Pages · Giscus · GA · 원천 레포 | R §바깥 접점 | 리뷰 | 사용자 확인: `gh api` 설정 변경 |
-| S5 | M3 `rules.enforce-line` | MUST | 없다 | R §조문 꼴(조문마다 집행 한 줄) | 리뷰 | |
-| S6 | M4 `rules.guard-entry` | MUST | 일부 — `npm run check`(tokens · posts · astro check) | R §가드 진입점 + `scripts/localci.sh` | localci | check:wording · seo 를 들일지 4 SDD |
-| S7 | M5 `rules.sector-map` | MUST | 없다 | R §섹터 맵(워크플로우 대응 열) | 리뷰 | |
-| S8 | M6 `rules.blank` 빈칸 | MUST | 없다 | R §빈칸 | 리뷰 | |
-| S9 | M7 `rules.logging` | MUST | 없다 | R §로그 — «안 정함 · 정적 사이트 · 빌드 로그만» | 리뷰 | 자리 MUST |
-| S10 | M8 `rules.errors` | MUST | 일부 — 404 페이지 · check 오류 / 경고 | R §오류 | 리뷰 | |
-| S11 | M9 `rules.structure-graph` | MUST | 없다 | R 몸통 첫 절 개관 그래프 | 노드 = 코드 대조 | «안 정함» 없음 |
-| S12 | `rules.telemetry`(M 밖) | M 밖 | 일부 — GA(`site.config.mjs`) | R §텔레메트리 | 리뷰 | |
-| S13 | §0-1 ⑤ 구조 칸 실물 분모 | MUST | 없다 | R — 역할 목록 셈 명령 · 기준 ref · 양성 대조 | 명령 | K7 과 같은 셈 |
-| V1 | SUPERVISOR §1 정의 | MUST | 없다 | W §감독(통합형 절) | 리뷰 | 감독 레인은 PASS 뒤 — 절은 설치가 세움 |
-| V2 | §1-4 참조 그림 | SHOULD | 없다 | W §감독 그림 | 리뷰 | |
-| V3 | §2 구성요소 · 소유 | MUST | 없다 | W §감독 | 리뷰 | |
-| V4 | §3 책임 · 범위 | MUST | 없다 | W §감독 | 리뷰 | |
-| V5 | §4-1 BF 생애 흐름 | MUST | 없다 | W §감독 — 글 한 편 생애 | 리뷰 | |
-| V6 | §4-2 매일 도는 흐름 일곱 | MUST | 없다 | W §감독 | 리뷰 | |
-| V7 | §4-3 병렬 · 직렬 마감 | MUST | 없다 | W §감독 | 리뷰 | |
-| V8 | §4-4 점호 보고 양식 | MUST | 없다 | W §감독 | 리뷰 | |
-| V9 | §5 활용 의무 | MUST | 없다 | W §감독 | 리뷰 | |
-| V10 | §5-1 사람 청은 티켓 | MUST | 없다 | W §감독 | 리뷰 | |
-| V11 | §5-2 줄의 상태 넷 | MUST | 없다 | W §감독 | 리뷰 | |
-| V12 | §6 넘김 형식 | MUST | 없다 | W §감독 | 리뷰 | |
-| V13 | §7 반환 성능 칸 | MUST | 없다 | W §감독 | 리뷰 | |
-| V14 | §7-1 진단 지표 | MUST | 없다 | W §지표(W11) 가리킴 | 리뷰 | |
-| V15 | §8 개정 · 공포 경계 | MUST | 없다 | W §감독 · A | 리뷰 | |
-| V16 | §9 감독 없는 레포의 과도 | MUST | **해당** — 감독 없음 | W §감독 — «설치 PASS 뒤 연다(C237 ⑴) · 그때까지 이 세션이 받음» | 리뷰 | |
-| V17 | §10 레포가 정하는 것 | MUST | 없다 | W §감독 | 리뷰 | |
-| C1 | SYSTEMS 공용 시스템 | MUST | 없다 | W §시스템(W13) | 리뷰 | |
-| C2 | TICKETS | MUST | 일부 — 명부 자리 bind | W §시스템 | svts | |
-| C3 | WORKTREE(분모 밖 · 한 줄) | MUST | 없다 | W §레인 선 한 줄 | 리뷰 | |
-| C4 | canon AMENDMENT | MUST | 없다 | A(레포 개정 절차) | 리뷰 | |
-| K1 | web 규칙 1 꼴 — 첫 몸통 절 = «현재 1» | MUST | 없다 | R 범위 다음 첫 절 | 절 차례 대조(가드 후보) | 걸림 — 화면 코드 있음 |
-| K2 | 규칙 2 현재 1 어디에 두나 — 역할 처분 0 | MUST | 없다 | R 현재 1 표 — pages · layouts · components · lib · styles · data · content(blog · team · projects) · scripts · 뿌리 설정 | 폴더 목록 ↔ 표 대조 | 분모는 K7 셈 |
-| K3 | 규칙 3 현재 2 어떻게 만드나 | MUST | 일부 — 토큰 · 글 생성(new-post) · 그림(make-charts) | R 현재 2 | 리뷰 | |
-| K4 | 규칙 4 현재 3 어떻게 시험하나 | MUST | 일부 — astro check · check:* · 브라우저 확인 | R 현재 3 — 단위 시험 없음 · 무엇을 대체하나 | 리뷰 | |
-| K5 | 규칙 5 현재 4 옆과 잇기 | MUST | 일부 | R 현재 4 — (가) 서버 계약 «해당 없음 · 정적» (나) 오류 → 404 · 빌드 실패 (다) 상태 «클라이언트 상태 거의 없음 · Giscus 외부» | 리뷰 | 서버 · 인증 · 상태 칸 = 해당 없음 + 까닭(판정) |
-| K6 | 규칙 6 지향 · 간극 | MUST | 일부 — «다크 모드 없음»(사용자 2026-09-29) | R 지향(출처 한 줄) · 간극 행 | 리뷰 | |
-| K7 | 규칙 7 gate 분모는 코드 | MUST | 없다 | R — 역할 목록 명령 · 수 · 기준 ref | 명령 | S13 과 같은 셈 |
-| B1 | 등록부 행 | 바탕 | 있다 — `targets.yaml` blog | W 머리 가리킴 | 민원과 | layout = 통합형(제정 때 확정) |
-| B2 | 명부 자리 | 바탕 | 있다 — `blog code-main / constitution-setup` | W §시스템 | 민원과 | |
-| B3 | 통합선 가지 `main-cicd` | 바탕 | 없다 | W §레인 선 | 첫 착지 | |
-| B4 | 원장 줄 | 바탕 | 확인 전 | — | 민원과 · tool | 6 DoD 전 확인 |
-| B5 | 러너 프로필 | 바탕 | 확인 전 | — | tool | 〃 |
-| B6 | 레포 가드 선언 `localci_guards` | 바탕 | 없다 | `scripts/localci.sh` | localci | 4 SDD |
-| B7 | 기계 전제 | 바탕 | 있다 — node 24.22 · npm 11.6 · astro 7.3.2 | W §검증 | Survey §4 | node 판 적힌 곳 불일치 → 간극 행 |
-| B8 | 전역 정지 · 문서 큐 | 바탕 | 확인 전 | — | tool | 7 Execute 때 |
-| B9 | 지침 판 포인터 | 바탕 | 없다 | `AGENTS.md`(= `CLAUDE.md`) 머리 | 확인기 | |
+| 행 | 칸 | 등급 | 지금(blog) | 설치 뒤 자리 | 집행 | 주인 · 확인 때 | 메모 · 처분 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| H1 | 판 표지 canon 0.44.0 · web-kind 0.1.0 | MUST | 없다 | W · R 머리 한 줄 · `AGENTS.md` 판 포인터 | 확인기 정규식(보급과) | 설치 레인 · 7 Execute | 0.45.0 공포 뒤 판 올림 |
+| W1 | 칸 1 `wf.layer` 흐름 층 | MUST | 없다 | W §흐름 층 — Subflow ⊂ Business Flow(글 한 편) ⊂ Supervisor · 감독 레인 «설치 PASS 뒤» | 리뷰 | 설치 레인 · 7 Execute | 사용자 합의 2026-11-23 |
+| W2 | 칸 2 `wf.bf-stages` 단계 · 정지점 | MUST | 일부 — `blog-compose` 다섯 단계 · AGENTS.md 초안 순서 줄 | W §루트 플로우 «글 한 편»(0 sync ~ 8 검증 · 정지점 = 사용자 «발행») | 리뷰 + check:seo · build | 설치 레인 · 7 Execute | 대응표는 `INSTALL_PLAN.md` §사용자 결정 |
+| W3 | 칸 3 `wf.layout` 문서 자리 | MUST | 일부 — 글 = `src/content/blog/<slug>/` · 조사 = `../blog-notes/`(저장소 밖) | W §문서 자리 — BF 대상 폴더 = `src/content/blog/<slug>/` · 전역 `docs/` 허용 목록 | 리뷰 | 설치 레인 · 7 Execute | 사실 확인 표는 저장소 밖 유지 |
+| W4 | 칸 4 `wf.roles` 역할 · 등급 | MUST | 없다 | W §역할 | 리뷰 | 설치 레인 · 7 Execute | canon 표 가리킴 |
+| W5 | 칸 5 `wf.done` 완료 기준 · 변경 책임 | MUST | 일부 — «커밋 전 build 통과» · 초안 순서 · PR 은 `check.yml`(npm run build) | W §완료 기준 — 초안 = build · wording · seo 0 · 사실 확인 닫힘 / 발행 = build · check:seo 오류 0 | localci · check:* | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| W6 | 칸 6 `wf.lane-line` 레인 선 | MUST | 없다 — 통합선 없음 · 기준은 main 하나(가지 13 · Survey §5) | W §레인 선 — base `main` · 통합선 `main-cicd` · 레인 가지 `post/<slug>` · `docs/<slug>` 등 | localci | 설치 레인 · 7 Execute | 판정 T-002697 |
+| W7 | 칸 7 `wf.audit-loop` 감사 고리 | MUST | 일부 — 사실 확인 회차(R1 · R2) | W §감사 — 사실 확인 회차 = 감사 · 상한 · 합격선 | 리뷰 | 설치 레인 · 7 Execute | 값은 7 Execute 전 합의 |
+| W8 | 칸 8 `wf.supervisor` | MUST | 없다 | W §감독 → SUPERVISOR 절(V 행) | 리뷰 | 설치 레인 · 7 Execute | 감독은 PASS 뒤 |
+| W9 | 칸 9 `wf.kickoff` 착수 3문 | MUST | 없다 | W §착수 | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| W10 | 칸 10 `wf.human-decision` | MUST | 일부 — «분류가 애매하면 묻는다» · «발행은 사용자» | W §사람 결정 길 | 리뷰 | 설치 레인 · 7 Execute | canon 그대로 |
+| W11 | 칸 11 `wf.metrics` 지표 | MUST | 없다 | W §지표 — BF 층 열둘(축마다 셋) · SUBF 층 | 안 잼 행 표기 | 설치 레인 · 7 Execute | C246 ⑷ — 층마다 행은 세운다 |
+| W12 | 칸 12 `wf.seam-rules` 이음매 | MUST | 없다 | W → R 섹터 맵(S7) 가리킴 | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| W13 | 칸 13 `wf.systems` 공용 시스템 | MUST | 없다 | W §시스템 — svts · localci 단계 표 | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| W14 | 칸 14 `wf.receive` 개정 수신 | MUST | 없다 | W §개정 수신 · A §5 | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| W15 | 칸 15 `wf.verify` 실환경 검증 | MUST | 일부 — dev 서버 미리보기 · 공개 페이지 확인 · 배포 `deploy.yml` | W §검증 — V0 build · V1 3310 ~ 3319 · V2 3300 · V3 사람 push 뒤 공개 페이지 | localci · 리뷰 | 설치 레인 · 7 Execute | 포트는 판정 · SYSTEMS 표 행 청(민원과) |
+| W16 | 칸 16 `wf.subflow` Subflow 계약 | MUST | 없다 | W §Subflow 계약 표 — 조사 요청 · 다시 세기 · 그림 · 사실 확인 · 용어 · SEO 등 | 선언 수 = 행 수 가드 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| W17 | 칸 17 `wf.collab` 협업 | MUST | 일부 — 원천 세션 조사 · 사실 확인(다른 저장소 읽기만) | W §협업 — 블로그는 코어가 아님 · 원천 레포 가리킴 | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| W18 | 칸 18 `wf.install` (PENDING · 지금 효력) | MUST | 진행 중 | 이 설치 · W §설치 가리킴 | 감수 ② | 설치 레인 · 8 검증(감수 ② PASS) | 설치 레인이 세움 |
+| S1 | M1 `rules.layer` 계층 · 의존 | MUST | 없다 | R 몸통 — K2 와 한 절 | 가드 후보 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| S2 | M1-S `rules.layer-body` | MUST(server 만) | 해당 없음 | — | — | — (해당 없음) | 해당 없음 — web kind · server 몸통 없음 |
+| S3 | M1 지향 기본값 | MUST | 없다 | R §지향 — K6 | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| S4 | M2 `rules.boundary` 바깥 접점 | MUST | 일부 — GitHub Pages · Giscus · GA · 원천 레포 | R §바깥 접점 | 리뷰 | 설치 레인 · 7 Execute | 사용자 확인: `gh api` 설정 변경 |
+| S5 | M3 `rules.enforce-line` | MUST | 없다 | R §조문 꼴(조문마다 집행 한 줄) | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| S6 | M4 `rules.guard-entry` | MUST | 일부 — 로컬 `npm run check`(tokens · posts · astro check) · PR `check.yml` | R §가드 진입점 + `scripts/localci.sh` | localci | 설치 레인 · 7 Execute | check:wording · seo 를 들일지 4 SDD |
+| S7 | M5 `rules.sector-map` | MUST | 없다 | R §섹터 맵(워크플로우 대응 열) | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| S8 | M6 `rules.blank` 빈칸 | MUST | 없다 | R §빈칸 | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| S9 | M7 `rules.logging` | MUST | 없다 | R §로그 — «안 정함 · 정적 사이트 · 빌드 로그만» | 리뷰 | 설치 레인 · 7 Execute | 자리 MUST |
+| S10 | M8 `rules.errors` | MUST | 일부 — 404 페이지 · check 오류 / 경고 | R §오류 | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| S11 | M9 `rules.structure-graph` | MUST | 없다 | R 몸통 첫 절 개관 그래프 | 노드 = 코드 대조 | 설치 레인 · 7 Execute | «안 정함» 없음 |
+| S12 | `rules.telemetry`(M 밖) | M 밖 | 일부 — GA(`site.config.mjs`) | R §텔레메트리 | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| S13 | §0-1 ⑤ 구조 칸 실물 분모 | MUST | 없다 | R — 역할 목록 셈 명령 · 기준 ref · 양성 대조 | 명령 | 설치 레인 · 7 Execute | K7 과 같은 셈 |
+| V1 | SUPERVISOR §1 정의 | MUST | 없다 | W §감독(통합형 절) | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 감독 레인은 PASS 뒤 — 절은 설치가 세움 |
+| V2 | §1-4 참조 그림 | SHOULD | 없다 | W §감독 그림 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V3 | §2 구성요소 · 소유 | MUST | 없다 | W §감독 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V4 | §3 책임 · 범위 | MUST | 없다 | W §감독 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V5 | §4-1 BF 생애 흐름 | MUST | 없다 | W §감독 — 글 한 편 생애 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V6 | §4-2 매일 도는 흐름 일곱 | MUST | 없다 | W §감독 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V7 | §4-3 병렬 · 직렬 마감 | MUST | 없다 | W §감독 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V8 | §4-4 점호 보고 양식 | MUST | 없다 | W §감독 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V9 | §5 활용 의무 | MUST | 없다 | W §감독 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V10 | §5-1 사람 청은 티켓 | MUST | 없다 | W §감독 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V11 | §5-2 줄의 상태 넷 | MUST | 없다 | W §감독 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V12 | §6 넘김 형식 | MUST | 없다 | W §감독 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V13 | §7 반환 성능 칸 | MUST | 없다 | W §감독 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V14 | §7-1 진단 지표 | MUST | 없다 | W §지표(W11) 가리킴 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V15 | §8 개정 · 공포 경계 | MUST | 없다 | W §감독 · A | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V16 | §9 감독 없는 레포의 과도 | MUST | **해당** — 감독 없음 | W §감독 — «설치 PASS 뒤 연다(C237 ⑴) · 그때까지 이 세션이 받음» | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| V17 | §10 레포가 정하는 것 | MUST | 없다 | W §감독 | 리뷰 | 설치 레인 · 7 Execute(절) · 감독 레인은 PASS 뒤 | 설치 레인이 세움 |
+| C1 | SYSTEMS 공용 시스템 | MUST | 없다 | W §시스템(W13) | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| C2 | TICKETS | MUST | 일부 — 명부 자리 bind | W §시스템 | svts | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| C3 | WORKTREE(분모 밖 · 한 줄) | MUST | 없다 | W §레인 선 한 줄 | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| C4 | canon AMENDMENT | MUST | 없다 | A(레포 개정 절차) | 리뷰 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
+| K1 | web 규칙 1 꼴 — 첫 몸통 절 = «현재 1» | MUST | 없다 | R 범위 다음 첫 절 | 절 차례 대조(가드 후보) | 설치 레인 · 7 Execute | 걸림 — 화면 코드 있음 |
+| K2 | 규칙 2 현재 1 어디에 두나 — 역할 처분 0 | MUST | 없다 | R 현재 1 표 — pages · layouts · components · lib · styles · data · content(blog · team · projects) · scripts · 뿌리 설정 | 폴더 목록 ↔ 표 대조 | 설치 레인 · 7 Execute | 걸림 — 화면 코드 있음 · 셈법: `git ls-tree -r --name-only <ref> src scripts` 폴더 목록 ↔ 현재 1 표 · 분모는 K7 셈 |
+| K3 | 규칙 3 현재 2 어떻게 만드나 | MUST | 일부 — 토큰 · 글 생성(new-post) · 그림(make-charts) | R 현재 2 | 리뷰 | 설치 레인 · 7 Execute | 걸림 — 화면 코드 있음 |
+| K4 | 규칙 4 현재 3 어떻게 시험하나 | MUST | 일부 — astro check · check:* · 브라우저 확인 | R 현재 3 — 단위 시험 없음 · 무엇을 대체하나 | 리뷰 | 설치 레인 · 7 Execute | 걸림 — 화면 코드 있음 |
+| K5 | 규칙 5 현재 4 옆과 잇기 | MUST | 일부 | R 현재 4 — (가) 서버 계약 «해당 없음 · 정적» (나) 오류 → 404 · 빌드 실패 (다) 상태 «클라이언트 상태 거의 없음 · Giscus 외부» | 리뷰 | 설치 레인 · 7 Execute | 서버 · 인증 · 상태 칸 = 해당 없음 + 까닭(판정) |
+| K6 | 규칙 6 지향 · 간극 | MUST | 일부 — «다크 모드 없음»(사용자 2026-09-29) | R 지향(출처 한 줄) · 간극 행 | 리뷰 | 설치 레인 · 7 Execute | 걸림 — 화면 코드 있음 · 지향은 출처 한 줄 |
+| K7 | 규칙 7 gate 분모는 코드 | MUST | 없다 | R — 역할 목록 명령 · 수 · 기준 ref | 명령 | 설치 레인 · 7 Execute | 걸림 — 화면 코드 있음 · 셈법 K2 와 같음 · 기준 ref = 심사 sha · S13 과 같은 셈 |
+| B1 | 등록부 행 | 바탕 | 있다 — `targets.yaml` blog | W 머리 가리킴 | 민원과 | 민원과 · 6 DoD 전 재확인 | layout = 통합형(제정 때 확정) |
+| B2 | 명부 자리 | 바탕 | 있다 — `blog code-main / constitution-setup` | W §시스템 | 민원과 | 민원과 · 6 DoD 전 재확인 | 설치 레인이 세움 |
+| B3 | 통합선 가지 `main-cicd` | 바탕 | 없다 | W §레인 선 | 첫 착지 | 설치 레인 · 7 Execute(첫 착지) | 설치 레인이 세움 |
+| B4 | 원장 줄 | 바탕 | 확인 전 | — | 민원과 · tool | 민원과 · tool · 6 DoD 전 | 공란 — 까닭: 원장 줄은 harness 쪽 장부라 이 레인은 읽기만 · 자리 불요(분모 행) · 6 DoD 전 확인 |
+| B5 | 러너 프로필 | 바탕 | 확인 전 | — | tool | tool · 6 DoD 전 | 공란 — 까닭: 러너 프로필(linestore 등)은 tool 설정 · 자리 불요(분모 행) · 〃 |
+| B6 | 레포 가드 선언 `localci_guards` | 바탕 | 없다 | `scripts/localci.sh` | localci | 설치 레인 · 7 Execute | 4 SDD |
+| B7 | 기계 전제 | 바탕 | 있다 — node 24.22 · npm 11.6 · astro 7.3.2 | W §검증 | Survey §4 | 설치 레인 · 1 Survey 확인됨 · 간극 행은 7 Execute | node 판 적힌 곳 불일치 → 간극 행 |
+| B8 | 전역 정지 · 문서 큐 | 바탕 | 확인 전 | — | tool | tool · 7 Execute(착지 때) | 공란 — 까닭: 전역 정지 · 문서 큐 통과는 착지할 때만 잴 수 있음 · 막히면 tool 결함 티켓 · 7 Execute 때 |
+| B9 | 지침 판 포인터 | 바탕 | 없다 | `AGENTS.md`(= `CLAUDE.md`) 머리 | 확인기 | 설치 레인 · 7 Execute | 설치 레인이 세움 |
 
-**셈**(스크립트로 다시 셈): 69 행 · 지금 있다 3 · 일부 16 · 없다 44 · 해당 없음 1(S2) · 해당 1(V16) · 확인 전 3 · 진행 중 1(W18) · 빈 칸 0.
+**셈**(스크립트로 다시 셈): 69 행 · 지금 있다 3 · 일부 16 · 없다 44 · 해당 없음 1(S2) · 해당 1(V16) · 확인 전 3 · 진행 중 1(W18) · 빈 칸 0(주인 · 확인 때 열 포함 · 메모 열도 채움).
 
 ## 2. 기존 규범 처분 표 (들어오는 길 (가) — `AGENTS.md` 운영 규칙 15 줄)
 
@@ -101,9 +101,25 @@
 | 14 | 토큰 · 비밀값을 파일 · 채팅에 남기지 않음 | 조문 | R `R-BLOG-PUBLIC-SAFE`(check-posts P1 ~ P5 와 한 조문) |
 | 15 | 스타일은 디자인 토큰으로만 · 다크 모드 없음 | 조문 둘 | R `R-BLOG-TOKENS`(check-tokens R1 ~ R3) · 지향 «다크 모드 없음»(사용자 2026-09-29) |
 
+| 16 | 머리 «Development» — `astro dev --background` 로 dev 서버 | 흐름(바꿈) | W §검증 V1 — 전역 규칙 «dev 서버를 직접 띄우지 않는다 · 큐로» 와 맞춰 고침(localci · 미리보기 포트 3310 ~ 3319) |
+| 17 | 절 머리 «설정 · 절차 전체는 `docs/claude-management.md` · 글쓰기 정본 WRITING_GUIDE» | 안내 | `docs/claude-management.md` 는 안내 문서로 남기고 W 가 가리킴 · 헌법과 겹치는 절은 헌법을 가리키게 고침(7 Execute) |
+
+간극 행(술어 없음 · 잣대 ②):
+
+| 간극 | 주인 | 확인 때 |
+| --- | --- | --- |
+| 같은 커밋 동기화 ① `WRITING_GUIDE` ↔ 글쓰기 규칙(R) | 설치 레인 → 상설 헌법 레인 | 첫 글쓰기 규칙 개정 때 |
+| 같은 커밋 동기화 ② `src/styles/tokens.css` ↔ `docs/design-tokens.md` | 설치 레인 → 글 · 코드 레인 | 첫 토큰 변경 때 |
+| 실존 인물 자료 검사 범위(`check-posts` 가 `team` · `projects` 를 안 읽음) | 설치 레인 → 상설 도구 레인 | 7 Execute 뒤 첫 도구 개정 |
+| node 판 적힌 곳 불일치(README · engines 22.12 · `.nvmrc` · deploy 24) | 설치 레인 | 7 Execute |
+
 - 조문 이름은 4 SDD 의 후보다(합의 전). 스킬 넷은 절차로 남기고 MUST 줄은 헌법으로 옮겨 스킬이 헌법을 가리키게 한다(선배 대조 권고 W).
 - 같은 커밋 동기화 둘(`WRITING_GUIDE` ↔ 글쓰기 규칙 · `tokens.css` ↔ `design-tokens.md`) — 술어 없음 → «일부 + 주인 · 확인 때».
 
 ## 감사 (2b)
 
-(분모 표 대조 — canon 칸 전수 존재 · kind 영역 빠짐 · 선배 대조 결과를 여기 적는다)
+- 독립 서브에이전트 대조(읽기 전용 · 2026-11-23): A0 canon 칸 빠짐 0(SUPERVISOR 제목 17 전부) · K1 ~ K7 · B1 ~ B9 있음 · «지금» 13 행 표본 모두 사실 · 셈 69 일치.
+- 막음 3 → 반영: ① 주인 · 확인 때 열 추가(전 행) ② 메모 빈 칸 채움 ③ B4 · B5 · B8 까닭 · 자리 불요 명시.
+- 권고 반영: K 행 걸리는 조건 · 셈법 · W5 · W15 · S6 에 CI 보강 · W6 문구 · 처분 표 16 · 17 행 · 간극 행 넷.
+- 선배 대조(잣대 ⑤): web 선배 = old_person(main-cicd＠1bc7688 · 보급과 peer-learn 대조) — 분모 틀 행 종류 빠짐 0(content 재설치 63 행 틀의 K 한 행을 web 규칙 7 행으로 바꾼 꼴). 행 대 행 맞대기는 6 DoD 관문에서 보급과 감수가 다시 잰다.
+- 막음 0.
