@@ -32,7 +32,7 @@
 0. **소유 확인** — 세우기 전에 그 축을 이미 다스리는 조문이 있는지 찾는다. 있으면 새로 세우지 않고 그 조문의 집행을 보강한다.
 1. **제안** — 무엇을 왜 바꾸나.
 2. **토론** — 사용자와 합의. 합의 없이 지우거나 다시 쓰지 않는다.
-3. **기록** — ADR 을 `docs/adr/TEMPLATE.md` 구조(Context · 논의된 대안 · 토론 히스토리 · Decision · Consequences)로 남긴다. 자리: RULES · AMENDMENT 변경 = `docs/adr/constitution/` · WORKFLOW 변경 = `docs/adr/workflow/`. 파일 이름 `ADR-NNNN-<슬러그>.md`, 번호는 만들기 직전에 그 폴더를 다시 세어 집고, 본문 H1 에 자기 번호를 적는다. 빈 절 · 사후 창작 금지 — 채울 근거가 없으면 먼저 토론한다.
+3. **기록** — ADR 을 `docs/adr/TEMPLATE.md` 구조(Context · 논의된 대안 · 토론 히스토리 · Decision · Consequences)로 남긴다. 자리: RULES · AMENDMENT 변경 = `docs/adr/constitution/` · WORKFLOW 변경 = `docs/adr/workflow/`. 파일 이름 `ADR-NNNN-<슬러그>.md`, 번호는 `docs/adr/**` 를 한 공간으로 보는 레포 순번이다(폴더마다 따로 세지 않는다 — 같은 번호가 둘 생기면 가리킴이 흐려진다 · 법제처 T-002764). 만들기 직전에 `ls docs/adr/*/` 로 다시 세어 집고, harness 에는 착수 알림으로 등록하고, 본문 H1 에 자기 번호를 적는다. 빈 절 · 사후 창작 금지 — 채울 근거가 없으면 먼저 토론한다.
 4. **색인** — `CHANGELOG.md` 에 ADR 링크 한 줄.
 5. **반영** — RULES · WORKFLOW 를 고친다. 같은 변경에서 그 문서를 가리키는 안내 문서 · 스킬의 문장도 맞춘다.
 6. **지침 동기화** — 에이전트 동작이 바뀌면 `AGENTS.md` 를 고친다. **`CLAUDE.md` 는 `AGENTS.md` 의 심링크다(미러 규칙)** — 따로 고치지 않는다. 심링크가 깨지면 그것이 결함이다.
