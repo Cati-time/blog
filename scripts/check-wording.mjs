@@ -101,6 +101,35 @@ const inAliasParen = (t, line, at) => {
 const PLAIN_END = /(?<![니]|습니)(한다|된다|는다|ㄴ다|간다|온다|둔다|본다|준다|친다|진다)[.)]?(\s|$)/;
 const FORCED_PASSIVE = /고쳐진|고쳐지|고쳐졌|세워져|세워진|되어진|되어지|에 의해(?!서)/g;
 
+// AI 티 — humanize-korean 분류(ai-tell-taxonomy)에서 개발 글에 자주 걸리고 정규식으로 오탐이 적은 것만 들였다.
+// 글자 그대로 잡는 줄(ai-…)과 문서에 몰렸을 때만 잡는 줄(밀집)을 나눈다. 리듬 · 문장 길이 · 대구 같은 문맥 판정은 humanize-korean 몫.
+const AI_TELL = [
+	{ id: 'ai-A3', avoid: /에 있어(서)?(?![가-힣])/g, use: '«~에서» · «~을 볼 때»' },
+	{ id: 'ai-A8', avoid: /되어지|되어진|지게 된다|지게 됩니다/g, use: '단일 피동 · 능동(«판단된다»)' },
+	{ id: 'ai-A19', avoid: /(에서의|에로의|으로의|에의|으로부터의)/g, use: '절로 풀기(«X에서 Y» → «X에서 하는 Y»)' },
+	{ id: 'ai-A21', avoid: /단순한 [^ ]{1,12} ?(을|를)? 넘어/g, use: '«X만이 아니라 Y»' },
+	{ id: 'ai-D2', avoid: /시사하는 바가 크|주목할 만하|매우 중요하/g, use: '삭제 또는 구체 결론' },
+	{ id: 'ai-D3', avoid: /크게 (두|세|네|다섯) 가지로 나눌 수/g, use: '도입구를 빼고 바로 본론' },
+	// 사용자 결정(2026-11-23): «경계의 형태는 둘입니다» 처럼 개수로 맺는 문장은 AI 같다 — «경계의 형태는 아래와 같습니다» 로 쓴다.
+	//   그래서 humanize 의 D-3 «다음과 같은» 은 이 저장소에서는 잡지 않는다(사용자가 쓰는 말).
+	{ id: 'ai-count', avoid: /[가-힣]+(은|는) (하나|둘|셋|넷|다섯|여섯|일곱|두 가지|세 가지|네 가지|다섯 가지)(입니다|이다)[.:]?/g, use: '«~는 아래와 같습니다»(사용자 결정 2026-11-23)' },
+	{ id: 'ai-D6', avoid: /(할|하는|해야 할) (때입니다|때다|시점입니다|시점이다|순간입니다)/g, use: '구체 동사로 단언' },
+	{ id: 'ai-D8', avoid: /(필요한|중요한) 것은|(관건|핵심)은 [^.]*(라는|다는) 점/g, use: '주어 · 서술 직결(«방향이 필요하다»)' },
+	{ id: 'ai-D10', avoid: /(하는|되는|인) 이유(다|입니다)[.]?\s*$/g, use: '순방향(«그래서 ~다»)' },
+	{ id: 'ai-D12', avoid: /(과제도 남아 있|한계도 분명하|아쉬운 점도 있)/g, use: '문패를 빼고 실제 과제부터' },
+	{ id: 'ai-D14', avoid: /잠식|청사진|적신호|경고등|신호탄|움켜쥐|뿌리내리|짓누르/g, use: '명제로(«잠식한다» → «점유율을 뺏는다»)' },
+	{ id: 'ai-B2', avoid: /\b(seamless|robust|leverage|seamlessly)\b/gi, use: '한국어로 풀기(표준 기술 용어는 그대로)' },
+];
+// 문서에 몰렸을 때만 — 한 글에서 기준 이상이면 한 번 알린다
+const AI_DENSE = [
+	{ id: 'ai-I3', avoid: /다는 (것|뜻)이다|다는 (것|뜻)입니다/g, max: 2, use: '«~다» 로 직접 맺기(글당 2회 이하)' },
+	{ id: 'ai-C11', avoid: /(고|며|지만|면서|아서|어서), /g, max: 5, use: '연결어미 뒤 쉼표 빼기(글당 5회 이하)' },
+	{ id: 'ai-D1', avoid: /(결론적으로|요약하면|정리하자면|이를 통해)/g, max: 2, use: '결산어 1 ~ 2건만' },
+	{ id: 'ai-H4', avoid: /(^|[^가-힣])즉[ ,]/g, max: 2, use: '«즉» 글당 2회 이하' },
+	// 사용자 결정(2026-11-23): «두 가지 · 둘 · 형태» 처럼 개수 세는 말이 한 글에 겹치면 같은 뜻이 되풀이돼 피로하다 — 개수는 표 · 목록이 보여 주게 하고 문장에서는 한두 번만.
+	{ id: 'ai-count-dense', avoid: /(?<![가-힣])(두|세|네|다섯) (가지|개|곳|단계|형태|종류)|(?<![가-힣])(둘|셋|넷)(?=입니다|이다|이고|으로|로|을|이|은|과|뿐)/g, max: 3, use: '개수 말은 글당 3회 이하 — 표 · 목록이 개수를 보여 주게(사용자 결정 2026-11-23)' },
+];
+
 const ROOT = process.cwd();
 const BLOG = join(ROOT, 'src/content/blog');
 const args = process.argv.slice(2);
@@ -139,6 +168,7 @@ for (const file of files) {
 	const out = [];
 	let inCode = false;
 	let inFm = lines[0] === '---';
+	const dense = {};
 	lines.forEach((raw, i) => {
 		const n = i + 1;
 		if (inFm) {
@@ -159,6 +189,9 @@ for (const file of files) {
 			}
 		}
 		for (const m of line.matchAll(FORCED_PASSIVE)) out.push(`  ${n}  [passive] «${m[0]}» — 능동으로 쓸 수 있는지 본다`);
+		const inQuote = (at) => /«[^»]*$/.test(line.slice(0, at)) || /^\s*>/.test(raw);
+		for (const t of AI_TELL) for (const m of line.matchAll(t.avoid)) if (!inQuote(m.index)) out.push(`  ${n}  [${t.id}] «${m[0].trim()}» → ${t.use}`);
+		for (const t of AI_DENSE) for (const m of line.matchAll(t.avoid)) if (!inQuote(m.index)) (dense[t.id] ??= []).push(n);
 		// 규칙형 «~한다»: 같은 줄에 «~니다» 문장이 있는데 «~한다.» 로 끝나는 문장이 섞인 경우
 		const prose = !/^\s*(>|\||#|[-*] |\d+\. )/.test(raw);
 		if (prose && /니다[.!?]/.test(line)) {
@@ -167,6 +200,7 @@ for (const file of files) {
 			}
 		}
 	});
+	for (const t of AI_DENSE) { const at = dense[t.id] ?? []; if (at.length > t.max) out.push(`  ${at[0]}  [${t.id}] 글에 ${at.length}회(줄 ${at.slice(0, 6).join(' · ')}${at.length > 6 ? ' …' : ''}) → ${t.use}`); }
 	if (out.length) {
 		console.log(`${relative(ROOT, file)} — ${out.length}건`);
 		console.log(out.join('\n'));
