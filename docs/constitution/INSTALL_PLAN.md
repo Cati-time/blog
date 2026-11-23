@@ -59,6 +59,19 @@
 2. **Business Flow = 글 한 편** — blog-compose 다섯 단계(뼈대 → 질문 → 살 붙이기 → 사실 확인 → 초안 마무리)를 칸 2 단계(0 sync ~ 8 검증)에 어떻게 대응시킬지(4 SDD 전).
 3. **헌법 문면 합의** — 조문은 단계마다 보여 드리고 합의받는다(business-flow §3).
 
+## 계획 (5 Plan)
+
+- 잣대 ①② 를 재려면 문서가 있어야 하므로 **헌법 문서는 레인 가지에서 먼저 쓰고**, 6 DoD 관문이 그 문서를 재며, 정지점에서 사용자가 문면을 확인한 뒤 **7 Execute = 통합선 `main-cicd` 착지**로 한다.
+- 커밋 묶음(레인 가지 · 차례):
+  1. 거버넌스 셋 — `AMENDMENT.md` · `CHANGELOG.md` · `docs/adr/TEMPLATE.md`
+  2. `RULES.md` — 머리 판 줄 · 몸통 현재 1 ~ 4 · 개관 그래프 · 조문 12 · 지향 · 간극 · 바깥 접점 · 로그 · 오류 · 텔레메트리 · 거버넌스
+  3. `WORKFLOW.md` — 칸 1 ~ 18 · 루트 플로우 «글 한 편» · Subflow 계약 · 감독 절(과도 포함)
+  4. 게이트 · 도구 — `scripts/localci.sh` · 가드 둘(LAYER · BASE-URL 코드) · `check-wording --strict` · `check-seo --strict` · `new-post` 기본 `draft: true` · 가드 짝 시험
+  5. 지침 · 스킬 — `AGENTS.md` 판 포인터 · 처분대로 줄임 · 스킬 넷이 헌법을 가리키게 · `docs/claude-management.md` 겹치는 절 가리킴
+  6. 첫 ADR `docs/adr/constitution/ADR-0001-constitution-install.md` — Context · 논의된 대안(스킬에 규범 남기기 · main 을 통합선으로 · 조문 복사) · 토론 히스토리(이 대화의 사용자 결정 넷) · Decision · Consequences · 분모 대조 표 가리킴
+- 각 묶음 뒤 `npm run build` · 새 가드 · 짝 시험 초록.
+- 6 DoD: 잣대 여섯 + 바탕 행 → 첫 ADR 법제처 심사(민원과 경유 review).
+
 ## 사용자 결정 · 제안 기록
 
 - 2026-11-23 사용자: «너도 감독레인을 만들고 지금 까지 했던 블로그 작성 플로우를 루트 플로우로 만들자» → 감독 시점은 «설치 PASS 뒤에»(사용자 선택 · C237 ⑴ 그대로). 루트 플로우는 이 설치의 4 SDD 몫으로 넣는다.
@@ -92,7 +105,7 @@
 | 3b 감사 | ✅ | 분모 69 덮음 69 · 빠짐 0(기계 셈) |
 | 4 SDD | ✅ | `INSTALL_SDD.md` — 조문 12 + 지향 1 · 게이트(글 레인 check:seo · wording) · claude-management 안내 유지 — 사용자 합의 |
 | 4b 감사 | ✅ | 막음 4 · 권고 7 반영 → 막음 0 · 도구 손봄 셋 7 Execute 로 |
-| 5 Plan | ⬜ | |
+| 5 Plan | ✅ | 커밋 묶음 여섯 · 문서는 레인에서 먼저 · Execute = 착지 |
 | 5b 감사 | ⬜ | |
 | 6 DoD 관문 | ⬜ | |
 | 7 Execute | ⬜ | 정지점 뒤 |
