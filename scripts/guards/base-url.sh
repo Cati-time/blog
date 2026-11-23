@@ -7,9 +7,10 @@ cd "$(dirname "$0")/../.."
 if [ $# -gt 0 ]; then files="$*"; else files=$(git ls-files 'src/*.astro' 'src/**/*.astro' 'src/*.ts' 'src/**/*.ts' 'src/**/*.js' | grep -v '^src/content/' || true); fi
 [ -z "$files" ] && { echo "base-url: 검사 대상 0"; exit 2; }
 # 잡는 꼴: href="/x" · href='/x' · href={"/x"} · href={'/x'} · href={`/x`} (src 도 같다) · 뿌리만 href="/" 도 잡는다.
+# srcset="/a.png 1x" 와 중괄호 안 빈칸 href={ '/x' } 도 잡는다(법제처 T-002761 ⚪ 둘).
 # 빼는 꼴: href="//cdn…" — 프로토콜 상대 주소는 바깥 주소다.
 # 빼는 줄: BASE_URL · withBase · ${base} 를 쓰는 줄(기준을 붙인 경로) — 법제처 T-002712 🟡.
-hits=$(grep -nE "(href|src)=(\\{)?[\"'\`]/([^/]|$)" $files | grep -vE 'BASE_URL|withBase|\$\{base\}' || true)
+hits=$(grep -nE "(href|src|srcset)=(\\{[[:space:]]*)?[\"'\`]/([^/]|$)" $files | grep -vE 'BASE_URL|withBase|\$\{base\}' || true)
 n=$(echo "$files" | wc -l | tr -d ' ')
 if [ -n "$hits" ]; then echo "$hits"; echo "base-url: 대상 $n · 위반 $(echo "$hits" | wc -l | tr -d ' ')"; exit 1; fi
 echo "base-url: 대상 $n · 위반 0"

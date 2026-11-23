@@ -136,7 +136,7 @@ flowchart TB
 
 ### R-BLOG-BASE-URL — 주소는 BASE_URL 기준
 - **뜻**: 사이트는 `/blog` 아래에 있다. 코드의 링크 · 자원 경로는 `import.meta.env.BASE_URL` 로 만들고, 글 본문의 다른 글 링크는 상대 경로(`../<slug>/`)로 쓴다.
-- **집행**: 코드 — 가드 `scripts/guards/base-url.sh`(`src` 의 `href` · `src` 가 `"/…"` · `'/…'` · `{"/…"}` · `{'/…'}` · `` {`/…`} `` 로 시작하는 줄 0 — 뿌리만인 `"/"` 도 잡는다 · `//` 로 시작하는 프로토콜 상대 주소는 바깥 주소라 뺀다 · `BASE_URL` · `withBase` · `${base}` 를 쓰는 줄은 뺌 · 오류 · 짝 시험 `test-guards.sh`) · 글 본문 — `check-posts` W7(경고).
+- **집행**: 코드 — 가드 `scripts/guards/base-url.sh`(`src` 의 `href` · `src` · `srcset` 이 `"/…"` · `'/…'` · `{"/…"}` · `{'/…'}` · `` {`/…`} `` 로 시작하는 줄 0 — 뿌리만인 `"/"` · 중괄호 안 빈칸(`{ '/…' }`)도 잡는다 · `//` 로 시작하는 프로토콜 상대 주소는 바깥 주소라 뺀다 · `BASE_URL` · `withBase` · `${base}` 를 쓰는 줄은 뺌 · 오류 · 짝 시험 `test-guards.sh`) · 글 본문 — `check-posts` W7(경고).
 - **어긋나면**: 코드는 게이트 빨강 · 글 본문은 경고(리뷰).
 
 ### R-BLOG-VERBATIM — 받은 문서는 본문 그대로

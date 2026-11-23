@@ -72,7 +72,7 @@
 | B1 | 등록부 행 | 바탕 | 있다 — `targets.yaml` blog | W 머리 가리킴 | 민원과 | 민원과 · 6 DoD 전 재확인 | layout = 통합형(제정 때 확정) |
 | B2 | 명부 자리 | 바탕 | 있다 — `blog code-main / constitution-setup` | W §시스템 | 민원과 | 민원과 · 6 DoD 전 재확인 | 설치 레인이 세움 |
 | B3 | 통합선 가지 `main-cicd` | 바탕 | 없다 | W §레인 선 | 첫 착지 | 설치 레인 · 7 Execute(첫 착지) | 설치 레인이 세움 |
-| B4 | 원장 줄 | 바탕 | 확인 전 | — | 민원과 · tool | 민원과 · tool · 감독이 선 뒤 첫 점호 | 공란 — 까닭: 원장 줄은 harness 쪽 장부라 이 레인은 읽기만 · 자리 불요(분모 행) · 감독이 선 뒤 첫 점호에서 확인(처음 «6 DoD 전» 은 지났다 · 감수 ② 정정 7) |
+| B4 | 원장 줄 | 바탕 | 확인 전 | `refs/heads/supervisor/code-main` | 감독 | 감독 · 섰음(2026-11-24 · T-002847) | 있다 — 원장 `refs/heads/supervisor/code-main`(소유 supervisor / blog code-main · 감독 가지 `main-supervisor`) · 이 레인은 읽기만 · 처음엔 «공란 — 감독이 선 뒤» 였다 |
 | B5 | 러너 프로필 | 바탕 | 확인 전 | — | tool | tool · 6 DoD 전 | 공란 — 까닭: 러너 프로필(linestore 등)은 tool 설정 · 자리 불요(분모 행) · 〃 |
 | B6 | 레포 가드 선언 `localci_guards` | 바탕 | 없다 | `scripts/localci.sh` | localci | 설치 레인 · 7 Execute | 4 SDD |
 | B7 | 기계 전제 | 바탕 | 있다 — node 24.22 · npm 11.6 · astro 7.3.2 | W §검증 | Survey §4 | 설치 레인 · 1 Survey 확인됨 · 간극 행은 7 Execute | node 판 적힌 곳 불일치 → 간극 행 |
@@ -189,7 +189,7 @@
 | B1 | 있다 — harness `targets.yaml` blog 행(민원과) |
 | B2 | 있다 — 명부 `blog code-main / constitution-setup` bound |
 | B3 | 있다 — `main-cicd` 섰음(2026-11-23 첫 착지 `c8630ba` · 원천 `main@16cb73c`) |
-| B4 | 집행 대기 — 원장 줄은 감독이 선 뒤(감독 레인 PASS 뒤 · 주인 민원과) |
+| B4 | 있다 — 원장 `refs/heads/supervisor/code-main`(소유 supervisor / blog code-main · 감독 가지 `main-supervisor` · T-002847 로 채움 · 설치 때는 «집행 대기 — 감독이 선 뒤») |
 | B5 | 있다 — `localci gate` kind=web 무게 기록(러너 프로필 동작 · 2026-11-23) |
 | B6 | 있다 — `RULES.md:192` |
 | B7 | 있다 — `SURVEY.md:57-59`(§4 기계 전제 표 · 고침: 처음엔 W 의 CI/CD 표 줄을 가리켰다) |
