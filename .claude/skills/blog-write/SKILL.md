@@ -110,7 +110,7 @@ npm run check:posts -- <slug>
 
 ```bash
 npm run build          # 토큰 → 글 → 타입 검사 → 빌드
-astro dev --background # 미리보기 (이미 떠 있으면 생략)
+localci gate           # 게이트(build · 가드) — 미리보기 dev 서버는 로컬 CI 큐로(WORKFLOW 칸 15 V1)
 ```
 
 미리보기: `http://localhost:4321/blog/posts/<slug>/` — 초안도 로컬에서는 보인다. 사용자에게 **원본과 나란히 열어 비교**해 보라고 권한다.

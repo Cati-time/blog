@@ -94,7 +94,7 @@ description: >-
 
 - 사용자가 «발행» 이라고 할 때만 한다. ⑤를 마친 글이면 아래만 하면 된다.
   1. `pubDate` · `draft: false` · 시리즈 상자 링크를 바꾼다.
-  2. `npm run build` → `npm run check:seo` 오류 0 → `post:` 커밋 → «push 하면 배포됩니다».
+  2. `npm run build` → `npm run check:seo` 오류 0 → `post:` 커밋 → 로컬 CI 로 통합선 `main-cicd` 착지 → «main-cicd 에 착지했습니다 · main 머지 · push 하면 배포됩니다»(WORKFLOW 칸 2 · 칸 6).
 - push 뒤에는 배포(Actions)와 공개 주소를 확인한다. 막 배포된 직후에는 CDN 이 옛 응답을 최대 10분 들고 있을 수 있다.
 - 발행 뒤 정정이 생기면 `edit:` 로 고치고, 지표를 모으는 팀이면 «발행 뒤 정정» 으로 알린다.
 
