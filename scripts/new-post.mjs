@@ -10,13 +10,14 @@ import { join } from 'node:path';
 import { CATEGORIES, PLATFORMS, platformsOf } from '../site.config.mjs';
 
 const args = process.argv.slice(2);
-const flags = { tags: '', draft: false, category: '', platform: '' };
+const flags = { tags: '', draft: true, category: '', platform: '' }; // R-BLOG-DRAFT — 새 글은 초안이 기본
 const positional = [];
 for (let i = 0; i < args.length; i++) {
 	const a = args[i];
 	if (a === '--tags') flags.tags = args[++i] ?? '';
 	else if (a.startsWith('--tags=')) flags.tags = a.slice(7);
 	else if (a === '--draft') flags.draft = true;
+	else if (a === '--publish') flags.draft = false; // 발행은 사용자 말이 있을 때만
 	else if (a === '--category') flags.category = args[++i] ?? '';
 	else if (a.startsWith('--category=')) flags.category = a.slice(11);
 	else if (a === '--platform') flags.platform = args[++i] ?? '';

@@ -174,3 +174,5 @@ for (const file of files) {
 	}
 }
 console.log(`\ncheck-wording: 글 ${files.length}편 · 경고 ${total}건 (고칠지는 문맥을 보고 정한다 — blog-wording 스킬)`);
+// --strict: 글 레인 게이트(R-BLOG-WORDING) — 경고가 하나라도 있으면 실패
+if (args.includes('--strict') && total > 0) process.exit(1);
