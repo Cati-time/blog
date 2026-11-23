@@ -10,6 +10,9 @@ description: >-
 
 # blog-wording — 개발자가 쓰는 말로
 
+> **규범은 헌법이 갖는다** — `docs/constitution/RULES.md` R-BLOG-WORDING(글 레인 게이트 `check:wording --strict`) · WORKFLOW 칸 16 «용어 손봄». 이 스킬은 절차다 — 어긋나면 헌법이 이긴다.
+
+
 이 스킬의 약속은 셋이다.
 
 1. **근거 없는 대체어를 지어내지 않는다.** 바꿀 말은 용어집에 있는 것만 — 사용자 결정이거나, 한국어 기술 블로그에서 실제로 센 말.

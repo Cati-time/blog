@@ -1,5 +1,8 @@
 # Claude Code로 블로그 관리하기 — 설정 가이드
 
+> **규범은 헌법이 갖는다** — 이 문서는 설정 · 절차 **안내**다. 규칙은 `docs/constitution/`(RULES · WORKFLOW · AMENDMENT)이 정본이고, 이 문서의 내용이 헌법과 어긋나면 헌법이 이긴다. 일하는 길(레인 가지 → `main-cicd` → 사용자 main 머지 · push)은 WORKFLOW 칸 6.
+
+
 이 문서는 `Cati-time/blog` 저장소를 Claude Code가 대신 관리할 수 있도록 **한 번만 해두면 되는 설정**과,
 설정 후 **Claude에게 일을 맡기는 절차**를 정리합니다.
 
