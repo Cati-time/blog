@@ -1,6 +1,6 @@
 # ADR-0001 — 헌법 도입 — canon 0.44.0 · web-kind 0.1.0 첫 설치
 
-- **상태**: 제안(법제처 심사 전)
+- **상태**: 채택 — 법제처 T-002712 적합(심사 `103a117`) · 설치 감수 ② PASS(T-002763 · `main-cicd`＠0af4d7c)
 - **날짜**: 2026-11-23
 - **범위**: RULES · WORKFLOW · AMENDMENT(첫 설치 — 셋 다)
 - **관련**: `docs/constitution/CHANGELOG.md` 첫 줄 · 착수 티켓 T-002701 · 편입 판정 T-002697 · 선배 대조 권고 T-002698 · 설치 기록 `docs/constitution/INSTALL_PLAN.md` · `SURVEY.md` · `INSTALL_DENOMINATOR.md` · `INSTALL_BDD.md` · `INSTALL_SDD.md`

@@ -43,7 +43,7 @@
 
 ## 4. 판 표지
 
-- 이 문서 · `RULES.md` · `WORKFLOW.md` 머리에 «canon 0.44.0 · web-kind 0.1.0» 판 줄을 둔다. `AGENTS.md` 머리는 그 줄을 가리킨다.
+- 이 문서 · `RULES.md` · `WORKFLOW.md` 머리에 «canon 0.44.0 · web-kind 0.1.0» 판 줄을 둔다. `AGENTS.md` 는 절 «블로그 운영 규칙» 머리(`AGENTS.md:20` — :1-19 는 Astro 스타터 안내)에서 그 줄을 가리킨다.
 - 판 줄은 «기준선» 이 harness 장부에 있을 때만 판 올림 분모를 줄일 수 있다 — 표지만으로 면제받지 않는다(canon C246).
 
 ## 5. 개정 수신 — 공통 규칙의 새 판을 받을 때 (canon 칸 14 · 칸 18)

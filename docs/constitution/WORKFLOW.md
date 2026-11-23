@@ -87,6 +87,7 @@
 | 레인 원천 | 통합선 착지분(통합선이 없던 첫 착지는 `main` 머리) |
 | 언제 싱크 | 착수 때 · 통합선이 움직일 때마다 |
 | 워크트리 | canon `WORKTREE.md` 대로 — 앱이 연다 · 상설 레인 셋(헌법 · 도구 · 통합) |
+| 가지 처분 | 통합선에 없는 커밋이 있는 가지는 **사용자에게 묻는다**(지우거나 착지시키지 않는다 · 목록 = `SURVEY.md` §5 · 셈 `git rev-list --count main-cicd..<가지>`) · 앞선 커밋 0 인 가지는 지움 후보 — 지우는 것도 사용자 |
 
 ## 칸 7 — 감사 고리 (`wf.audit-loop`)
 
@@ -189,6 +190,7 @@
 ## 칸 18 — 헌법 설치 (`wf.install` · canon PENDING C236 · 지금 효력)
 
 - 첫 설치 기록: `docs/constitution/INSTALL_PLAN.md` · `INSTALL_DENOMINATOR.md` · `INSTALL_BDD.md` · `INSTALL_SDD.md` · `SURVEY.md`. 판 올림 · kind 판 올림도 같은 flow(`AMENDMENT.md` §5).
+- **설치 끝** = 보급과 감수 ② PASS(T-002763 · 기록 harness `desks/guide/audits/2026-11-23-blog-install-0.44.0.md`) · 기준선 = canon 0.44.0 · web-kind 0.1.0 · `main-cicd`＠0af4d7c.
 
 ## 감독 (canon `SUPERVISOR.md` 의 인스턴스)
 
@@ -211,5 +213,5 @@ canon `SUPERVISOR.md` 절마다 이 저장소의 값만 적는다. 몸통 문장
 | §7 반환 성능 칸 | canon 칸 그대로 |
 | §7-1 진단 지표 | 칸 11 의 글 지표를 모아 보고 |
 | §8 개정 · 공포 경계 | 판 올림은 상설 헌법 개정 레인 `docs/constitution` 에 넘김 · 사용자에게 묻지 않음(`AMENDMENT.md` §5) |
-| §9 감독 없는 동안(과도) | **지금 해당** — 설치 감수 ② PASS 전에는 감독이 없다. 그동안 글 요청은 블로그 세션이 받아 이 문서 칸 2 루트 플로우로 돌린다. PASS 뒤 민원과가 사용자에게 «감독 레인을 만들까» 를 묻고, 예면 `supervisor-open` 으로 연다 |
-| §10 레포가 정하는 것 | 레인 이름 · 점호 주기(안 정함 — 감독이 선 뒤 첫 점호에서) · 깨우는 수단(안 정함 — 같은 때) |
+| §9 감독 없는 동안(과도) | **끝남** — 감수 ② PASS(T-002763) 뒤 감독이 섰다(가지 `main-supervisor`). 아래는 과도 동안의 기록이다 — 설치 감수 ② PASS 전에는 감독이 없었다. 그동안 글 요청은 블로그 세션이 받아 이 문서 칸 2 루트 플로우로 돌렸고, PASS 뒤 민원과가 사용자에게 «감독 레인을 만들까» 를 물어 `supervisor-open` 으로 열었다 |
+| §10 레포가 정하는 것 | 레인 이름 · 점호 주기(안 정함 — 주인 감독 · 감독이 선 뒤 첫 점호에서) · 깨우는 수단(안 정함 — 주인 감독 · 같은 때) |
