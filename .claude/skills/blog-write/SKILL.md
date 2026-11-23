@@ -9,6 +9,9 @@ description: >-
 
 # blog-write — 문서를 스타일만 빼고 그대로 블로그 글로
 
+> **규범은 헌법이 갖는다** — `docs/constitution/RULES.md` R-BLOG-VERBATIM · R-BLOG-PUBLIC-SAFE · WORKFLOW 칸 16 Subflow «옮기기». 이 스킬은 절차다 — 어긋나면 헌법이 이긴다.
+
+
 **이 스킬의 약속: 내용은 원본 그대로.** 문장을 고치거나, 요약하거나, 순서를 바꾸거나, 덧붙이거나, 빼지 않는다. 맞춤법·어투도 그대로 둔다. 바꾸는 것은 **모양(스타일)** 뿐이다.
 
 변환은 Claude 가 손으로 하지 않는다. `npm run import` 스크립트가 기계적으로 하고, **원본과 결과의 글자 순서가 완전히 같은지** 대조해 보고한다. Claude 는 스크립트를 돌리고, 결과를 판정하고, 사용자가 결정할 것을 묻는다.
@@ -107,7 +110,7 @@ npm run check:posts -- <slug>
 
 ```bash
 npm run build          # 토큰 → 글 → 타입 검사 → 빌드
-astro dev --background # 미리보기 (이미 떠 있으면 생략)
+localci gate           # 게이트(build · 가드) — 미리보기 dev 서버는 로컬 CI 큐로(WORKFLOW 칸 15 V1)
 ```
 
 미리보기: `http://localhost:4321/blog/posts/<slug>/` — 초안도 로컬에서는 보인다. 사용자에게 **원본과 나란히 열어 비교**해 보라고 권한다.

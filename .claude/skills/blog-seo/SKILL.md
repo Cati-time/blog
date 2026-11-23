@@ -9,6 +9,9 @@ description: >-
 
 # blog-seo — 검색과 AI 에 잘 전달되게
 
+> **규범은 헌법이 갖는다** — `docs/constitution/RULES.md` R-BLOG-SEO(초안 `check:seo -- <slug> --strict` · 발행 전체 오류 0) · WORKFLOW 칸 5 · 칸 16 «SEO · GEO». 이 스킬은 절차다 — 어긋나면 헌법이 이긴다.
+
+
 약속은 셋이다.
 
 1. **사람에게 쓴 글이 먼저다.** 검색어를 억지로 끼우지 않는다. 제목 · 설명 · 첫 절을 «무슨 글인지 한 번에 알게» 쓰는 것이 SEO 이자 AI 전달이다.

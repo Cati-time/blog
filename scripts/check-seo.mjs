@@ -52,7 +52,9 @@ if (only.length) {
 	for (const w of warns) console.log('  경고 ' + w);
 	for (const e of errors) console.log('  오류 ' + e);
 	console.log(`check-seo: 지정한 글 ${only.length}편 · 오류 ${errors.length} · 경고 ${warns.length}`);
-	process.exit(errors.length ? 1 : 0);
+	// --strict: 초안 게이트(R-BLOG-SEO) — 경고도 실패
+	const strict = process.argv.includes('--strict');
+	process.exit(errors.length || (strict && warns.length) ? 1 : 0);
 }
 
 if (!existsSync(DIST)) {

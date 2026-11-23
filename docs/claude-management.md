@@ -1,5 +1,8 @@
 # Claude Code로 블로그 관리하기 — 설정 가이드
 
+> **규범은 헌법이 갖는다** — 이 문서는 설정 · 절차 **안내**다. 규칙은 `docs/constitution/`(RULES · WORKFLOW · AMENDMENT)이 정본이고, 이 문서의 내용이 헌법과 어긋나면 헌법이 이긴다. 일하는 길(레인 가지 → `main-cicd` → 사용자 main 머지 · push)은 WORKFLOW 칸 6.
+
+
 이 문서는 `Cati-time/blog` 저장소를 Claude Code가 대신 관리할 수 있도록 **한 번만 해두면 되는 설정**과,
 설정 후 **Claude에게 일을 맡기는 절차**를 정리합니다.
 
@@ -205,7 +208,7 @@ curl -s -o /dev/null -w '%{http_code}\n' https://cati-time.github.io/blog/
 | "의존성 업데이트해줘" | `npm outdated` → 업데이트 → 빌드 검증 → 커밋 | 사용자 |
 | "디자인/기능 바꿔줘" | 컴포넌트 수정 → dev 서버로 화면 확인 → 커밋 | 사용자 |
 
-커밋이 끝나면 Claude가 "push 하면 배포됩니다" 라고 알려줍니다. 그때 GitHub Desktop 에서 **Push origin** 또는 `git push` 를 하면 됩니다.
+Claude 는 레인 가지에서 일하고 로컬 CI 로 통합선 `main-cicd` 에 착지한 뒤 "main-cicd 에 착지했습니다 · main 머지 · push 하면 배포됩니다" 라고 알려줍니다. 그때 `main-cicd` 를 `main` 에 머지하고 GitHub Desktop 에서 **Push origin** 또는 `git push` 를 하면 됩니다(WORKFLOW 칸 6).
 
 ---
 
