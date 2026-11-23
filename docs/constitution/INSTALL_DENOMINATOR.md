@@ -116,6 +116,83 @@
 - 조문 이름은 4 SDD 의 후보다(합의 전). 스킬 넷은 절차로 남기고 MUST 줄은 헌법으로 옮겨 스킬이 헌법을 가리키게 한다(선배 대조 권고 W).
 - 같은 커밋 동기화 둘(`WRITING_GUIDE` ↔ 글쓰기 규칙 · `tokens.css` ↔ `design-tokens.md`) — 술어 없음 → «일부 + 주인 · 확인 때».
 
+
+## 3. 설치 뒤 자리 — 6 DoD 관문 (레인 가지 a07e4ea 기준)
+
+셈: 행 id 마다 그 절 머리의 경로:줄(파이썬 — 문서 머리 정규식 대조). 기준 ref = 레인 가지 `docs/constitution-setup`＠a07e4ea.
+
+| 행 | 설치 뒤 |
+| --- | --- |
+| H1 | 있다 — `RULES.md:3` |
+| W1 | 있다 — `WORKFLOW.md:7` |
+| W2 | 있다 — `WORKFLOW.md:17` |
+| W3 | 있다 — `WORKFLOW.md:47` |
+| W4 | 있다 — `WORKFLOW.md:59` |
+| W5 | 있다 — `WORKFLOW.md:63` |
+| W6 | 있다 — `WORKFLOW.md:75` |
+| W7 | 있다 — `WORKFLOW.md:87` |
+| W8 | 있다 — `WORKFLOW.md:92` |
+| W9 | 있다 — `WORKFLOW.md:96` |
+| W10 | 있다 — `WORKFLOW.md:100` |
+| W11 | 있다 — `WORKFLOW.md:106` |
+| W12 | 있다 — `WORKFLOW.md:119` |
+| W13 | 있다 — `WORKFLOW.md:123` |
+| W14 | 있다 — `WORKFLOW.md:132` |
+| W15 | 있다 — `WORKFLOW.md:136` |
+| W16 | 있다 — `WORKFLOW.md:147` |
+| W17 | 있다 — `WORKFLOW.md:162` |
+| W18 | 있다 — `WORKFLOW.md:166` |
+| S1 | 있다 — `RULES.md:53` |
+| S2 | 해당 없음 — web kind · server 몸통 없음(RULES.md §4 (가)) |
+| S3 | 있다 — `RULES.md:97` |
+| S4 | 있다 — `RULES.md:174` |
+| S5 | 있다 — `RULES.md:112` |
+| S6 | 있다 — `RULES.md:192` |
+| S7 | 있다 — `RULES.md:196` |
+| S8 | 있다 — `RULES.md:206` |
+| S9 | 있다 — `RULES.md:186` |
+| S10 | 있다 — `RULES.md:187` |
+| S11 | 있다 — `RULES.md:13` |
+| S12 | 있다 — `RULES.md:188` |
+| S13 | 있다 — `RULES.md:210` |
+| V1 | 있다 — `WORKFLOW.md:176` |
+| V2 | 있다 — `WORKFLOW.md:177` |
+| V3 | 있다 — `WORKFLOW.md:178` |
+| V4 | 있다 — `WORKFLOW.md:179` |
+| V5 | 있다 — `WORKFLOW.md:180` |
+| V6 | 있다 — `WORKFLOW.md:181` |
+| V7 | 있다 — `WORKFLOW.md:182` |
+| V8 | 있다 — `WORKFLOW.md:183` |
+| V9 | 있다 — `WORKFLOW.md:184` |
+| V10 | 있다 — `WORKFLOW.md:185` |
+| V11 | 있다 — `WORKFLOW.md:186` |
+| V12 | 있다 — `WORKFLOW.md:187` |
+| V13 | 있다 — `WORKFLOW.md:188` |
+| V14 | 있다 — `WORKFLOW.md:189` |
+| V15 | 있다 — `WORKFLOW.md:190` |
+| V16 | 있다 — `WORKFLOW.md:191` |
+| V17 | 있다 — `WORKFLOW.md:192` |
+| C1 | 있다 — `WORKFLOW.md:123` |
+| C2 | 있다 — `WORKFLOW.md:127` |
+| C3 | 있다 — `WORKFLOW.md:85` |
+| C4 | 있다 — `AMENDMENT.md:28` |
+| K1 | 있다 — `RULES.md:11` |
+| K2 | 있다 — `RULES.md:53` |
+| K3 | 있다 — `RULES.md:73` |
+| K4 | 있다 — `RULES.md:82` |
+| K5 | 있다 — `RULES.md:91` |
+| K6 | 있다 — `RULES.md:97` |
+| K7 | 있다 — `RULES.md:210` |
+| B1 | 있다 — harness `targets.yaml` blog 행(민원과) |
+| B2 | 있다 — 명부 `blog code-main / constitution-setup` bound |
+| B3 | 집행 대기 — `main-cicd` 는 7 Execute 첫 착지가 세움(주인 설치 레인) |
+| B4 | 집행 대기 — 원장 줄은 감독이 선 뒤(감독 레인 PASS 뒤 · 주인 민원과) |
+| B5 | 있다 — `localci gate` kind=web 무게 기록(러너 프로필 동작 · 2026-11-23) |
+| B6 | 있다 — `RULES.md:192` |
+| B7 | 있다 — `WORKFLOW.md:136` |
+| B8 | 일부 — 전역 정지 `PAUSED` 있음(2026-11-13 · tool) · 게이트는 돌았음(rc 0) · 착지가 막히면 tool 결함 티켓(canon C221) |
+| B9 | 있다 — `AGENTS.md:20` |
+
 ## 감사 (2b)
 
 - 독립 서브에이전트 대조(읽기 전용 · 2026-11-23): A0 canon 칸 빠짐 0(SUPERVISOR 제목 17 전부) · K1 ~ K7 · B1 ~ B9 있음 · «지금» 13 행 표본 모두 사실 · 셈 69 일치.
