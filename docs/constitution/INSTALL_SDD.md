@@ -31,7 +31,7 @@
 | content | `src/content/{blog,team,projects}/` | 61 | 글 · 팀원 · 프로젝트(스키마 `content.config.ts`) | — |
 | 설정 정본 | `src/consts.ts` · `site.config.mjs` · `astro.config.mjs` | 3 | 분류 · 주소 · SEO · 빌드 설정 | — |
 | 도구 | `scripts/` | 9 | check-* · new-post · import-doc · make-charts · make-og · setup | content · 설정 |
-| 정적 파일 | `public/` | (7 Execute 에서 셈) | 이미지 · 아이콘 | — |
+| 정적 파일 | `public/` | 3 | 이미지 · 아이콘 | — |
 
 - **의존 방향**(관찰): route → layout → component → lib · consts · 설정 · style. lib 는 component · route 를 부르지 않는다(실측 `grep` 0). 조문 `R-BLOG-LAYER` + 가드 후보(lib · styles 에서 components · pages import 0).
 - 서버 계약 · 인증 · 서버 상태: **해당 없음 — 정적 사이트**(K5 · 판정 T-002697).
