@@ -6,6 +6,16 @@
 LOCALCI_KIND=web
 # V2 포트 = 3300 · V1 대역 3310 ~ 3319(법제처 T-002697 판정 · WORKFLOW 칸 15). 판정자가 LOCALCI_WEB_PORT 를 주면 그 값이 이긴다.
 LOCALCI_WEB_PORT="${LOCALCI_WEB_PORT:-3300}"
+# 이 머지가 바꾸면 dev 서버를 재사용하지 않고 다시 띄울 설정 파일(러너 기본값은 craco 레포용이라 이 레포 것을 적는다).
+LOCALCI_RESTART_ON='astro.config.mjs site.config.mjs package.json package-lock.json tsconfig*.json'
+
+# localci_start — CD: Astro dev 서버를 러너가 준 포트로 띄우고 돌아온다(선언이 없으면 러너가 `npx craco start` 로 넘어가 늘 실패했다 · 2026-11-23).
+#   러너가 트리에서 PORT · LOCALCI_WEB_PORT 를 넣어 부른다. 서버는 백그라운드 · 로그는 러너 로그($2)로.
+localci_start() {
+  local t="$1" log="$2"
+  ( cd "$t" && nohup npx astro dev --port "${PORT:-$LOCALCI_WEB_PORT}" --host 127.0.0.1 >>"$log" 2>&1 </dev/null & )
+  return 0
+}
 
 # localci_ci — PR check.yml 과 같은 명령(npm ci --no-audit --no-fund → npm run build).
 #   npm run build = check(check-tokens → check-posts → astro check) → astro build.
