@@ -6,6 +6,9 @@
 LOCALCI_KIND=web
 # V2 포트 = 3300 · V1 대역 3310 ~ 3319(법제처 T-002697 판정 · WORKFLOW 칸 15). 판정자가 LOCALCI_WEB_PORT 를 주면 그 값이 이긴다.
 LOCALCI_WEB_PORT="${LOCALCI_WEB_PORT:-3300}"
+# 문서만 회차 판별(WORKFLOW 칸 13-1 · canon C170) — 글(src/content/**/*.md)은 빌드 입력이라 «*.md» 기본값을 쓰지 않는다.
+#   러너는 소문자로 바꾼 경로를 case 패턴으로 맞춘다(* 는 / 도 넘는다). 짝 가드 = scripts/guards/docs-glob.sh.
+LOCALCI_DOCS_GLOB='docs/*.md readme.md writing_guide.md agents.md claude.md .claude/*.md'
 # 이 머지가 바꾸면 dev 서버를 재사용하지 않고 다시 띄울 설정 파일(러너 기본값은 craco 레포용이라 이 레포 것을 적는다).
 LOCALCI_RESTART_ON='astro.config.mjs site.config.mjs package.json package-lock.json tsconfig*.json'
 
@@ -51,5 +54,6 @@ localci_guards() {
     bash scripts/guards/layer.sh || exit 22
     bash scripts/guards/base-url.sh || exit 23
     bash scripts/guards/test-guards.sh || exit 24
+    bash scripts/guards/docs-glob.sh || exit 25
   ) >>"$log" 2>&1
 }

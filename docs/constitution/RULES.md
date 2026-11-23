@@ -106,6 +106,8 @@ flowchart TB
 | `tokens.css` ↔ `docs/design-tokens.md` 같은 커밋 · `WRITING_GUIDE` ↔ 글 규칙 같은 커밋(술어 없음) | 상설 헌법 레인 | 첫 해당 개정 때 가드 또는 리뷰 줄 |
 | node 판 적힌 곳 불일치(README · engines 22.12 · `.nvmrc` · deploy 24) | 설치 레인 | 한 판으로 맞춤 |
 | `check-tokens` 범위 밖(`public/` · 글 본문 · 그림 SVG 색 · `.ts` 주입 스타일) | 상설 도구 레인 | 범위를 정하거나 «범위 밖» 을 조문에 둠 |
+| 집행 대기 — 역할 목록 ↔ 현재 1 처분 표 대조 가드(K2 · K7 · S13 · 지금은 셈 명령 + 사람 대조) | 상설 도구 레인 | 가드가 `localci_guards` 에 들고 짝 시험 · 확인 때: 감독이 선 뒤 첫 점호 |
+| 집행 대기 — Subflow 선언 수 = WORKFLOW 칸 16 행 수 가드(지금은 리뷰) | 상설 도구 레인 | 가드가 `localci_guards` 에 듦 · 확인 때: 감독이 선 뒤 첫 점호 |
 
 ## 6. 글 규칙 — `R-BLOG-*`
 
@@ -133,7 +135,7 @@ flowchart TB
 
 ### R-BLOG-BASE-URL — 주소는 BASE_URL 기준
 - **뜻**: 사이트는 `/blog` 아래에 있다. 코드의 링크 · 자원 경로는 `import.meta.env.BASE_URL` 로 만들고, 글 본문의 다른 글 링크는 상대 경로(`../<slug>/`)로 쓴다.
-- **집행**: 코드 — 가드 `scripts/guards/base-url.sh`(`src` 의 `href="/…"` · `src="/…"` 0 · 오류) · 글 본문 — `check-posts` W7(경고).
+- **집행**: 코드 — 가드 `scripts/guards/base-url.sh`(`src` 의 `href` · `src` 가 `"/…"` · `'/…'` · `{"/…"}` · `{'/…'}` · `` {`/…`} `` 로 시작하는 줄 0 · `BASE_URL` · `withBase` · `${base}` 를 쓰는 줄은 뺌 · 오류 · 짝 시험 `test-guards.sh`) · 글 본문 — `check-posts` W7(경고).
 - **어긋나면**: 코드는 게이트 빨강 · 글 본문은 경고(리뷰).
 
 ### R-BLOG-VERBATIM — 받은 문서는 본문 그대로
@@ -191,7 +193,7 @@ flowchart TB
 
 ### 9-1. 가드 진입점 (M4)
 
-- `scripts/localci.sh` 하나 — `localci_ci`(`npm ci --no-audit --no-fund` → `npm run build` — PR `check.yml` 과 같은 명령) · `localci_guards`(check-tokens · check-posts · R-BLOG-LAYER · R-BLOG-BASE-URL 가드) · 글 레인 덧(바뀐 글마다 `check:seo -- <slug> --strict` · `check:wording --strict`).
+- `scripts/localci.sh` 하나 — `localci_ci`(`npm ci --no-audit --no-fund` → `npm run build` — PR `check.yml` 과 같은 명령) · `localci_guards`(check-tokens · check-posts · R-BLOG-LAYER · R-BLOG-BASE-URL 가드 · 가드 짝 시험 `test-guards.sh` · 문서만 회차 짝 가드 `docs-glob.sh` — WORKFLOW 칸 13-1) · 글 레인 덧(바뀐 글마다 `check:seo -- <slug> --strict` · `check:wording --strict`).
 
 ### 9-2. 섹터 맵 (M5)
 

@@ -185,7 +185,7 @@
 | K7 | 있다 — `RULES.md:210` |
 | B1 | 있다 — harness `targets.yaml` blog 행(민원과) |
 | B2 | 있다 — 명부 `blog code-main / constitution-setup` bound |
-| B3 | 집행 대기 — `main-cicd` 는 7 Execute 첫 착지가 세움(주인 설치 레인) |
+| B3 | 있다 — `main-cicd` 섰음(2026-11-23 첫 착지 `c8630ba` · 원천 `main@16cb73c`) |
 | B4 | 집행 대기 — 원장 줄은 감독이 선 뒤(감독 레인 PASS 뒤 · 주인 민원과) |
 | B5 | 있다 — `localci gate` kind=web 무게 기록(러너 프로필 동작 · 2026-11-23) |
 | B6 | 있다 — `RULES.md:192` |
