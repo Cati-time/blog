@@ -1,7 +1,7 @@
-# 헌법 설치 4 SDD — 헌법 문서 설계 (blog · 합의 전)
+# 헌법 설치 4 SDD — 헌법 문서 설계 (blog · 설계 합의 2026-11-23)
 
 - 기준: 레인 `docs/constitution-setup`＠7beaa47 · 분모 `INSTALL_DENOMINATOR.md` 69 행 · 장면 `INSTALL_BDD.md`.
-- 🔶 **조문 문면은 사용자 합의 뒤에 쓴다**(business-flow §3). 이 문서는 «무엇을 어디에 · 무엇으로 집행» 설계다.
+- 설계(무엇을 어디에 · 무엇으로 집행)는 사용자 합의(§6). **조문 문면은 7 Execute 전에 한 번 더 보인다**(business-flow §3).
 
 ## 1. 세울 파일
 
@@ -60,18 +60,18 @@
 | --- | --- | --- |
 | `localci_ci` | `npm ci` → `npm run build` | PR `check.yml` 과 같은 명령 — 로컬 초록 = PR 초록 |
 | `localci_guards` | `check:tokens` · `check:posts` · 새 의존 방향 가드 | 빌드 없이 빠르게 |
-| 글 레인 덧(제안) | 바뀐 글마다 `check:seo -- <slug>` · `check:wording` | 초안 완료 기준(0 · 0)을 게이트로 — 지금은 사람이 돌림 |
+| 글 레인 덧(합의) | 바뀐 글마다 `check:seo -- <slug>` · `check:wording` | 초안 완료 기준(0 · 0)을 게이트로 — 지금은 사람이 돌림 |
 
 ## 5. WORKFLOW 루트 플로우 «글 한 편» · Subflow 계약 (W2 · W16)
 
 - 단계 대응은 `INSTALL_PLAN.md` §사용자 결정 표 그대로(합의 2026-11-23).
 - Subflow 계약 행 후보: 조사 요청 · 다시 세기 · 뼈대 · 그림 · 사실 확인 회차 · 용어 손봄 · SEO · GEO · 옮기기(blog-write) · 발행 확인(V3). 행마다 입력 · 방법 · 결과물 · 통과 체크 · 결정 기록 · 반려되는 곳.
 
-## 6. 사용자에게 물을 것 (합의 전)
+## 6. 사용자 합의 (2026-11-23)
 
-1. 조문 후보 12 개와 지향 한 줄 — 이대로 세울지 · 빼거나 더할 것.
-2. 글 레인 게이트에 `check:seo` · `check:wording` 을 넣을지(§4 덧).
-3. `docs/claude-management.md` 는 안내로 남기고 헌법이 가리키게 할지.
+1. 조문 후보 12 개 + 지향 «다크 모드 없음» — **이대로 세운다.** 문면은 7 Execute 전에 한 번 더 보인다.
+2. 글 레인 게이트에 `check:seo -- <slug>` · `check:wording` — **넣는다**(§4 덧 확정).
+3. `docs/claude-management.md` — **안내로 남기고 헌법이 가리킨다.** 겹치는 절만 헌법을 가리키게 고친다.
 
 ## 감사 (4b)
 
