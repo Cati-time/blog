@@ -12,6 +12,7 @@
 | 레인 가지 | `docs/constitution-setup`(main＠16cb73c 에서 땀 · 추적 파일 129) |
 | 들어오는 길 | (가) 기존 실물 — 이미 도는 규칙이 있다: `AGENTS.md`(= `CLAUDE.md`) · `WRITING_GUIDE.md` · 스킬 `blog-compose` · `blog-wording` · `blog-seo` · `blog-write` · `scripts/check-*.mjs`(tokens · posts · wording · seo) · `.github/workflows/check.yml` · `deploy.yml`. 지우지 않고 **들인다**(분모 행에 «있다(경로:줄)» 로 댄다) |
 | 선언 판 | 없음(헌법 0) → 분모 = 설치 분모 표 **전수**(C246 ⑴ ⑵ — 기준선 없음) |
+| 선배 대조 권고 | 보급과 T-002698 → harness `desks/guide/checks/2026-11-23-peer-learn-blog.md`＠`2bc24fa3a` — 선배 old_person(web · main-cicd＠1bc7688) · content(1.0.0/cicd＠9ce7f71). 첫 ADR 필수 묶음: 헌법 넷 · ADR · 기존 규범(CLAUDE.md 운영 규칙 15 줄 · WRITING_GUIDE · 스킬 넷) 처분 표 · 술어 있는 조문 셋(토큰 R1 ~ R3 · 공개 글 P1 ~ P5 · 분류 정본) · localci(build = PR CI 와 같음) · 통합선 main-cicd(main push = 공개 배포) · 가지 처분 · 배포 = 사람 몫 |
 | 정지점 | Execute 직전 하나(칸 2). 헌법 문면은 단계마다 사용자 합의(business-flow §3 «에이전트 단독 작성 금지») |
 | 끝 | `main-cicd` 착지 sha + 보급과 감수 ② PASS → 민원과가 사용자에게 «감독 레인을 만들까» (C237 ⑴) |
 
