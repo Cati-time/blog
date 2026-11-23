@@ -52,7 +52,7 @@ flowchart TB
 
 ### 1-2. 층 · 역할 처분 (web-kind 규칙 2)
 
-셈 명령: `git ls-tree -r --name-only <ref> <폴더> | wc -l` · 기준 ref = 이 판을 착지한 통합선 sha. **처분 안 된 역할 0** — 새 폴더 · 뿌리 파일이 생기면 같은 변경에서 이 표에 행을 둔다.
+셈 명령(K7 · S13 — 역할 목록과 수를 한 번에): `git -c core.quotepath=false ls-tree -r --name-only <ref> src scripts public | awk -F/ '$1=="src" && NF>2 {print $1"/"$2; next} $1!="src" {print $1; next} {print}' | sort | uniq -c` — 줄마다 «수 · 폴더(또는 `src` 바로 아래 파일)». 나온 줄 하나하나가 아래 표의 행에 들어야 한다(처분 안 된 줄 0). 폴더 하나만 셀 때는 `git ls-tree -r --name-only <ref> <폴더> | wc -l`. 기준 ref = 이 판을 착지한 통합선 sha — 지금 `main-cicd`＠0af4d7c(설치 감수 ② · `src` + `scripts` 106 파일 = src 92 · scripts 14 · 여기에 public 3). **처분 안 된 역할 0** — 새 폴더 · 뿌리 파일이 생기면 같은 변경에서 이 표에 행을 둔다.
 
 | 층 · 역할 | 폴더 · 파일 | 수 | 책임 | 소유(이 층만) | 의존 가능 | 관찰 근거 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -86,6 +86,7 @@ flowchart TB
   - `check-tokens` · `check-posts` · 콘텐츠 스키마 — 토큰 · 공개 글 안전 · 분류(빌드 안)
   - `check:seo` · `check:wording` — 검색 · AI 전달 · 용어(글 레인 게이트)
   - 브라우저 미리보기(V1) · 공개 페이지(V3) — 화면
+- **진짜로 돌리는 것** = `npm run build`(정적 생성 전체 — 스키마 · 콘텐츠 검사 포함 · `localci_ci`) · **시험 이음새**(가짜를 끼우는 자리) = 없음 — 까닭: 정적 생성이라 런타임 요청 · 저장소 · 상태가 없어 갈아 끼울 경계가 없다.
 - 바깥 HTTP · 저장소 · 시계 · 라우터 대체: **해당 없음** — 정적 생성이라 런타임 요청이 없다.
 
 ## 4. 현재 4 — 옆과 어떻게 잇나
@@ -135,7 +136,7 @@ flowchart TB
 
 ### R-BLOG-BASE-URL — 주소는 BASE_URL 기준
 - **뜻**: 사이트는 `/blog` 아래에 있다. 코드의 링크 · 자원 경로는 `import.meta.env.BASE_URL` 로 만들고, 글 본문의 다른 글 링크는 상대 경로(`../<slug>/`)로 쓴다.
-- **집행**: 코드 — 가드 `scripts/guards/base-url.sh`(`src` 의 `href` · `src` 가 `"/…"` · `'/…'` · `{"/…"}` · `{'/…'}` · `` {`/…`} `` 로 시작하는 줄 0 · `BASE_URL` · `withBase` · `${base}` 를 쓰는 줄은 뺌 · 오류 · 짝 시험 `test-guards.sh`) · 글 본문 — `check-posts` W7(경고).
+- **집행**: 코드 — 가드 `scripts/guards/base-url.sh`(`src` 의 `href` · `src` 가 `"/…"` · `'/…'` · `{"/…"}` · `{'/…'}` · `` {`/…`} `` 로 시작하는 줄 0 — 뿌리만인 `"/"` 도 잡는다 · `//` 로 시작하는 프로토콜 상대 주소는 바깥 주소라 뺀다 · `BASE_URL` · `withBase` · `${base}` 를 쓰는 줄은 뺌 · 오류 · 짝 시험 `test-guards.sh`) · 글 본문 — `check-posts` W7(경고).
 - **어긋나면**: 코드는 게이트 빨강 · 글 본문은 경고(리뷰).
 
 ### R-BLOG-VERBATIM — 받은 문서는 본문 그대로

@@ -12,6 +12,8 @@ printf "<a href='/posts/x/'>x</a>\n" > "$tmp/bad-single.astro"
 printf '<a href={"/posts/x/"}>x</a>\n' > "$tmp/bad-brace.astro"
 printf "<img src={'/og.png'} />\n" > "$tmp/bad-brace-single.astro"
 printf '<a href={`/tags/${t}/`}>x</a>\n' > "$tmp/bad-tmpl.astro"
+printf '<a href="/">home</a>\n' > "$tmp/bad-root.astro"
+printf '<script src="//cdn.example.com/x.js"></script>\n' > "$tmp/good-proto.astro"
 printf '<a href={`${import.meta.env.BASE_URL}posts/x/`}>x</a>\n<a href={`${base}/tags/`}>t</a>\n<a href="https://example.com/x">e</a>\n' > "$tmp/good-base.astro"
 expect 1 bash scripts/guards/layer.sh "$tmp/bad.ts"
 expect 0 bash scripts/guards/layer.sh "$tmp/good.ts"
@@ -22,6 +24,8 @@ expect 1 bash scripts/guards/base-url.sh "$tmp/bad-brace.astro"
 expect 1 bash scripts/guards/base-url.sh "$tmp/bad-brace-single.astro"
 expect 1 bash scripts/guards/base-url.sh "$tmp/bad-tmpl.astro"
 expect 0 bash scripts/guards/base-url.sh "$tmp/good-base.astro"
+expect 1 bash scripts/guards/base-url.sh "$tmp/bad-root.astro"
+expect 0 bash scripts/guards/base-url.sh "$tmp/good-proto.astro"
 expect 1 env DOCS_GLOB='*.md' bash scripts/guards/docs-glob.sh docs/a.md src/content/blog/x/index.md
 expect 1 env DOCS_GLOB='*.md' bash scripts/guards/docs-glob.sh docs/a.md SRC/Content/blog/x/README.md
 expect 0 bash scripts/guards/docs-glob.sh docs/a.md README.md src/content/blog/x/index.md
