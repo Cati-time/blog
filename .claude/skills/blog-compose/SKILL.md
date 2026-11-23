@@ -10,6 +10,9 @@ description: >-
 
 # blog-compose — 취재해서 쓰는 글: 뼈대 → 질문 → 살 붙이기 → 사실 확인 → 초안 마무리
 
+> **규범은 헌법이 갖는다** — 단계 · 정지점 · 완료 기준은 `docs/constitution/WORKFLOW.md` 칸 2 루트 플로우 «글 한 편» · 칸 5 · 칸 16, 숫자 규칙은 `RULES.md` R-BLOG-FACTS · 인용은 R-BLOG-QUOTES. 이 스킬은 그 절차를 돕는 손이다 — 어긋나면 헌법이 이기고, 고칠 것은 `AMENDMENT.md` 절차로.
+
+
 이 스킬의 약속은 셋이다.
 
 1. **거짓말을 쓰지 않는다.** 글의 숫자와 «좋아졌다» 같은 효과는 저장소에서 센 값으로만 쓴다. 못 쟀으면 필자의 판단이라고 밝힌다.
@@ -91,7 +94,7 @@ description: >-
 
 - 사용자가 «발행» 이라고 할 때만 한다. ⑤를 마친 글이면 아래만 하면 된다.
   1. `pubDate` · `draft: false` · 시리즈 상자 링크를 바꾼다.
-  2. `npm run build` → `npm run check:seo` 오류 0 → `post:` 커밋 → «push 하면 배포됩니다».
+  2. `npm run build` → `npm run check:seo` 오류 0 → `post:` 커밋 → 로컬 CI 로 통합선 `main-cicd` 착지 → «main-cicd 에 착지했습니다 · main 머지 · push 하면 배포됩니다»(WORKFLOW 칸 2 · 칸 6).
 - push 뒤에는 배포(Actions)와 공개 주소를 확인한다. 막 배포된 직후에는 CDN 이 옛 응답을 최대 10분 들고 있을 수 있다.
 - 발행 뒤 정정이 생기면 `edit:` 로 고치고, 지표를 모으는 팀이면 «발행 뒤 정정» 으로 알린다.
 

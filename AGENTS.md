@@ -1,12 +1,6 @@
 ## Development
 
-When starting the dev server, use background mode:
-
-```
-astro dev --background
-```
-
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+dev 서버는 직접 띄우지 않고 로컬 CI 큐로 띄운다(전역 규칙 · WORKFLOW 칸 15 V1 · 포트 3310 ~ 3319). 손으로 볼 때만 `astro dev --background` · `astro dev stop` · `astro dev status` · `astro dev logs`.
 
 ## Documentation
 
@@ -23,20 +17,17 @@ Consult these guides before working on related tasks:
 
 ## 블로그 운영 규칙 (Claude)
 
-설정·절차 전체는 [docs/claude-management.md](docs/claude-management.md) 참고. 팀원용 글쓰기 안내의 정본은 [WRITING_GUIDE.md](WRITING_GUIDE.md) — 글쓰기 규칙(분류 기준, frontmatter, 공개 금지 정보, 발행 절차)을 바꾸면 이 문서도 같은 커밋에서 고친다.
+> **헌법**: 이 저장소는 canon 판 **0.44.0** · web-kind **0.1.0** 의 인스턴스다 — `docs/constitution/RULES.md`(코드 · 글 규칙 `R-BLOG-*`) · `WORKFLOW.md`(루트 플로우 «글 한 편» · 레인 선 · 감독) · `AMENDMENT.md`(개정 절차). **헌법은 단독 편집 금지 — `AMENDMENT.md` 절차로.** 이 파일과 안내 문서 · 스킬은 헌법을 가리킨다. 겹치면 헌법이 이긴다. `CLAUDE.md` 는 이 파일의 심링크다.
 
-- 저장소: `Cati-time/blog`, 사이트: `https://cati-time.github.io/blog/` (`site.config.mjs` 의 `base: '/blog'`). 링크는 항상 `import.meta.env.BASE_URL` 기준으로 만든다.
-- 글: `npm run new "제목" slug --category <ax|architecture> --platform <android|ios|backend|web|back-office|harness> --tags a,b [--draft]` → `src/content/blog/<slug>/index.md`, 주소는 `/posts/<slug>/`.
-- 메뉴: 상단 대분류 2개(AX, Architecture) × 하위 플랫폼 5개, AX 에만 Harness Rules(`harness`) 가 하나 더 있다(PLATFORMS 의 `categories`). 한 글을 여러 하위 메뉴에 실으려면 frontmatter `alsoIn: [...]`(주 메뉴는 `platform`). 목록의 정본은 `site.config.mjs` 의 `CATEGORIES`·`PLATFORMS` 이고 스키마·메뉴·페이지·새 글 스크립트가 모두 여기서 읽는다. 글의 분류가 애매하면 사용자에게 묻는다.
-- **push 는 하지 않는다.** 전역 hook 이 막고, main push 는 곧 공개 배포다. 커밋까지 하고 "push 하면 배포됩니다" 라고 알린다.
-- 커밋 전 반드시 `npm run build` 통과를 확인한다. build 는 `astro check`(타입 검사) 후 빌드하므로 GitHub Actions 배포도 타입 오류가 있으면 멈춘다.
-- 커밋 메시지 접두어: `post:` 새 글·발행, `edit:` 글 수정, `fix:` 버그, `style:` 디자인, `config:` 설정, `chore:` 의존성·도구.
-- **사용자가 Markdown·HTML 문서를 주면 `blog-write` 스킬(`.claude/skills/blog-write/`)을 따른다 — 스타일만 걷어내고 내용은 그대로.** 변환은 `npm run import` 가 하고 원본과 본문 글자를 대조한다. Claude 는 결과 본문을 고치지 않는다(허용: frontmatter·alt·비밀값 가리기·강조 표기, 사용자가 콕 집은 곳). HTML 은 `index.md` 안 블록으로만, `npm run check:posts` 가 비밀값·금지 HTML·alt 누락을 빌드에서 막는다. 문장부호 자동 변환(smartPunctuation)은 꺼 둔다.
-- **주제만 주고 Claude 가 취재해서 함께 쓰는 글은 `blog-compose` 스킬(`.claude/skills/blog-compose/`)을 따른다 — 뼈대 → 질문 → 살 붙이기 → 사실 확인.** 사실은 그 저장소의 원천 세션에 조사·확인을 요청하고(다른 저장소는 읽기만), 숫자는 두 세션이 따로 세어 맞춘다. 실측 없는 효과는 «판단 + 단서», 달력 기간은 작업 시간으로 쓰지 않는다(커밋 시각 추정). 사실 확인 표는 저장소 밖(`../blog-notes/fact-checks/`), 커밋 메시지엔 집계만.
-- 소개 페이지의 팀원(`src/content/team/*.yaml`)·프로젝트(`src/content/projects/*.yaml`)는 **실존 인물·실제 업무 정보**다. 이름·역할·소개·프로젝트 내용을 지어내지 않고 사용자에게 받은 그대로 넣는다. 형식은 WRITING_GUIDE.md §11 "소개 페이지에 팀원·프로젝트 추가".
-- 새 글은 기본 `draft: true` 로 만들고, 사용자가 "발행" 이라고 할 때만 `draft: false` 로 바꾼다.
-- `gh api` 로 저장소 설정(Pages, Discussions 등)을 바꾸는 작업은 실행 전에 사용자에게 확인한다. 조회(`gh run list`, graphql 읽기)는 바로 해도 된다.
-- **초안은 작성 → 개발자 용어(`blog-wording`) → SEO · GEO(`blog-seo`) → 초안으로 올리기 순서로 끝낸 뒤 보여 준다** — 묻지 않고 매번 하고, 사용자가 확인하면 «발행» 만으로 배포할 수 있어야 한다(`blog-compose` ⑤). `blog-write` 로 옮긴 글은 본문을 고치지 않으므로 SEO · GEO 중 frontmatter · alt 만 본다.
-- **검색 · AI 전달은 `blog-seo` 스킬(`.claude/skills/blog-seo/`)을 따른다.** 초안은 `npm run check:seo -- <slug>` 오류 0 · 경고 0, 발행은 build 뒤 `npm run check:seo` 오류 0. AI 용 출력은 `/llms.txt` · `/llms-full.txt` · `/posts/<slug>.md`(`src/lib/llms.ts`).
-- 토큰·비밀값은 파일이나 채팅에 남기지 않는다.
-- **스타일은 디자인 토큰으로만 쓴다.** 정본 `src/styles/tokens.css`, 정의서 [docs/design-tokens.md](docs/design-tokens.md) (두 파일은 같은 커밋에서 수정). 컴포넌트에 색상 값·원시 토큰(`--p-*`)·정의 안 된 토큰을 쓰면 `npm run check:tokens` 가 빌드를 막는다. **다크 모드는 지원하지 않는다**(사용자 결정 2026-09-29) — 다크 테마·토글을 다시 넣지 않는다.
+설정 · 절차 안내는 [docs/claude-management.md](docs/claude-management.md), 팀원용 글쓰기 안내는 [WRITING_GUIDE.md](WRITING_GUIDE.md).
+
+- 저장소 `Cati-time/blog` · 사이트 `https://cati-time.github.io/blog/`. 링크는 `BASE_URL` 기준 — R-BLOG-BASE-URL.
+- 새 글: `npm run new "제목" slug --category <…> --platform <…> --tags a,b` → `src/content/blog/<slug>/index.md`(기본 `draft: true` · 발행은 `--publish` 가 아니라 사용자 «발행» 뒤 frontmatter 로) — R-BLOG-DRAFT.
+- 메뉴 · 분류의 정본은 `site.config.mjs` 의 `CATEGORIES` · `PLATFORMS`. 애매하면 사용자에게 묻는다 — R-BLOG-TAXONOMY.
+- **일하는 길**: 레인 가지(`post/<slug>` · `docs/<slug>` 등) → 로컬 CI(`localci`) 초록 → 통합선 `main-cicd`. **`main` 머지 · push(= 공개 배포)는 사용자** — WORKFLOW 칸 6. «push 하면 배포됩니다» 대신 «main-cicd 에 착지했습니다 · main 머지 · push 하면 배포됩니다» 라고 알린다.
+- 완료 기준은 WORKFLOW 칸 5 — 글 초안은 build · `check:seo -- <slug> --strict` · `check:wording --strict` 0 · 사실 확인 막음 0.
+- 커밋 메시지 접두어: `post:` 새 글 · 발행 · `edit:` 글 수정 · `fix:` 버그 · `style:` 디자인 · `config:` 설정 · `chore:` 의존성 · 도구 · `docs(constitution):` 헌법.
+- 글 흐름: 취재해서 쓰는 글 = WORKFLOW 칸 2 루트 플로우(스킬 `blog-compose` 가 절차) · 받은 문서 = R-BLOG-VERBATIM(스킬 `blog-write`) · 용어 = R-BLOG-WORDING(`blog-wording`) · AI 티 걷어내기 · 새 패턴 배우기 = `blog-humanize`(서브에이전트가 고치고 본체가 판정) · 검색 · AI = R-BLOG-SEO(`blog-seo`) · 숫자 = R-BLOG-FACTS · 인용 = R-BLOG-QUOTES.
+- 팀원 · 프로젝트는 받은 그대로 — R-BLOG-REAL-PEOPLE.
+- 공개 글 안전 · 비밀값 — R-BLOG-PUBLIC-SAFE. 저장소 설정(`gh api`) 변경은 사용자 확인 — RULES §7.
+- 스타일은 토큰으로만 · 다크 모드 없음(사용자 2026-09-29) — R-BLOG-TOKENS · RULES §5 지향.

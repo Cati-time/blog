@@ -22,3 +22,5 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+# 로컬 CI 러너 로그
+.claude/localci/
