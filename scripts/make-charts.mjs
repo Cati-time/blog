@@ -1408,3 +1408,79 @@ const W = 600;
 			svg(W, H, '단계마다 졸업 증거가 나온 저장소 수', '저장소 10곳 기준 도입 실측표. S0 저장소 재기 10, S1 머지되는 길 5, S2 받는 창구 2, S3 지금 버전 받기 1, S4 첫 Subflow 4, S5 첫 Business Flow 완주 4.', b));
 	}
 }
+
+// ── 30~32. AI 가 일을 얼마나 하나 — 기능 개발 체크리스트 · 영역별 자동화율 · 월별 추이 ─────────────
+// 원천: 백엔드 자동화 현황 보고 판 3.2(2026-11-23) 1 · 3 · 3-1 · 4-1 절 — 블로그 세션이 3 절 표로 다시 셈 일치(128 · 57 · 45 · 19 · 7).
+{
+	const GREEN = C.s1, BLUE = C.s2, GRAY = '#9ca3af';
+	const dir = 'src/content/blog/backend-ax-automation-rate/';
+
+	// 30. 기능 개발 체크리스트 11 행동
+	{
+		const rows = [
+			['무엇을 만들지 · 고칠지 정하기', 0], ['일감을 쪼개 티켓으로 넘기기', 1], ['작업 · Supervisor 세션 열기', 0],
+			['설계 문서(조사 · 구조 · 시나리오 · 계획)', 1], ['실행 직전 판정', 1], ['코드 쓰기 · 커밋', 1], ['테스트 쓰기 · 검사 돌리기', 1],
+			['실환경 테스트', 1], ['리뷰', 1], ['진행 기록(티켓 · 작업 이력)', 1], ['결과가 목적과 맞나 판정', 0],
+		];
+		const RH = 32, Y0 = 82, H = Y0 + rows.length * RH + 48;
+		let b = text(16, 30, '서버 기능 개발 — 행동 11 개', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '한 줄 = 사람이 하는 행동 하나 · 2026-11 기준', { size: 12, fill: C.subtle });
+		rows.forEach(([n, auto], i) => {
+			const y = Y0 + i * RH;
+			b += `<rect x="16" y="${y}" width="568" height="${RH - 4}" rx="6" fill="${i % 2 ? '#ffffff' : '#fafafa'}"/>`;
+			b += text(32, y + 19, n, { size: 12.5, fill: C.text });
+			const col = auto ? GREEN : BLUE;
+			b += `<rect x="470" y="${y + 5}" width="98" height="18" rx="9" fill="${auto ? '#e8f5ef' : '#eaf2fc'}" stroke="${col}"/>`;
+			b += text(519, y + 18, auto ? '✓ 자동' : '사람', { size: 11.5, anchor: 'middle', fill: col, weight: 700 });
+		});
+		b += text(16, H - 18, '자동 8 ÷ 행동 11 = 73 % · 사람 셋 중 «정하기 · 판정» 은 규칙이 사람에게 둔 일', { size: 12, fill: C.muted });
+		out(dir + 'feature-checklist.svg',
+			svg(W, H, '서버 기능 개발 — 행동 11 개', '무엇을 만들지 정하기(사람) · 일감을 티켓으로 넘기기(자동) · 세션 열기(사람) · 설계 문서(자동) · 실행 직전 판정(자동) · 코드 쓰기 · 커밋(자동) · 테스트 쓰기 · 검사(자동) · 실환경 테스트(자동) · 리뷰(자동) · 진행 기록(자동) · 결과가 목적과 맞나 판정(사람). 자동 8 ÷ 11 = 73 %.', b));
+	}
+
+	// 31. 영역별 자동화율 + 최대
+	{
+		const data = [['서버 로직', 58, 70], ['웹', 57, 63], ['CI/CD', 45, 64], ['인프라', 19, 42], ['직무 전체', 45, 59]];
+		const H = 330, L = 110, T = 80, RH = 44, pw = 400;
+		const x = (v) => L + (v / 100) * pw;
+		let b = text(16, 30, '백엔드 직무 — 영역별 자동화율', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '진한 막대 = 자동 ÷ 행동 · 옅은 막대 = 확인 안 됨이 모두 자동일 때(최대)', { size: 12, fill: C.subtle });
+		for (const g of [0, 25, 50, 75, 100]) {
+			b += `<line x1="${x(g)}" x2="${x(g)}" y1="${T - 8}" y2="${T + data.length * RH}" stroke="${C.grid}"/>`;
+			b += text(x(g), T + data.length * RH + 16, g + ' %', { size: 11, anchor: 'middle', fill: C.subtle });
+		}
+		data.forEach(([n, v, mx], i) => {
+			const y = T + i * RH, last = i === data.length - 1;
+			b += text(L - 10, y + 19, n, { size: 13, anchor: 'end', fill: C.text, weight: last ? 700 : 400 });
+			b += `<rect x="${L}" y="${y + 4}" width="${x(mx) - L}" height="22" rx="4" fill="#cfe9dd"/>`;
+			b += `<rect x="${L}" y="${y + 4}" width="${x(v) - L}" height="22" rx="4" fill="${last ? GREEN : '#2f9b72'}"/>`;
+			b += text(x(mx) + 8, y + 20, `${v} %  (최대 ${mx} %)`, { size: 12, fill: C.text, weight: 700 });
+		});
+		out(dir + 'area-rates.svg',
+			svg(W, H, '백엔드 직무 — 영역별 자동화율', '서버 로직 58 %(최대 70 %), 웹 57 %(63 %), CI/CD 45 %(64 %), 인프라 19 %(42 %), 직무 전체 45 %(59 %). 최대는 확인 안 된 행동이 모두 자동일 때의 값.', b));
+	}
+
+	// 32. 기능 개발 월별 추이
+	{
+		const data = [['6월', 0, ''], ['7월', 0, ''], ['8월', 18, '코드 · 설계'], ['9월', 27, '테스트 · 로컬 CI'], ['10월', 64, '티켓 · 판정 · 리뷰'], ['11월', 73, '실환경 테스트']];
+		const H = 360, L = 48, R = 16, T = 80, B = 50;
+		const pw = W - L - R, ph = H - T - B;
+		const y = (v) => T + ph - (v / 100) * ph;
+		const step = pw / data.length, bw = step - 24;
+		let b = text(16, 30, '서버 기능 개발 — 달마다 자동화율', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '2026년 · 같은 11 행동 체크리스트 · 장치가 처음 생긴 달부터 자동으로 셈', { size: 12, fill: C.subtle });
+		for (const g of [0, 25, 50, 75, 100]) {
+			b += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="${C.grid}"/>`;
+			b += text(L - 6, y(g) + 4, g + '%', { size: 11, anchor: 'end', fill: C.subtle });
+		}
+		data.forEach(([m, v, ev], i) => {
+			const bx = L + i * step + 12, cx = bx + bw / 2;
+			if (v > 0) b += bar(bx, y(v), bw, y(0) - y(v), C.s1);
+			b += text(cx, y(v) - (ev ? 24 : 8), `${v} %`, { size: 13, anchor: 'middle', fill: C.text, weight: 700 });
+			if (ev) b += text(cx, y(v) - 8, ev, { size: 10.5, anchor: 'middle', fill: C.muted });
+			b += text(cx, H - B + 18, m, { size: 12, anchor: 'middle', fill: C.subtle });
+		});
+		out(dir + 'feature-trend.svg',
+			svg(W, H, '서버 기능 개발 — 달마다 자동화율', '2026년 6월 0 %, 7월 0 %, 8월 18 %(코드 쓰기 · 설계 문서), 9월 27 %(테스트 · 로컬 CI), 10월 64 %(티켓 · 실행 직전 판정 · 리뷰), 11월 73 %(실환경 테스트).', b));
+	}
+}
