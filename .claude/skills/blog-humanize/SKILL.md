@@ -23,7 +23,7 @@ description: >-
 
 1. **꼴만 바꾼다.** 숫자 · 사실 · 이름 · 링크 · 코드 · 표 데이터 · frontmatter · 인용(«…» · `>` 줄 · `<!-- wording-ok -->`)은 그대로. «~할 수 있다» · «봅니다» 같은 유보의 강도도 그대로. 새 주장 · 새 내용을 넣지 않는다.
 2. **글을 바꾸는 손은 서브에이전트, 판정은 본체.** 본체는 바뀐 줄을 읽고 검사를 다시 돌려 받아들이거나 돌려보낸다.
-3. **사용자 결정이 먼저다.** 지금 둘(2026-11-23): ① 세어서 끝나는 문장(«경계의 형태는 둘입니다») → «~는 아래와 같습니다» ② 세는 말 · 분류어(두 가지 · 둘 · 형태 · 종류)가 겹치면 피로하다 → 개수는 표 · 목록이 보여 주게. «다음과 · 아래와 같습니다» 는 이 저장소에서 AI 티가 아니다.
+3. **사용자 결정이 먼저다.** 지금 둘(2026-11-23): ① 세어서 끝나는 문장(«경계의 형태는 둘입니다») → «~는 아래와 같습니다» ② 세는 말 · 분류어(두 가지 · 둘 · 형태 · 종류)가 겹치면 피로하다 → 개수는 표 · 목록이 보여 주게. «다음과 · 아래와 같습니다» 는 이 저장소에서 AI 티가 아니다. ③(2026-11-24 · T-002932) 겪은 일을 말하는 절의 처방형 종결(«~재기 어려우면 ~세면 됩니다») → **까닭 → 결과**(«~재기 어려워, ~세게 되었습니다»). 읽는 사람에게 시키는 말이 아니라 우리가 겪은 차례로 쓴다. 방법 · 쓰는 법 절의 «~하면 됩니다» 는 그대로 둘 수 있다 — 정규식으로 잡지 않고 사람이 읽어 본다(`blog-wording` §사람이 읽어 보는 것).
 
 ## ① 고치기
 
@@ -44,7 +44,7 @@ description: >-
 Reply in Korean. You are an execution-tier editor for a Korean tech blog.
 Repo: /Users/catius_macbook_air/Documents/0.dev/2.blog, branch <가지> (already checked out — do NOT switch branches, do NOT commit, do NOT touch any file except the posts assigned to you).
 Your posts: <파일 목록> (<초안 · 발행 표시>)
-Why: the owner says the posts feel AI-written. His decisions: (1) sentences that end by counting («경계의 형태는 둘입니다») → «~는 아래와 같습니다» + list, or drop the count word; «다음과/아래와 같습니다» is fine. (2) repeating counting/category words in one post («두 가지 · 둘 · 세 단계 · 첫째 · 형태 · 종류 · 유형») causes fatigue — let tables/lists show counts; use count words once or twice per post; replace «형태» with the real name, «꼴», «방식», or drop it. <새 사용자 결정이 있으면 여기에>
+Why: the owner says the posts feel AI-written. His decisions: (1) sentences that end by counting («경계의 형태는 둘입니다») → «~는 아래와 같습니다» + list, or drop the count word; «다음과/아래와 같습니다» is fine. (2) repeating counting/category words in one post («두 가지 · 둘 · 세 단계 · 첫째 · 형태 · 종류 · 유형») causes fatigue — let tables/lists show counts; use count words once or twice per post; replace «형태» with the real name, «꼴», «방식», or drop it. (3) in sections that tell what we went through, a prescriptive ending («~하면 됩니다») becomes reason → result («~어려워, ~하게 되었습니다»); how-to sections may keep it. <새 사용자 결정이 있으면 여기에>
 Read first: .claude/skills/blog-wording/SKILL.md (§AI 티 · 사람이 읽어 보는 것) and docs/constitution/RULES.md R-BLOG-WORDING · R-BLOG-FACTS · R-BLOG-QUOTES.
 Steps per post: 1) run `node scripts/check-wording.mjs <slug>`, note every flagged line. 2) rewrite only those sentences (plus nearby sentences repeating the same count/category word); keep 합니다체; change form only — never change numbers, facts, names, links, code, frontmatter, table data, text inside «…», lines with <!-- wording-ok -->, lines starting with '>'; keep hedging exactly as strong; no new claims or content; don't delete facts. 3) re-run `node scripts/check-wording.mjs <slug> --strict` until rc 0; check-seo must not get new errors. 4) don't run npm run build.
 Report (under 60 lines): per post flagged count before → after, and «줄 | 전 | 후» for every changed sentence. Mention what you chose not to change and why.
