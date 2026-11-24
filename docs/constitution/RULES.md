@@ -157,7 +157,7 @@ flowchart TB
 ### R-BLOG-SEO — 검색 · AI 전달
 - **뜻**: 초안은 `check:seo -- <slug>` 오류 0 · 경고 0, 발행은 빌드 뒤 `check:seo` 오류 0.
 - **뜻(들어오는 링크)**: 새 글을 발행할 때, 관련 발행 글 1 ~ 2 편에서 새 글로 가는 한 줄을 같은 발행 묶음에 넣는다. 관련 글은 같은 시리즈 · 새 글이 가리키는 글 · 같은 platform 이나 태그에서 고른다. 문장은 사용자가 정지점에서 본다(WORKFLOW 칸 2-1). 관련 글이 없으면 «없음 + 까닭» 을 적는다. 그 옛 글이 `check:seo -- <옛 slug> --strict` 에서 이미 막히면 넣지 않고 «막힘 · 까닭» 을 적는다. 잇는 줄만 넣을 때는 `updatedDate` 를 올리지 않는다.
-- **집행**: `scripts/check-seo.mjs` — 초안 게이트는 `--strict`(경고도 실패). 들어오는 링크는 리뷰다 — 6 관문 보고 · 발행 보고에 «들어오는 n 편 · 잇는 문장» 을 싣는다. 셈: `grep -l "](../<slug>/)" src/content/blog/*/index.md`(발행 글만 센다 · 기준선 2026-11-24 `main-cicd`＠1ffa3ca = 발행 17 편 중 들어오는 0 인 글 2 편).
+- **집행**: `scripts/check-seo.mjs` — 초안 게이트는 `--strict`(경고도 실패). 들어오는 링크는 리뷰다 — 6 관문 보고 · 발행 보고에 «들어오는 n 편 · 잇는 문장» 을 싣는다. 셈: `grep -l "](../<slug>/)" src/content/blog/*/index.md | xargs grep -L '^draft: true' | wc -l` — 출처 초안을 빼고 발행 글만 센다(법제처 T-002888 정정 · 양성 대조 business-flow-story 6 · 음성 대조 hello-world 0). 기준선 2026-11-24 `main-cicd`＠1ffa3ca = 발행 17 편 중 들어오는 0 인 글 2 편(hello-world · why-architecture-in-ai-era).
 - **어긋나면**: 글 레인 게이트 빨강. 들어오는 링크 칸이 빠진 보고는 감독이 되묻는다.
 
 ### R-BLOG-WORDING — 개발자가 쓰는 말
