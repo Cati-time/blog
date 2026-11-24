@@ -1,6 +1,6 @@
 # ADR-0003: 설치 감수 ② 막지 않는 정정 여덟 — 셈 명령 · 시험 줄 · 설치 끝 줄 · 가지 처분 · base-url 뿌리 · 바닥 정리
 
-- **상태**: 제안(법제처 심사 전)
+- **상태**: 채택 — 법제처 T-002849 적합(심사 `95a8d12`)
 - **날짜**: 2026-11-24
 - **범위**: RULES(§1-2 셈 명령 · §3 시험 줄 · R-BLOG-BASE-URL 집행) · WORKFLOW(칸 6 가지 처분 · 칸 18 설치 끝 · 감독 §9 · §10) · AMENDMENT(§4 가리킴 줄) · 설치 기록(`INSTALL_DENOMINATOR.md` §1 B4 · B8 · §3)
 - **관련**: [ADR-0001](ADR-0001-constitution-install.md)(헌법 도입) · [ADR-0002](../workflow/ADR-0002-install-audit-fixes.md)(감수 ① 막음) · CHANGELOG 2026-11-24 · 감수 ② T-002763 · 기록 harness `desks/guide/audits/2026-11-23-blog-install-0.44.0.md`＠4037c4d02 · 원천 `main-cicd`＠0af4d7c
