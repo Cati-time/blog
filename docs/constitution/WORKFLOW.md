@@ -28,14 +28,15 @@
 | 4 | SDD | 초안 본문 · 그림 · 표(`scripts/make-charts.mjs` 구간) | `src/content/blog/<slug>/` | 장면을 빠짐없이 덮음 |
 | 5 | Plan | 사실 확인 주장 목록 · 발행 묶음 | 계획 메모 §주장 | 주장마다 원천 |
 | 5b | 감사 | 사실 확인 회차(R1 · R2 …) — 원천이 판정 · 블로그가 다시 셈 | `../blog-notes/fact-checks/<slug>-R<n>.md` | 막음 0 |
-| 6 | DoD 관문 | 용어 · SEO · GEO · `check:posts` · build 0 · 공개 금지 훑기 → 초안 커밋(`draft: true`) | 가지 커밋 | 로컬 CI 초록(칸 5) |
+| 6 | DoD 관문 | 용어 · SEO · GEO · `check:posts` · build 0 · 공개 금지 훑기 → 초안 커밋(`draft: true`) · 관문 보고에 **들어오는 링크 제안**(R-BLOG-SEO — 관련 발행 글 1 ~ 2 편 · 잇는 문장) | 가지 커밋 · 관문 보고 | 로컬 CI 초록(칸 5) · 제안 또는 «없음 · 막힘 + 까닭» |
 | — | **정지점** | **사용자가 초안을 보고 «발행»** | | 사용자 말 |
-| 7 | Execute | 발행 — `draft: false` · pubDate · 통합선 착지 | 통합선 커밋 | 발행 게이트(칸 5) |
+| 7 | Execute | 발행 — `draft: false` · pubDate · 정지점에서 본 잇는 문장을 관련 발행 글에 넣음(같은 발행 묶음) · 통합선 착지 | 통합선 커밋 | 발행 게이트(칸 5) |
 | 8 | 검증 | 사용자 push 뒤 공개 페이지 · `/llms.txt` · 사이트맵 확인 · 발행 뒤 정정 | 확인 기록 | 칸 15 V3 |
 
 - 받은 문서를 옮기는 글(R-BLOG-VERBATIM)은 1 ~ 5 를 «해당 없음 — 본문 그대로» 로 두고 Subflow «옮기기» 로 4 를 대신한다.
 - 단계 2 Architecture 는 RULES 구조 그래프가 아니라 독자 · 메뉴 구조에서 출발한다 — «해당 없음(RULES 그래프 출발 · `ARCHITECTURE.md` 분리) — 글은 코드 층을 바꾸지 않는다 · 결과물은 계획 메모 §뼈대» (canon 칸 2 책임 — 단계 2). 글이 코드를 함께 바꾸면 그 코드 몫은 2-2 로 간다.
 - 단계 6 실행 전 보고서(canon 칸 2 · C118)는 «해당 없음 — 사람이 읽는 한 장이 초안 그 자체다 · 사용자가 초안을 읽고 «발행» 을 정한다». 대신 6 관문 보고(용어 · SEO · 사실 확인 막음 · build)를 초안과 함께 사용자에게 보인다.
+- 들어오는 링크는 정지점을 늘리지 않는다 — 6 관문 보고에 실린 잇는 문장은 사용자의 «발행» 한 번으로 함께 승인된다. 7 에서 다시 묻지 않는다. 발행 글에서 초안으로 가는 링크는 `check:seo` 오류라서, 잇는 줄은 7 에서만 넣을 수 있다.
 - 계약 단계 감사(b)는 1 · 5 에 둔다. 2b · 3b · 4b 는 «해당 없음 — 글 구조 · 장면 · 본문은 5b 사실 확인 회차와 6 관문이 한꺼번에 본다».
 
 ### 2-2. 코드 변경 한 건 (표준 단계)
@@ -69,7 +70,7 @@
 | 일 | 완료 기준 | 확인 수단 |
 | --- | --- | --- |
 | 글 초안(6 관문) | `npm run build` 초록 · `check:seo -- <slug> --strict` 0 · `check:wording --strict` 0 · 사실 확인 막음 0 · 공개 금지 훑기 | `scripts/localci.sh`(글 레인 덧) |
-| 글 발행(7) | `npm run build` → `check:seo`(전체) 오류 0 | `scripts/localci.sh` |
+| 글 발행(7) | `npm run build` → `check:seo`(전체) 오류 0 · 들어오는 링크 n 편 또는 «없음 · 막힘 + 까닭» 이 발행 보고에 실림(R-BLOG-SEO) | `scripts/localci.sh` · 보고(리뷰) |
 | 코드 변경 | `npm run build` 초록 · `localci_guards` 초록 · 바뀐 화면 브라우저 확인 | `scripts/localci.sh` · V1 |
 | 헌법 개정 | 위 + 법제처 심사 적합 | `AMENDMENT.md` §3 |
 

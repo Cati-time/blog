@@ -86,14 +86,14 @@ description: >-
 1. **개발자 용어**: `blog-wording` 의 «초안에서» 대로 바로 고친다.
 2. (선택) `humanize-korean` 으로 윤문한다. 숫자 · 인용 · 판단 + 단서 문장은 보존한다.
 3. **SEO · GEO**: `blog-seo` 의 체크리스트를 돌고 `npm run check:seo -- <slug>` 오류 0 · 경고 0. 남긴 경고는 이유를 보고한다.
-4. `npm run build` → 커밋(`post:` · `edit:`, `draft: true` 그대로) → dev 서버로 보여 주고, 고친 곳 · 남은 판단만 짧게 보고한다.
+4. `npm run build` → 커밋(`post:` · `edit:`, `draft: true` 그대로) → dev 서버로 보여 주고, 고친 곳 · 남은 판단만 짧게 보고한다. 보고에 들어오는 링크 제안(관련 발행 글 1 ~ 2 편 · 잇는 문장, 없으면 «없음 · 막힘 + 까닭»)을 함께 싣는다 — R-BLOG-SEO.
 
 ③에서 중간 초안을 먼저 보여 줄 때는 «작성 중» 이라고 밝힌다. 사용자 수정이나 사실 확인으로 본문이 바뀌면 바뀐 곳에 1 · 3 을 다시 돈다.
 
 ## 발행
 
 - 사용자가 «발행» 이라고 할 때만 한다. ⑤를 마친 글이면 아래만 하면 된다.
-  1. `pubDate` · `draft: false` · 시리즈 상자 링크를 바꾼다.
+  1. `pubDate` · `draft: false` · 시리즈 상자 링크를 바꾼다. 보고에서 사용자가 본 잇는 문장을 관련 발행 글에 넣는다(다시 묻지 않음 · `updatedDate` 그대로).
   2. `npm run build` → `npm run check:seo` 오류 0 → `post:` 커밋 → 로컬 CI 로 통합선 `main-cicd` 착지 → «main-cicd 에 착지했습니다 · main 머지 · push 하면 배포됩니다»(WORKFLOW 칸 2 · 칸 6).
 - push 뒤에는 배포(Actions)와 공개 주소를 확인한다. 막 배포된 직후에는 CDN 이 옛 응답을 최대 10분 들고 있을 수 있다.
 - 발행 뒤 정정이 생기면 `edit:` 로 고치고, 지표를 모으는 팀이면 «발행 뒤 정정» 으로 알린다.
