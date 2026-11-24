@@ -11,6 +11,10 @@ draft: false
 > **안드로이드 아키텍처 시리즈**
 > [① 지금의 구조 — SSOT 는 한 곳에](../android-architecture-1-one-truth/) · [② 새로 만들고 고치기](../android-architecture-2-build-and-fix/) · ③ 어떻게 옮겨 왔나 — Subflow 로 (이 글)
 
+## 한 줄로
+
+**동작이 바뀌는 일은 한 화면 · 한 도메인씩, 이름만 바뀌는 일은 한 번에 바꿨습니다.** 다른 곳이 많이 읽는 SSOT 부터 module 로 분리했고, 그동안에도 앱은 계속 출시했습니다. 규칙은 문서만으로는 재발했고, 검사가 되어야 지켜졌습니다.
+
 [①편](../android-architecture-1-one-truth/) 에서 지금의 구조를, [②편](../android-architecture-2-build-and-fix/) 에서 그 구조로 무엇이 쉬워졌는지를 봤습니다. 마지막 편은 어떻게 여기까지 왔는지입니다.
 
 답부터 적으면 한 번에 바꾸지 않았습니다. 다른 곳이 많이 읽는 SSOT 부터 module 로 분리했고, 화면은 하나씩 Business Flow 와 Subflow 로 옮겼습니다. 문서로 정한 규칙은 하나씩 검사로 바꿨습니다. Subflow 가 무엇인지는 [Subflow 만들기 시리즈](../subflow-1-smallest-unit/) 에 따로 적었으니, 이 글은 그 방식을 아키텍처를 옮기는 데 어떻게 썼는지에 집중합니다.
