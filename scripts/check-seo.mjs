@@ -47,7 +47,9 @@ if (only.length) {
 		if (!existsSync(path)) { err(slug, '글이 없음'); continue; }
 		const src = readFileSync(path, 'utf8');
 		checkSource(slug, src, fm(src));
-		for (const m of src.matchAll(/!\[([^\]]*)\]\(/g)) if (m[1].trim().length < 5) warn(slug, '짧거나 빈 이미지 alt');
+		// 코드 블록 안의 ![..](..) 는 문법 예시라 그림이 아니다
+		const prose = src.replace(/^```[\s\S]*?^```/gm, '');
+		for (const m of prose.matchAll(/!\[([^\]]*)\]\(/g)) if (m[1].trim().length < 5) warn(slug, '짧거나 빈 이미지 alt');
 	}
 	for (const w of warns) console.log('  경고 ' + w);
 	for (const e of errors) console.log('  오류 ' + e);
