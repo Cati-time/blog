@@ -23,6 +23,7 @@ localci_start() {
 # localci_ci — PR check.yml 과 같은 명령(npm ci --no-audit --no-fund → npm run build).
 #   npm run build = check(check-tokens → check-posts → astro check) → astro build.
 #   글 레인 덧: 머지로 바뀐 글(src/content/blog/<slug>/)이 있으면 그 글마다 check:seo --strict · check:wording --strict.
+#   용어 결정 등록 가드(R-BLOG-WORDING · ADR-0005): 이 머지가 들인 커밋에 «용어 결정» 이 있는데 용어집 · TERMS 변경 0 이면 실패.
 localci_ci() {
   local t="$1" log="$2"
   (
@@ -30,6 +31,7 @@ localci_ci() {
     echo "  [blog] node $(node -v) · npm $(npm -v)"
     npm ci --no-audit --no-fund || exit 10
     npm run build || exit 11
+    bash scripts/guards/wording-decision.sh HEAD^1..HEAD || exit 15
     local slugs
     slugs=$(git -c core.quotepath=false diff --name-only HEAD^1 HEAD 2>/dev/null \
       | sed -n 's#^src/content/blog/\([^/]*\)/.*#\1#p' | sort -u | while read -r s; do [ -f "src/content/blog/$s/index.md" ] && echo "$s"; done)
@@ -46,7 +48,7 @@ localci_ci() {
 
 # localci_guards — 빌드 없이 빠르게. 대상 0 은 통과가 아니다(가드가 exit 2).
 localci_guards() {
-  local t="$1" log="$2"
+  local t="$1" log="$2" pre="${3:-HEAD^1}"
   (
     cd "$t" || exit 90
     node scripts/check-tokens.mjs || exit 20
@@ -55,5 +57,6 @@ localci_guards() {
     bash scripts/guards/base-url.sh || exit 23
     bash scripts/guards/test-guards.sh || exit 24
     bash scripts/guards/docs-glob.sh || exit 25
+    bash scripts/guards/wording-decision.sh "$pre..HEAD" || exit 26
   ) >>"$log" 2>&1
 }
