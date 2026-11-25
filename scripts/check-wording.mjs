@@ -52,7 +52,7 @@ export const TERMS = [
 	{ id: 'adopt', avoid: /[을를] ?들이(며|고|면|는|기|려)|[을를] ?들였/g, glossary: '도입하다' },
 	{ id: 'layer', avoid: /(?<![가-힣])겹(?![치쳐친칠쳤])/g, glossary: '계층 · 레이어' },
 	{ id: 'granularity', avoid: /입자/g, glossary: '단위' },
-	{ id: 'field', avoid: /(입력|산출|반출|통과 ?체크|계약)[의 ]* ?칸|(?<![가-힣]|한 )칸(?! ?\d)(?=[이은을의도에]|마다|\s|$|[)»,.])|빈칸/g, glossary: '항목 · 필드' },
+	{ id: 'field', avoid: /(입력|산출|반출|통과 ?체크|계약)[의 ]* ?칸|(?<![가-힣]|한 )칸(?! ?\d| ?=)(?=[이은을의도에]|마다|\s|$|[)»,.])|빈칸/g, glossary: '항목 · 필드' },
 	{ id: 'hand-down', avoid: /넘김/g, glossary: '위임' },
 	{ id: 'tally', avoid: /셈의|셈 ?축|셈[을를]/g, glossary: '집계 기준 · 집계 축' },
 	{ id: 'blind', avoid: /못 ?보는/g, glossary: '검증할 수 없는 · 사각지대' },
@@ -76,7 +76,7 @@ export const TERMS = [
 	{ id: 'frame', avoid: /(?<![가-힣])틀(?! 수)(?= ?[과와은는이을를의로에만도]|\s|$|[)·,.])|틀과 값|(팀|원본|자기|저장소)의? 값(?=[으이을은만]|\s|$)|채운 값|값으로 채|값을 (거르|걸러|걷|빼)|새는 값|값이 (유출|새[어었]|샌)/g, glossary: '구조 · 규칙 문서' },
 	{ id: 'done-signal', avoid: /됐다는 신호/g, glossary: '완료 기준' },
 	{ id: 'loop', avoid: /(?<!연결 ?)(?<![가-힣])고리/g, glossary: '새 버전을 받는 절차' },
-	{ id: 'path', avoid: /(되는|오는|가는|퍼지는|받는|두|새|같은|다른|그|한|틀린) 길(?![가-힣])|(?<![가-힣])길(마다|은|을|로|에서|도)(?![가-힣])|첫 일이 다릅니다/g, glossary: '도입 유형 · 머지 경로' },
+	{ id: 'path', avoid: /(되는|오는|가는|퍼지는|받는|있는|지난|두|새|같은|다른|그|한|틀린) 길(?![가-힣])|길이 (하나|여러|둘)|(?<![가-힣])길(마다|은|을|로|에서|도)(?![가-힣])|첫 일이 다릅니다/g, glossary: '도입 유형 · 머지 경로' },
 	{ id: 'sheet', avoid: /문면|(?<!(문서|구조) )(?<![가-힣])한 장(?![가-힣])/g, glossary: '정리 문서' },
 	{ id: 'cheap', avoid: /(?<!비)쌉니다|(?<![가-힣])싸(다|고|게|서)(?![가-힣])/g, glossary: '비용이 적다' },
 	{ id: 'wiring', avoid: /배선(?! ?시험)/g, glossary: '구성' },
@@ -262,6 +262,41 @@ for (const file of files) {
 		console.log(out.join('\n'));
 		total += out.length;
 	}
+}
+
+// 그림 글자 — 글 폴더의 svg(title · desc · text)와, 그 폴더로 그림을 쓰는 scripts/make-charts.mjs 구간의 문자열도 용어(TERMS)로 본다.
+// 까닭(T-003332 · 2026-11-25): svg 만 손으로 고치고 생성 코드에 옛 말이 남아, 다시 그리면 옛 말이 돌아올 뻔했다. 그림 글은 평서체라 말투 · AI 티 검사는 하지 않는다.
+const slugs = new Set(files.map(slugOf));
+const termHits = (s) => TERMS.flatMap((t) => [...s.matchAll(t.avoid)].filter((m) => !inAliasParen(t, s, m.index)).map((m) => `[${t.id}] «${m[0]}» → ${t.use}`));
+const figOut = new Map();
+const pushFig = (slug, line) => { if (!slugs.has(slug)) return; (figOut.get(slug) ?? figOut.set(slug, []).get(slug)).push(line); };
+for (const f of walk(BLOG).filter((p) => p.endsWith('.svg'))) {
+	const slug = relative(BLOG, f).split('/')[0];
+	const txt = [...readFileSync(f, 'utf8').matchAll(/<(title|desc|text)\b[^>]*>([^<]*)</g)].map((m) => m[2]).join(' \n ');
+	for (const h of termHits(txt)) pushFig(slug, `  ${relative(join(BLOG, slug), f)}  ${h}`);
+}
+{
+	// 줄마다 글 폴더를 정한다: 구간(«// ── » 머리)마다 `const dir = '…/<slug>/'` 가 있으면 그 글, 없으면 그 줄 뒤에 처음 나오는 out('…/<slug>/…') 의 글
+	const CHARTS = join(ROOT, 'scripts/make-charts.mjs');
+	const lines = readFileSync(CHARTS, 'utf8').split('\n');
+	const pathAt = lines.map((l) => l.match(/src\/content\/blog\/([^/'"]+)\//)?.[1] ?? null);
+	const nextPath = [];
+	for (let i = lines.length - 1, nxt = null; i >= 0; i--) { if (pathAt[i]) nxt = pathAt[i]; if (/^\/\/ ── /.test(lines[i])) nxt = null; nextPath[i] = nxt; }
+	let dirSlug = null;
+	lines.forEach((raw, i) => {
+		if (/^\/\/ ── /.test(raw)) dirSlug = null;
+		const d = raw.match(/const dir = 'src\/content\/blog\/([^/']+)\//);
+		if (d) dirSlug = d[1];
+		const cur = dirSlug ?? nextPath[i];
+		if (!cur || /^\s*\/\//.test(raw)) return;
+		const lits = [...raw.matchAll(/'([^'\\]*(?:\\.[^'\\]*)*)'|`([^`]*)`/g)].map((m) => m[1] ?? m[2]).filter((x) => /[가-힣]/.test(x)).join(' \n ');
+		for (const h of termHits(lits)) pushFig(cur, `  scripts/make-charts.mjs:${i + 1}  ${h}`);
+	});
+}
+for (const [slug, lines] of figOut) {
+	console.log(`${slug} 그림 — ${lines.length}건`);
+	console.log(lines.join('\n'));
+	total += lines.length;
 }
 console.log(`\ncheck-wording: 글 ${files.length}편 · 경고 ${total}건 (고칠지는 문맥을 보고 정한다 — blog-wording 스킬)`);
 // --strict: 글 레인 게이트(R-BLOG-WORDING) — 경고가 하나라도 있으면 실패
