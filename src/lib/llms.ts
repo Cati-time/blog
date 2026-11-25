@@ -1,4 +1,4 @@
-import { SITE } from '../consts';
+import { SITE, SITE_KEYWORDS } from '../consts';
 import { getCategory, getPlatform, type Post } from './posts';
 
 // AI 가 읽기 좋은 글 본문 — 사람 화면용 HTML 대신 원문 마크다운을 그대로 준다.
@@ -32,6 +32,8 @@ export function llmsIndex(posts: Post[]): string {
 		`# ${SITE.title}`,
 		'',
 		`> ${SITE.description}`,
+		'',
+		`핵심 주제: ${SITE_KEYWORDS.map((k) => `${k.name}(${k.en})`).join(' · ')}`,
 		'',
 		'이 블로그의 글은 모두 필자가 실제 저장소의 코드 · 커밋 · 결정 기록을 다시 세어 확인한 뒤 씁니다. 숫자가 없는 효과는 «판단» 이라고 밝힙니다.',
 		`용어집: ${siteRoot()}/glossary/ · 전체 본문(한 파일): ${siteRoot()}/llms-full.txt · RSS: ${siteRoot()}/rss.xml`,

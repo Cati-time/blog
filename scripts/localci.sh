@@ -23,6 +23,7 @@ localci_start() {
 # localci_ci — PR check.yml 과 같은 명령(npm ci --no-audit --no-fund → npm run build).
 #   npm run build = check(check-tokens → check-posts → astro check) → astro build.
 #   글 레인 덧: 머지로 바뀐 글(src/content/blog/<slug>/)이 있으면 그 글마다 check:seo --strict · check:wording --strict.
+#   발행 기준 check:seo(전체 · 오류만)는 회차마다 돈다.
 #   용어 결정 등록 가드(R-BLOG-WORDING · ADR-0005): 이 머지가 들인 커밋에 «용어 결정» 이 있는데 용어집 · TERMS 변경 0 이면 실패.
 localci_ci() {
   local t="$1" log="$2"
@@ -39,10 +40,10 @@ localci_ci() {
       echo "  [blog] 글 레인 덧 · 바뀐 글: $(echo $slugs)"
       node scripts/check-seo.mjs $slugs --strict || exit 12
       node scripts/check-wording.mjs $slugs --strict || exit 13
-      node scripts/check-seo.mjs || exit 14   # 발행 기준 — 빌드 뒤 전체 오류 0
     else
       echo "  [blog] 바뀐 글 없음 — 글 레인 덧 건너뜀"
     fi
+    node scripts/check-seo.mjs || exit 14   # 발행 기준 — 빌드 뒤 전체 오류 0 · 사이트 핵심 키워드(머리 · JSON-LD · llms) 도 여기서 · 글이 안 바뀐 회차도 잰다(ADR-0006)
   ) >>"$log" 2>&1
 }
 

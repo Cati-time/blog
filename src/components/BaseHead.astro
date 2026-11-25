@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
-import { ANALYTICS, SEO, SITE } from '../consts';
+import { ANALYTICS, SEO, SITE, SITE_KEYWORDS } from '../consts';
 
 interface Props {
 	title: string;
@@ -15,9 +15,11 @@ interface Props {
 	article?: { published: Date; modified?: Date; section?: string; tags?: string[] };
 	/** 구조화 데이터 (schema.org JSON-LD) */
 	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+	/** meta keywords — 글은 그 글에 드러난 사이트 핵심 키워드 + 태그를 준다. 없으면 사이트 핵심 키워드 전체 */
+	keywords?: string[];
 }
 
-const { title, description, image, type = 'website', noindex = false, article, jsonLd } = Astro.props;
+const { title, description, image, type = 'website', noindex = false, article, jsonLd, keywords } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const fullTitle = title === SITE.title ? title : `${title} · ${SITE.title}`;
@@ -28,6 +30,8 @@ const markdownURL = article ? new URL(Astro.url.pathname.replace(/\/$/, '') + '.
 const robots = noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large';
 // 배포 빌드에서만 — dev 서버 방문이 통계에 섞이지 않게
 const gaId = import.meta.env.PROD ? ANALYTICS.gaMeasurementId : '';
+// 사이트 핵심 키워드(site.config.mjs SITE_KEYWORDS · R-BLOG-SEO) — 글과 무관한 키워드를 글에 싣지 않는다
+const metaKeywords = [...new Set(keywords ?? SITE_KEYWORDS.map((k) => k.name))].join(', ');
 ---
 
 <!-- Global Metadata -->
@@ -74,6 +78,7 @@ const gaId = import.meta.env.PROD ? ANALYTICS.gaMeasurementId : '';
 <!-- Primary Meta Tags -->
 <title>{fullTitle}</title>
 <meta name="description" content={description} />
+{metaKeywords && <meta name="keywords" content={metaKeywords} />}
 
 <!-- Open Graph -->
 <meta property="og:type" content={type} />

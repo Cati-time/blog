@@ -7,7 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import Giscus from '../components/Giscus.astro';
 import Header from '../components/Header.astro';
 import Tags from '../components/Tags.astro';
-import { SEO, SITE } from '../consts';
+import { SEO, SITE, type SITE_KEYWORDS } from '../consts';
 import { categoryUrl, getCategory, getPlatform } from '../lib/posts';
 
 // 글 이외의 페이지(소개 등)도 이 레이아웃을 쓰므로 tags·draft 는 선택으로 둔다
@@ -19,6 +19,8 @@ type Props = Omit<CollectionEntry<'blog'>['data'], 'tags' | 'draft' | 'category'
 	minutesRead?: string;
 	showComments?: boolean;
 	showMeta?: boolean;
+	/** 이 글에 드러난 사이트 핵심 키워드(R-BLOG-SEO) — JSON-LD keywords · about */
+	siteKeywords?: typeof SITE_KEYWORDS;
 };
 
 const {
@@ -34,6 +36,7 @@ const {
 	minutesRead,
 	showComments = true,
 	showMeta = true,
+	siteKeywords = [],
 } = Astro.props;
 const cat = category ? getCategory(category) : undefined;
 const plat = platform ? getPlatform(platform) : undefined;
@@ -58,7 +61,8 @@ const jsonLd: Record<string, unknown>[] = [
 		mainEntityOfPage: pageUrl,
 		image: [imageUrl],
 		...(section && { articleSection: section }),
-		...(tags.length > 0 && { keywords: tags.join(', ') }),
+		...((tags.length > 0 || siteKeywords.length > 0) && { keywords: [...new Set([...siteKeywords.map((k) => k.name), ...tags])].join(', ') }),
+		...(siteKeywords.length > 0 && { about: siteKeywords.map((k) => ({ '@type': 'Thing', name: k.name, alternateName: k.en })) }),
 		author: { '@type': 'Organization', name: SITE.author, url: homeUrl },
 		publisher: { '@type': 'Organization', name: SITE.title, url: homeUrl },
 		isPartOf: { '@type': 'Blog', name: SITE.title, url: homeUrl },
@@ -85,6 +89,7 @@ if (cat) {
 			type="article"
 			article={{ published: pubDate, modified: updatedDate, section, tags }}
 			jsonLd={jsonLd}
+			keywords={[...siteKeywords.map((k) => k.name), ...tags]}
 		/>
 	</head>
 
