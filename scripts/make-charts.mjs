@@ -208,7 +208,7 @@ const W = 600;
 	];
 	const H = 430, L = 128, R = 44, T = 92, rowH = 44, bh = 14, max = 200;
 	const x = (v) => L + (v / max) * (W - L - R);
-	let b = text(16, 28, '화면이 기대는 것 — module 분리 전과 지금', { size: 17, fill: C.text, weight: 700 });
+	let b = text(16, 28, '화면이 의존하는 것 — module 분리 전과 지금', { size: 17, fill: C.text, weight: 700 });
 	b += text(16, 48, '휴대폰 앱 ViewModel 50여 개의 생성자 주입 타입 수 · «약» = 두 세션이 센 값이 ±3 안', { size: 12, fill: C.subtle });
 	// 범례
 	[[C.s2, '처음 (첫 module 을 떼기 직전)'], [C.s1, '지금']].forEach(([color, name], i) => {
@@ -236,12 +236,12 @@ const W = 600;
 	});
 	out(
 		'src/content/blog/android-architecture-3-how-we-moved/vm-dependencies.svg',
-		svg(W, H, '화면이 기대는 것 — module 분리 전과 지금', '휴대폰 앱 ViewModel 50여 개의 생성자 주입 타입 수. 처음(첫 module 을 떼기 직전): UseCase 약 180, Repository 28, BT 상태 홀더 19, StateReader · ActionDispatcher · SideEffectReader · Selector 0. 지금: UseCase 9, Repository 10, BT 상태 홀더 0, StateReader 약 105, ActionDispatcher 약 95, SideEffectReader 41, Selector 5.', b),
+		svg(W, H, '화면이 의존하는 것 — module 분리 전과 지금', '휴대폰 앱 ViewModel 50여 개의 생성자 주입 타입 수. 처음(첫 module 을 떼기 직전): UseCase 약 180, Repository 28, BT 상태 홀더 19, StateReader · ActionDispatcher · SideEffectReader · Selector 0. 지금: UseCase 9, Repository 10, BT 상태 홀더 0, StateReader 약 105, ActionDispatcher 약 95, SideEffectReader 41, Selector 5.', b),
 	);
 }
 
 // ── 6. 지금 있는 module 24개가 생긴 때 (안드로이드 아키텍처 ③) ─────────
-// 지금 남은 24개의 빌드 파일이 처음 추가된 커밋 날짜로 센 누적값(중간에 만들었다 지운 2개는 뺌). 첫 module 을 뗀 달이 1달째.
+// 지금 남은 24개의 빌드 파일이 처음 추가된 커밋 날짜로 센 누적값(중간에 만들었다 지운 2개는 뺌). 첫 module 을 분리한 달이 1달째.
 {
 	const months = ['1달째', '2달째', '3달째', '4달째', '5달째', '6달째', '7달째', '8달째', '9달째', '지금'];
 	const vals = [8, 13, 14, 14, 16, 21, 21, 23, 24, 24];
@@ -251,7 +251,7 @@ const W = 600;
 	const step = pw / months.length;
 	const y = (v) => T + ph - (v / max) * ph;
 	let b = text(16, 28, '지금 있는 module 24개가 생긴 때', { size: 17, fill: C.text, weight: 700 });
-	b += text(16, 48, '누적 · 첫 module 을 뗀 달이 1달째 · 중간에 만들었다 지운 2개는 뺌', { size: 12, fill: C.subtle });
+	b += text(16, 48, '누적 · 첫 module 을 분리한 달이 1달째 · 중간에 만들었다 지운 2개는 뺌', { size: 12, fill: C.subtle });
 	for (const g of [0, 8, 16, 24]) {
 		b += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="${C.grid}"/>`;
 		b += text(L - 6, y(g) + 4, g, { size: 12, anchor: 'end', fill: C.subtle });
@@ -265,11 +265,11 @@ const W = 600;
 	b += text(16, H - 8, '짙은 막대: 1달째 로그인·사용자·아이·기기 · 2달째 홈·미디어·플레이어·미션 · 5달째 BT · 6달째 테마 등', { size: 11, fill: C.subtle });
 	out(
 		'src/content/blog/android-architecture-3-how-we-moved/modules-born.svg',
-		svg(W, H, '지금 있는 module 24개가 생긴 때', '누적 module 수(첫 module 을 뗀 달이 1달째): 1달째 8, 2달째 13, 3달째 14, 4달째 14, 5달째 16, 6달째 21, 7달째 21, 8달째 23, 9달째 24, 지금 24.', b),
+		svg(W, H, '지금 있는 module 24개가 생긴 때', '누적 module 수(첫 module 을 분리한 달이 1달째): 1달째 8, 2달째 13, 3달째 14, 4달째 14, 5달째 16, 6달째 21, 7달째 21, 8달째 23, 9달째 24, 지금 24.', b),
 	);
 }
 
-// ── 7. 지금 화면이 기대는 것 (안드로이드 아키텍처 ①) ──────────────────────
+// ── 7. 지금 화면이 의존하는 것 (안드로이드 아키텍처 ①) ──────────────────────
 // 5번과 같은 측정의 «지금» 쪽만. 위 넷 = 구독·알리기, 아래 둘 = 이전 구조의 흔적.
 {
 	const rows = [
@@ -282,7 +282,7 @@ const W = 600;
 	];
 	const H = 340, L = 128, R = 60, T = 84, rowH = 36, bh = 18, max = 120;
 	const x = (v) => L + (v / max) * (W - L - R);
-	let b = text(16, 28, '지금 화면이 기대는 것', { size: 17, fill: C.text, weight: 700 });
+	let b = text(16, 28, '지금 화면이 의존하는 것', { size: 17, fill: C.text, weight: 700 });
 	b += text(16, 48, '휴대폰 앱 ViewModel 55개의 생성자 주입 타입 수 · «약» = 세는 방법에 따라 ±3', { size: 12, fill: C.subtle });
 	const sepY = T + 4 * rowH - 9;
 	for (const g of [0, 40, 80, 120]) {
@@ -302,7 +302,7 @@ const W = 600;
 	});
 	out(
 		'src/content/blog/android-architecture-1-one-truth/vm-dependencies-now.svg',
-		svg(W, H, '지금 화면이 기대는 것', '휴대폰 앱 ViewModel 55개의 생성자 주입 타입 수. StateReader 약 105, ActionDispatcher 약 95, SideEffectReader 41, Selector 5, Repository 10, UseCase 9.', b),
+		svg(W, H, '지금 화면이 의존하는 것', '휴대폰 앱 ViewModel 55개의 생성자 주입 타입 수. StateReader 약 105, ActionDispatcher 약 95, SideEffectReader 41, Selector 5, Repository 10, UseCase 9.', b),
 	);
 }
 
@@ -504,13 +504,13 @@ const W = 600;
 	);
 }
 
-// ── 11. 앱 정보 화면이 지난 길 (안드로이드 아키텍처 ③) ───────────────────────
+// ── 11. 앱 정보 화면이 거친 경로 (안드로이드 아키텍처 ③) ───────────────────────
 // 설정 화면 전체를 옮긴 Business Flow 안에서 «앱 정보» 몫. 단계마다 독립 검수 — 최대 세 라운드.
 {
 	const H = 360;
 	const steps = [
 		['조사', '검수 세 라운드', '지적 약 24 → 10 → 7'],
-		['아키텍처', '한 번 반려', '원장을 다시 씀'],
+		['아키텍처', '한 번 반려', '이력을 다시 씀'],
 		['BDD', '반려 1 · 세 라운드', '시나리오 177'],
 		['SDD', '세 라운드', '어긋난 사본을 하나로'],
 		['계획', '세 라운드 · 반려 13', '슬라이스 22'],
@@ -521,7 +521,7 @@ const W = 600;
 	const w = 130, h = 78, gap = 16, x0 = 16;
 	const marker = `<marker id="t-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${C.s1}"/></marker>`;
 	let b = `<defs>${marker}</defs>`;
-	b += text(16, 28, '앱 정보 화면이 지난 길', { size: 17, fill: C.text, weight: 700 });
+	b += text(16, 28, '앱 정보 화면이 거친 경로', { size: 17, fill: C.text, weight: 700 });
 	b += text(16, 48, '조사 ~ 완료 기준은 설정 화면 전체 기준 · 실행이 앱 정보 몫 · 단계마다 독립 검수, 최대 세 라운드', { size: 12, fill: C.subtle });
 	const pos = (i) => (i < 4 ? [x0 + i * (w + gap), 76] : [x0 + (7 - i) * (w + gap), 226]);
 	steps.forEach(([name, date, out], i) => {
@@ -546,7 +546,7 @@ const W = 600;
 	b += text(16, 346, '설정 화면 전체는 약 86시간 — AI 작업이 겹친 커밋 기준이라 사람의 시간이 아니다', { size: 12, fill: C.muted });
 	out(
 		'src/content/blog/android-architecture-3-how-we-moved/app-info-flow.svg',
-		svg(W, H, '앱 정보 화면이 지난 길', '조사부터 완료 기준까지는 설정 화면 전체 기준이고 실행이 앱 정보 몫. 조사(검수 세 라운드, 설정 전체 지적 약 24 → 10 → 7) → 아키텍처(한 번 반려, 원장을 다시 씀) → BDD(반려 1, 세 라운드, 시나리오 177) → SDD(세 라운드, 어긋난 사본을 하나로) → 계획(세 라운드, 반려 13, 슬라이스 22) → 완료 기준(세 번 반려 뒤 통과) → 실행(독립 검수, 명세 → Store → 화면) → 검증(설정 화면 전체 기준으로 아직 열려 있음). 앱 정보 화면 쪽 작업은 커밋 시각으로 약 4시간 반(실행 단계만 약 3시간), 설정 화면 전체는 약 86시간(AI 작업이 겹친 커밋 기준).', b),
+		svg(W, H, '앱 정보 화면이 거친 경로', '조사부터 완료 기준까지는 설정 화면 전체 기준이고 실행이 앱 정보 몫. 조사(검수 세 라운드, 설정 전체 지적 약 24 → 10 → 7) → 아키텍처(한 번 반려, 이력을 다시 씀) → BDD(반려 1, 세 라운드, 시나리오 177) → SDD(세 라운드, 어긋난 사본을 하나로) → 계획(세 라운드, 반려 13, 슬라이스 22) → 완료 기준(세 번 반려 뒤 통과) → 실행(독립 검수, 명세 → Store → 화면) → 검증(설정 화면 전체 기준으로 아직 열려 있음). 앱 정보 화면 쪽 작업은 커밋 시각으로 약 4시간 반(실행 단계만 약 3시간), 설정 화면 전체는 약 86시간(AI 작업이 겹친 커밋 기준).', b),
 	);
 }
 
@@ -701,7 +701,7 @@ const W = 600;
 	b += text(482, 438, '로거의 진입점 하나', { size: 11, fill: C.muted });
 	b += text(482, 454, '로그 레벨 필터링', { size: 11, fill: C.muted });
 	b += text(482, 469, '+ 개인정보', { size: 11, fill: C.muted });
-	b += text(482, 484, '가리기 (core)', { size: 11, fill: C.muted });
+	b += text(482, 484, '마스킹 (core)', { size: 11, fill: C.muted });
 	b += text(482, 503, 'Store 전이는', { size: 10.5, fill: C.text });
 	b += text(482, 517, 'StoreLogger 에서', { size: 10.5, fill: C.text });
 	// 가르는 질문
@@ -717,7 +717,7 @@ const W = 600;
 
 	out(
 		'src/content/blog/android-architecture-2-build-and-fix/architecture-telemetry.svg',
-		svg(W, H, '분석 이벤트와 로그가 나오는 자리', '①편의 구조 그림 위에 관찰과 기록을 덧그린 그림. 분석 이벤트는 화면에서는 ViewModel 의 onEvent 로 들어온 입력(탭)을, module 에서는 StoreLogger 옆 옵저버가 받는 상태 전이를 GA 로 보낸다(이름은 이음새를 가진 층이 짓고, 싱크는 firebase module). Store 의 전이 기록은 StoreLogger 에서 남고, 모든 층의 디버그 로그는 core 로거의 진입점 하나에서 로그 레벨 필터링과 개인정보 가리기를 거친다. 관찰은 흐름을 바꾸지 않는다. 의도와 전후가 있으면 이벤트, 없으면 로그.', b),
+		svg(W, H, '분석 이벤트와 로그가 나오는 자리', '①편의 구조 그림 위에 관찰과 기록을 덧그린 그림. 분석 이벤트는 화면에서는 ViewModel 의 onEvent 로 들어온 입력(탭)을, module 에서는 StoreLogger 옆 옵저버가 받는 상태 전이를 GA 로 보낸다(이름은 이음새를 가진 층이 짓고, 싱크는 firebase module). Store 의 전이 기록은 StoreLogger 에서 남고, 모든 층의 디버그 로그는 core 로거의 진입점 하나에서 로그 레벨 필터링과 개인정보 마스킹를 거친다. 관찰은 흐름을 바꾸지 않는다. 의도와 전후가 있으면 이벤트, 없으면 로그.', b),
 	);
 }
 
@@ -920,7 +920,7 @@ const W = 600;
 		const H = 330;
 		let b = defs('o');
 		b += text(16, 30, 'AI 의 선택지를 좁힌다', { size: 18, fill: C.text, weight: 700 });
-		b += text(16, 50, '같은 요구(«목록을 보여 줘»)에 AI 가 고를 수 있는 길', { size: 12, fill: C.subtle });
+		b += text(16, 50, '같은 요구(«목록을 보여 줘»)에 AI 가 고를 수 있는 경로', { size: 12, fill: C.subtle });
 		// 왼쪽
 		b += text(150, 82, '규칙이 없을 때', { size: 13, anchor: 'middle', fill: C.text, weight: 700 });
 		b += layer(16, 168, 110, 40, tint.feature, BLUE, '화면');
@@ -940,11 +940,11 @@ const W = 600;
 		b += layer(R0 + 70, 238, 120, 40, tint.module, GREEN, 'module (SSOT)');
 		b += arrow(R0 + 130, 140, R0 + 130, 164, GREEN, 'o-g');
 		b += arrow(R0 + 130, 210, R0 + 130, 234, GREEN, 'o-g');
-		b += text(R0 + 196, 190, '길이 하나', { size: 11.5, fill: GREEN, weight: 700 });
-		b += text(R0 + 130, 310, '틀린 길은 빌드가 막는다', { size: 11, anchor: 'middle', fill: C.muted });
+		b += text(R0 + 196, 190, '경로가 하나', { size: 11.5, fill: GREEN, weight: 700 });
+		b += text(R0 + 130, 310, '틀린 경로는 빌드가 막는다', { size: 11, anchor: 'middle', fill: C.muted });
 		b += `<line x1="300" x2="300" y1="74" y2="310" stroke="${C.grid}" stroke-width="1"/>`;
 		out('src/content/blog/why-architecture-in-ai-era/narrowing-choices.svg',
-			svg(W, H, 'AI 의 선택지를 좁힌다', '규칙이 없으면 화면에서 목록을 보여 주는 길이 API 직접 호출, 다른 화면 상태 복사, 공용 유틸, 옛 코드의 판정 복사 등 여러 개로 열려 있다. 규칙이 있으면 화면 → ViewModel → module 의 한 길만 남고, 틀린 길은 빌드가 막는다.', b));
+			svg(W, H, 'AI 의 선택지를 좁힌다', '규칙이 없으면 화면에서 목록을 보여 주는 길이 API 직접 호출, 다른 화면 상태 복사, 공용 유틸, 옛 코드의 판정 복사 등 여러 개로 열려 있다. 규칙이 있으면 화면 → ViewModel → module 의 한 경로만 남고, 틀린 경로는 빌드가 막는다.', b));
 	}
 }
 
@@ -997,7 +997,7 @@ const W = 600;
 		const fy = 240;
 		b += box(16, fy, 150, 40, C.surface, GREEN, { rx: 7, sw: 1.2 }) + text(91, fy + 25, 'mock 테스트 통과', { size: 12, anchor: 'middle', fill: C.text, weight: 600 });
 		b += arrow(168, fy + 20, 206, fy + 20, GRAY, 'm-gray');
-		b += box(210, fy, 170, 40, C.surface, ORANGE, { rx: 7, sw: 1.2 }) + text(295, fy + 25, '확인 SQL 을 사람에게 넘김', { size: 12, anchor: 'middle', fill: C.text, weight: 600 });
+		b += box(210, fy, 170, 40, C.surface, ORANGE, { rx: 7, sw: 1.2 }) + text(295, fy + 25, '확인 SQL 을 사람에게 위임', { size: 12, anchor: 'middle', fill: C.text, weight: 600 });
 		b += text(295, fy - 8, '여기서 «끝났다»', { size: 11, anchor: 'middle', fill: C.muted });
 		b += arrow(382, fy + 20, 420, fy + 20, GRAY, 'm-gray');
 		b += box(424, fy, 160, 40, C.surface, GREEN, { rx: 7, sw: 1.8 }) + text(504, fy + 25, '결과 기록 → «검증됐다»', { size: 12, anchor: 'middle', fill: C.text, weight: 700 });
@@ -1485,8 +1485,8 @@ const W = 600;
 	}
 }
 
-// ── 33~34. 팀에 퍼지는 Business Flow — 두 길 · 두 사다리 ─────────────
-// 원천: 팀 하네스 사본 조사 회신(2026-11-25) · 단 대응은 사본 사다리 문서 기준. 숫자는 글과 같다(받은 팀 0 · 올라간 개선 0).
+// ── 33~34. 다른 팀에 Business Flow 를 전하는 법 — 두 경로 · 도입 단계와 구축 단계 ─────────────
+// 원천: 팀용 템플릿 조사 회신(2026-11-25) · 단계 대응은 템플릿의 단계 문서 기준. 숫자는 글과 같다(받은 팀 0 · 반영된 개선 0). 글자는 본문과 같은 말(사용자 용어 결정 2026-11-25 · T-003314).
 {
 	const BLUE = C.s2, GREEN = C.s1, ORANGE = C.s3, GRAY = '#9ca3af';
 	const marker = (id, color) =>
@@ -1501,50 +1501,50 @@ const W = 600;
 		(sub ? text(x + w / 2, y + 40, sub, { size: 11.5, anchor: 'middle', fill: C.muted }) : '');
 	const dir = 'src/content/blog/team-harness-propagation/';
 
-	// 33. 두 길
+	// 33. 두 경로
 	{
 		const H = 420;
 		let b = `<defs>${marker('p-g', GREEN)}${marker('p-o', ORANGE)}</defs>`;
-		b += text(16, 30, '사본의 세 층과 두 길', { size: 18, fill: C.text, weight: 700 });
-		b += text(16, 50, '위는 «무엇을 갖춰야 하나», 아래로 갈수록 «그 저장소의 값»', { size: 12, fill: C.subtle });
-		b += node(150, 74, 300, 56, '#f3f4f6', GRAY, '팀용 사본(틀)', '값을 걸러 내고 뼈대만 남김');
-		b += node(24, 200, 250, 56, '#e8f5ef', GREEN, '원본', '우리 팀의 규칙 묶음', { sw: 2 });
-		b += node(326, 200, 250, 56, '#fdf0e8', ORANGE, '다른 팀의 구현', '사본을 받아 채운 것', { dash: '5 4' });
-		b += node(24, 310, 250, 50, '#eaf2fc', BLUE, '저장소가 채운 값', '저장소마다 규칙 문서');
-		b += node(326, 310, 250, 50, '#fafafa', GRAY, '저장소가 채운 값', '아직 없음', { dash: '5 4' });
+		b += text(16, 30, '팀용 템플릿과 두 경로', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '위는 «무엇을 갖춰야 하나», 아래로 갈수록 «그 저장소의 내용»', { size: 12, fill: C.subtle });
+		b += node(150, 74, 300, 56, '#f3f4f6', GRAY, '팀용 템플릿(구조)', '고유 내용을 빼고 구조만 남김');
+		b += node(24, 200, 250, 56, '#e8f5ef', GREEN, '원본', '우리 팀이 실제로 쓰는 규칙', { sw: 2 });
+		b += node(326, 200, 250, 56, '#fdf0e8', ORANGE, '다른 팀', '템플릿을 받아 채운 것', { dash: '5 4' });
+		b += node(24, 310, 250, 50, '#eaf2fc', BLUE, '저장소가 채운 내용', '저장소마다 규칙 문서');
+		b += node(326, 310, 250, 50, '#fafafa', GRAY, '저장소가 채운 내용', '아직 없음', { dash: '5 4' });
 		b += `<line x1="149" y1="258" x2="149" y2="308" stroke="${GRAY}" stroke-width="1.5"/>`;
 		b += `<line x1="451" y1="258" x2="451" y2="308" stroke="${GRAY}" stroke-width="1.5" stroke-dasharray="4 4"/>`;
-		// 올라가는 길
+		// 반영 경로
 		b += arrow(170, 198, 170, 132, GREEN, 'p-g');
-		b += text(160, 170, '올라감 · 여러 번 돎', { size: 12, anchor: 'end', fill: GREEN, weight: 700 });
+		b += text(160, 170, '반영 · 여러 번 돎', { size: 12, anchor: 'end', fill: GREEN, weight: 700 });
 		b += arrow(360, 198, 360, 132, ORANGE, 'p-o', '5 4');
-		b += text(352, 170, '올라옴 · 0 건', { size: 12, anchor: 'end', fill: ORANGE, weight: 700 });
-		// 내려가는 길
+		b += text(352, 170, '반영 · 0 건', { size: 12, anchor: 'end', fill: ORANGE, weight: 700 });
+		// 배포 경로
 		b += arrow(430, 132, 430, 198, ORANGE, 'p-o', '5 4');
-		b += text(440, 170, '내려감 · 0 곳', { size: 12, fill: ORANGE, weight: 700 });
-		b += text(16, H - 36, '실선: 실제로 돈 길 / 점선: 길은 설계돼 있지만 아직 돈 적 없음', { size: 11.5, fill: C.muted });
+		b += text(440, 170, '배포 · 0 곳', { size: 12, fill: ORANGE, weight: 700 });
+		b += text(16, H - 36, '실선: 실제로 돈 경로 / 점선: 경로는 설계돼 있지만 아직 돈 적 없음', { size: 11.5, fill: C.muted });
 		b += text(16, H - 16, '다른 팀은 테스트(빈 폴더 설치 · 가상 팀 채택)로만 확인했다', { size: 11.5, fill: C.muted });
 		out(dir + 'two-paths.svg',
-			svg(W, H, '사본의 세 층과 두 길', '맨 위 팀용 사본(값을 걸러 내고 뼈대만 남긴 틀). 그 아래 왼쪽은 원본(우리 팀의 규칙 묶음)이고 오른쪽은 사본을 받아 채운 다른 팀의 구현이며, 각각 아래에 저장소가 채운 값이 있다. 원본에서 사본으로 올라가는 길은 실선으로 여러 번 돌았다. 다른 팀에서 올라오는 길(개선 0 건)과 사본에서 다른 팀으로 내려가는 길(받은 팀 0 곳)은 점선으로 아직 돈 적이 없다.', b));
+			svg(W, H, '팀용 템플릿과 두 경로', '맨 위 팀용 템플릿(우리 팀 고유 내용을 빼고 구조만 남긴 것). 그 아래 왼쪽은 원본(우리 팀이 실제로 쓰는 규칙)이고 오른쪽은 템플릿을 받아 채운 다른 팀이며, 각각 아래에 저장소가 채운 내용이 있다. 원본에서 템플릿으로 반영하는 경로는 실선으로 여러 번 돌았다. 다른 팀에서 반영하는 경로(개선 0 건)와 템플릿을 다른 팀에 배포하는 경로(받은 팀 0 곳)는 점선으로 아직 돈 적이 없다.', b));
 	}
 
-	// 34. 두 사다리 맞물림
+	// 34. 도입 단계와 구축 단계의 맞물림
 	{
 		const rows = [
-			['S0 ~ S1', '저장소 재기 · 머지되는 길', 'H0 점검 · H1 규칙 채택 · H2 번호 등록처'],
-			['S2', '받는 창구(Supervisor)', 'H3 수신함 · 답장 보장'],
-			['S3', '지금 버전 한 번에 받기', 'H4 티켓은 증거로만 닫기'],
-			['S4', '규칙과 집행 수단 쌍', 'H1 (새 가드는 H5 도구 만들기)'],
-			['S5 ~ S8', 'Business Flow 완주 ~ Supervisor 운영', 'H6 Supervisor 연결'],
+			['S0 ~ S1', '저장소 파악 · 머지 경로', 'H0 점검 · H1 규칙 채택 · H2 개정 번호 발급'],
+			['S2', 'Supervisor 세션', 'H3 요청 수신 · 응답 보장'],
+			['S3', '현재 버전 한 번에 받기', 'H4 티켓은 증거로만 닫기'],
+			['S4', '규칙과 자동 검사 함께 두기', 'H1 (새 가드는 H5 도구 만들기)'],
+			['S5 ~ S8', 'Business Flow 완료 ~ Supervisor 운영', 'H6 Supervisor 연결'],
 			['S9', '운영 지표', 'H9 Flow 진단 지표'],
-			['상시 고리', '새 버전 받기', 'H8 규칙이 내려가는 길 (H7 담당 세션)'],
+			['상시 절차', '새 버전 받기', 'H8 새 규칙 배포 경로 (H7 담당 세션)'],
 		];
 		const H = 130 + rows.length * 50;
 		let b = `<defs>${marker('l-g', GREEN)}</defs>`;
-		b += text(16, 30, '두 사다리는 맞물려 오릅니다', { size: 18, fill: C.text, weight: 700 });
-		b += text(16, 50, '저장소가 한 단 오르려면 오른쪽 관리 쪽 단이 먼저 서 있어야 한다', { size: 12, fill: C.subtle });
-		b += text(32, 82, '레포 사다리', { size: 12, fill: BLUE, weight: 700 });
-		b += text(350, 82, '먼저 서 있어야 할 관리 쪽 사다리', { size: 12, fill: GREEN, weight: 700 });
+		b += text(16, 30, '도입 단계와 구축 단계는 맞물려 갑니다', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '저장소가 도입 단계를 하나 올라가려면 오른쪽 구축 단계가 먼저 갖춰져 있어야 한다', { size: 12, fill: C.subtle });
+		b += text(32, 82, '도입 단계(저장소)', { size: 12, fill: BLUE, weight: 700 });
+		b += text(350, 82, '먼저 갖춰야 할 구축 단계(공통 규칙 쪽)', { size: 12, fill: GREEN, weight: 700 });
 		rows.forEach(([id, name, h], i) => {
 			const y = 94 + i * 50;
 			b += box(16, y, 568, 42, i % 2 ? '#ffffff' : '#fafafa', C.grid, { sw: 1 });
@@ -1553,8 +1553,8 @@ const W = 600;
 			b += arrow(318, y + 21, 340, y + 21, GREEN, 'l-g');
 			b += text(350, y + 26, h, { size: 12, fill: C.text });
 		});
-		b += text(16, H - 16, '사람이 하나뿐인 팀이 S5 까지 가는 데 필요한 관리 쪽 단: H0 · H1 · H2 · H3 · H4 · H6', { size: 11.5, fill: C.muted });
+		b += text(16, H - 16, '사람이 한 명뿐인 팀이 S5 까지 가는 데 필요한 구축 단계: H0 · H1 · H2 · H3 · H4 · H6', { size: 11.5, fill: C.muted });
 		out(dir + 'two-ladders.svg',
-			svg(W, H, '두 사다리는 맞물려 오릅니다', '저장소 쪽 S0~S1(재기 · 머지되는 길)은 관리 쪽 H0 점검 · H1 규칙 채택 · H2 번호 등록처가, S2(받는 창구)는 H3 수신함과 답장 보장이, S3(지금 버전 받기)는 H4 티켓이, S4(규칙과 집행 수단 쌍)는 H1(새 가드는 H5)이, S5~S8(Business Flow 완주 ~ Supervisor 운영)은 H6 Supervisor 연결이, S9(운영 지표)는 H9가, 상시 고리(새 버전 받기)는 H8과 H7이 먼저 받쳐 준다. 사람이 하나뿐인 팀이 S5까지 가는 데 필요한 관리 쪽 단은 H0 H1 H2 H3 H4 H6.', b));
+			svg(W, H, '도입 단계와 구축 단계는 맞물려 갑니다', '저장소의 도입 단계 S0~S1(저장소 파악 · 머지 경로)은 공통 규칙 쪽 구축 단계 H0 점검 · H1 규칙 채택 · H2 개정 번호 발급이, S2(Supervisor 세션)는 H3 요청 수신과 응답 보장이, S3(현재 버전 받기)는 H4 티켓이, S4(규칙과 자동 검사)는 H1(새 가드는 H5)이, S5~S8(Business Flow 완료 ~ Supervisor 운영)은 H6 Supervisor 연결이, S9(운영 지표)는 H9가, 상시 절차(새 버전 받기)는 H8과 H7이 먼저 받쳐 준다. 사람이 한 명뿐인 팀이 S5까지 가는 데 필요한 구축 단계는 H0 H1 H2 H3 H4 H6.', b));
 	}
 }
