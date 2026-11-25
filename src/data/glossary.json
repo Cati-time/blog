@@ -699,6 +699,238 @@
 			"decided": "user",
 			"status": "decided",
 			"evidence": "사용자 결정 2026-11-24 · 명사로 쓴 «사람 손» 0(사람 손 5 는 모두 «손을 타다 · 손이 가다 · 손으로» 관용구) / 사람이 직접 25 · 수작업 · 수동 144"
+		},
+		{
+			"name": "구조 · 규칙 문서",
+			"aliases": [],
+			"avoid": [
+				"틀과 값",
+				"팀 전파용 틀",
+				"저장소의 값",
+				"자기 값으로"
+			],
+			"definition": "«틀 · 값» 대신 쓰는 말. 공통 규칙이 정하는 것은 «구조», 저장소가 작성하는 것은 «내용 · 규칙 문서».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 틀(템플릿 뜻) 63 / 구조 · 템플릿 2,304"
+		},
+		{
+			"name": "항목",
+			"aliases": [],
+			"avoid": [
+				"칸의 상태",
+				"채울 칸",
+				"빈칸"
+			],
+			"definition": "규칙 문서에서 갖춰야 하는 하나하나를 «칸» 이 아니라 «항목» 이라 쓴다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 칸 36 / 항목 · 필드 509"
+		},
+		{
+			"name": "도입 유형 · 머지 경로",
+			"aliases": [],
+			"avoid": [
+				"들어오는 길",
+				"머지되는 길",
+				"첫 일이 다릅니다"
+			],
+			"definition": "«길» 은 개발 글에서 쓰지 않는다. 시작 상황은 «도입 유형», 머지가 가는 곳은 «머지 경로».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 길 4 / 경로 · 방식 · 유형 · 흐름 3,227"
+		},
+		{
+			"name": "Supervisor 세션 · 담당 세션",
+			"aliases": [],
+			"avoid": [
+				"받는 창구",
+				"받는 창구를 연다"
+			],
+			"definition": "«창구» 대신 일을 받는 쪽을 실제 이름(Supervisor 세션 · 담당 세션)으로 쓴다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 창구 16 / 담당 · 수신 · 채널 778"
+		},
+		{
+			"name": "새 버전을 받는 절차",
+			"aliases": [],
+			"avoid": [
+				"상시 고리",
+				"받는 고리",
+				"새 버전을 받는 고리"
+			],
+			"definition": "반복해서 도는 절차는 «고리» 가 아니라 «절차 · 사이클 · 루프».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 고리 9 / 사이클 · 루프 · 순환 · 주기 646"
+		},
+		{
+			"name": "완료 기준",
+			"aliases": [],
+			"avoid": [
+				"다 됐다는 신호"
+			],
+			"definition": "단계가 끝났는지 보는 기준은 «신호» 가 아니라 «완료 기준».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 신호(이 뜻) 드묾 / 완료 기준 · 지표 · 조건"
+		},
+		{
+			"name": "충족",
+			"aliases": [],
+			"avoid": [
+				"졸업"
+			],
+			"definition": "단계의 완료 기준을 채웠다는 뜻으로 «졸업» 을 쓰지 않는다 — «충족 · 완료».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 졸업 23 / 완료 · 통과 · 충족 683"
+		},
+		{
+			"name": "정리 문서",
+			"aliases": [],
+			"avoid": [
+				"문면"
+			],
+			"definition": "«문면» 은 쓰지 않는다 — «본문 · 내용 · 정리 문서».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 문면 0 / 본문 · 문서 · 내용 2,485"
+		},
+		{
+			"name": "실행 결과 기록",
+			"aliases": [],
+			"avoid": [
+				"실측 기록",
+				"실측표",
+				"S0 실측"
+			],
+			"definition": "빌드 · 테스트를 돌려 본 결과 기록은 «실측» 대신 «실행 결과 기록».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 실측 기록 0 / 실행 결과 · 조사 결과"
+		},
+		{
+			"name": "자동 검사",
+			"aliases": [],
+			"avoid": [
+				"집행 수단",
+				"집행할 수단"
+			],
+			"definition": "규칙을 어기면 자동으로 실패시키는 것(게이트 · 가드 · 판정 스크립트 · git hook)은 «집행 수단» 대신 «자동 검사». «검증 수단» 은 테스트 · 리뷰까지 넓어 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "확인 지점",
+			"aliases": [],
+			"avoid": [
+				"정지점"
+			],
+			"definition": "사람이 멈춰서 확인하는 곳은 «정지점» 대신 «확인 지점».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "배포 · 수신 · 요청",
+			"aliases": [],
+			"avoid": [
+				"0 공포",
+				"3 수령",
+				"2 위임"
+			],
+			"definition": "새 버전을 받는 절차의 단계 이름은 «공포 · 수령 · 위임» 이 아니라 «배포 · 수신 · 요청».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "주의할 점",
+			"aliases": [],
+			"avoid": [
+				"함정"
+			],
+			"definition": "«함정» 대신 «주의할 점».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "적용 결정 기록",
+			"aliases": [],
+			"avoid": [
+				"맞춤 결정 기록"
+			],
+			"definition": "현재 규칙에 맞춘 결정 기록은 «적용 결정 기록».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "운영 규칙 문장",
+			"aliases": [],
+			"avoid": [
+				"거버넌스 문장"
+			],
+			"definition": "«거버넌스 문장» 대신 «운영 규칙 문장».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "위반 검출 테스트",
+			"aliases": [],
+			"avoid": [
+				"짝 테스트"
+			],
+			"definition": "일부러 위반을 넣으면 실패하는 테스트는 «짝 테스트» 가 아니라 «위반 검출 테스트».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "완료",
+			"aliases": [],
+			"avoid": [
+				"완주",
+				"첫 바퀴"
+			],
+			"definition": "«완주 · 첫 바퀴» 는 잘 쓰지 않는다 — «완료».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "비용이 적다",
+			"aliases": [],
+			"avoid": [
+				"쌉니다"
+			],
+			"definition": "비용 뜻의 «싸다» 는 구어라 «비용이 적다».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
 		}
 	]
 }

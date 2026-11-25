@@ -1281,7 +1281,7 @@ const W = 600;
 }
 
 // ── 26~29. Business Flow 를 내 저장소에 — 세 층 · 여섯 단계 · 새 버전 받는 고리 · 단계별 졸업 수 ─────────────
-// 원천: 공통 규칙 쪽 조사 회신(2026-11-12) · 단계별 졸업 수 = 도입 현황표(저장소 10곳 · 2026-10-22 판) — 블로그 세션이 다시 셈 일치.
+// 원천: 공통 규칙 쪽 조사 회신(2026-11-12) · 단계별 충족 수 = 보급과 다시 측정(저장소 15곳 · 2026-11-25) — 블로그 세션이 다시 셈 일치.
 {
 	const BLUE = C.s2, GREEN = C.s1, ORANGE = C.s3, GRAY = '#9ca3af';
 	const tint = { top: '#f3f4f6', feature: '#eaf2fc', module: '#e8f5ef', io: '#fdf0e8' };
@@ -1386,26 +1386,26 @@ const W = 600;
 
 	// 29. 단계별 충족 수
 	{
-		const data = [['S0', '파악', 10], ['S1', '머지 경로', 5], ['S2', 'Supervisor', 2], ['S3', '현재 버전', 1], ['S4', '첫 Subflow', 4], ['S5', '첫 완료', 4]];
+		const data = [['S0', '파악', 15], ['S1', '머지 경로', 12], ['S2', 'Supervisor', 9], ['S3', '현재 버전', 15], ['S4', '첫 Subflow', 8], ['S5', '첫 완료', 9]];
 		const H = 340, L = 48, R = 16, T = 80, B = 56;
-		const pw = W - L - R, ph = H - T - B, max = 10;
+		const pw = W - L - R, ph = H - T - B, max = 15;
 		const y = (v) => T + ph - (v / max) * ph;
 		const step = pw / data.length, bw = step - 26;
 		let b = text(16, 30, '단계마다 완료 기준을 충족한 저장소 수', { size: 18, fill: C.text, weight: 700 });
-		b += text(16, 50, '저장소 10곳 · 도입 현황표 기준 · 충족 = 그 단계의 «완료 기준» 이 실제로 있음', { size: 12, fill: C.subtle });
-		for (const g of [0, 5, 10]) {
+		b += text(16, 50, '저장소 15곳 · 2026-11-25 다시 측정 · 충족 = 그 단계의 «완료 기준» 이 실제로 있음', { size: 12, fill: C.subtle });
+		for (const g of [0, 5, 10, 15]) {
 			b += `<line x1="${L}" x2="${W - R}" y1="${y(g)}" y2="${y(g)}" stroke="${C.grid}" stroke-width="1"/>`;
 			b += text(L - 6, y(g) + 4, String(g), { size: 12, anchor: 'end', fill: C.subtle });
 		}
 		data.forEach(([id, n, v], i) => {
 			const x = L + i * step + 13, cx = x + bw / 2;
-			b += bar(x, y(v), bw, y(0) - y(v), v >= 4 ? C.s1 : '#86c9ad');
+			b += bar(x, y(v), bw, y(0) - y(v), v >= 9 ? C.s1 : '#86c9ad');
 			b += text(cx, y(v) - 8, String(v), { size: 13, anchor: 'middle', fill: C.text, weight: 700 });
 			b += text(cx, H - B + 18, id, { size: 12, anchor: 'middle', fill: C.text, weight: 700 });
 			b += text(cx, H - B + 34, n, { size: 11, anchor: 'middle', fill: C.subtle });
 		});
 		out(dir + 'adoption-progress.svg',
-			svg(W, H, '단계마다 완료 기준을 충족한 저장소 수', '저장소 10곳 기준 도입 현황표. S0 저장소 파악 10, S1 머지 경로 5, S2 Supervisor 세션 2, S3 현재 버전 받기 1, S4 첫 Subflow 4, S5 첫 Business Flow 완료 4.', b));
+			svg(W, H, '단계마다 완료 기준을 충족한 저장소 수', '저장소 15곳 기준 2026-11-25 다시 측정한 값. S0 저장소 파악 15, S1 머지 경로 12, S2 Supervisor 세션 9, S3 현재 버전 받기 15, S4 첫 Subflow 8, S5 첫 Business Flow 완료 9.', b));
 	}
 }
 
