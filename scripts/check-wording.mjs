@@ -52,7 +52,7 @@ export const TERMS = [
 	{ id: 'adopt', avoid: /[을를] ?들이(며|고|면|는|기|려)|[을를] ?들였/g, glossary: '도입하다' },
 	{ id: 'layer', avoid: /(?<![가-힣])겹(?![치쳐친칠쳤])/g, glossary: '계층 · 레이어' },
 	{ id: 'granularity', avoid: /입자/g, glossary: '단위' },
-	{ id: 'field', avoid: /(입력|산출|반출|통과 ?체크|계약)[의 ]* ?칸/g, glossary: '항목 · 필드' },
+	{ id: 'field', avoid: /(입력|산출|반출|통과 ?체크|계약)[의 ]* ?칸|(?<![가-힣]|한 )칸(?=[이은을의도에]|마다|\s|$|[)»,.])|빈칸/g, glossary: '항목 · 필드' },
 	{ id: 'hand-down', avoid: /넘김/g, glossary: '위임' },
 	{ id: 'tally', avoid: /셈의|셈 ?축|셈[을를]/g, glossary: '집계 기준 · 집계 축' },
 	{ id: 'blind', avoid: /못 ?보는/g, glossary: '검증할 수 없는 · 사각지대' },
@@ -71,6 +71,25 @@ export const TERMS = [
 	// 사용자 결정 2026-11-24(T-002932) — 내부 말. 관용구(한 걸음 더 · 첫걸음 · 발걸음 · 걸음마 / 사람 손 없이 · 손을 타다 · 손이 가다 · 손으로)는 걸지 않는다 · 원천 말뭉치 오탐 0
 	{ id: 'step', avoid: /(?<!(한|첫|발|큰|작은|뒷|잰|빠른|느린|두|세) ?)걸음(?!마|걸이)/g, glossary: '단계' },
 	{ id: 'human-hand', avoid: /사람 ?손(?= ?\d|입니|이었|인지|인(?![가-힣])|은(?![가-힣])| 가운데)/g, glossary: '사람이 맡음' },
+	// 사용자 결정 2026-11-25(adoption-guide 3e48b88 · 5a3229e · 369915f · T-003251 · T-003291) — 글 한 편에만 들어가고 검사에 없어 다음 글이 같은 말을 다시 썼다(T-003314). 뜻이 갈리는 말(길 · 틀 · 값 · 신호 · 자리 · 계기 · 한 장)은 그 뜻의 꼴만 잡는다
+	{ id: 'measure', avoid: /(?<![가-힣])(재(고|서|기|면|려|야|어|는|지)(?![가-힣])|잰다|잰(?![가-힣])|잴(?= 수)|쟀|잽니)/g, glossary: '파악 · 분석' },
+	{ id: 'frame', avoid: /(?<![가-힣])틀(?! 수)(?= ?[과와은는이을를의로에만도]|\s|$|[)·,.])/g, glossary: '구조 · 템플릿' },
+	{ id: 'value', avoid: /틀과 값|(팀|원본|자기|저장소)의? 값(?![가-힣])|채운 값|값으로 채|값을 (거르|걸러|걷|빼)|새는 값|값이 (유출|새)/g, glossary: '내용' },
+	{ id: 'done-signal', avoid: /됐다는 신호/g, glossary: '완료 기준' },
+	{ id: 'loop', avoid: /(?<!연결 ?)(?<![가-힣])고리/g, glossary: '절차' },
+	{ id: 'path', avoid: /(되는|오는|가는|퍼지는|받는|두|새|같은|다른|그|한|틀린) 길(?![가-힣])|(?<![가-힣])길(마다|은|을|로|에서|도)(?![가-힣])/g, glossary: '경로 · 유형' },
+	{ id: 'sheet', avoid: /문면|(?<!문서 )(?<![가-힣])한 장(?![가-힣])/g, glossary: '정리 문서' },
+	{ id: 'cheap', avoid: /(?<!비)쌉니다|(?<![가-힣])싸(다|고|게|서)(?![가-힣])/g, glossary: '비용이 적다' },
+	{ id: 'wiring', avoid: /배선(?! ?시험)/g, glossary: '구성' },
+	{ id: 'occasion', avoid: /계기가 (있을|있으면|생기|생길|생겼)/g, glossary: '필요가 생길 때' },
+	{ id: 'hardened', avoid: /(?<![가-힣])굳(은|어|었)/g, glossary: '안정된' },
+	{ id: 'patch-up', avoid: /메우|메웠|메운/g, glossary: '보완하다' },
+	{ id: 'others', avoid: /(?<![가-힣])남의/g, glossary: '다른 팀의 · 다른' },
+	{ id: 'enforce', avoid: /집행 ?수단|집행할 수단/g, glossary: '자동 검사' },
+	{ id: 'pair-test', avoid: /짝 ?테스트/g, glossary: '위반 검출 테스트' },
+	{ id: 'finish', avoid: /완주|(첫|한) ?바퀴/g, glossary: '완료' },
+	{ id: 'promulgate', avoid: /공포(하|했|한|된|합)/g, glossary: '배포(규칙 버전)' },
+	{ id: 'seat', avoid: /(\d+|열|한|두|세|네|다섯) 자리(?=[(\s])|(어느|들어갈|반영할|담당|관리 쪽|세션) 자리/g, glossary: '위치 · 담당 세션 · 개' },
 ];
 
 
