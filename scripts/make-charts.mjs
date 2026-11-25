@@ -1484,3 +1484,75 @@ const W = 600;
 			svg(W, H, '서버 기능 개발 — 달마다 자동화율', '2026년 6월 0 %, 7월 0 %, 8월 18 %(코드 쓰기 · 설계 문서), 9월 27 %(테스트 · 로컬 CI), 10월 64 %(티켓 · 실행 직전 판정 · 리뷰), 11월 73 %(실환경 테스트).', b));
 	}
 }
+
+// ── 33~34. 팀에 퍼지는 Business Flow — 두 길 · 두 사다리 ─────────────
+// 원천: 팀 하네스 사본 조사 회신(2026-11-25) · 단 대응은 사본 사다리 문서 기준. 숫자는 글과 같다(받은 팀 0 · 올라간 개선 0).
+{
+	const BLUE = C.s2, GREEN = C.s1, ORANGE = C.s3, GRAY = '#9ca3af';
+	const marker = (id, color) =>
+		`<marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${color}"/></marker>`;
+	const box = (x, y, w, h, fill, stroke, o = {}) =>
+		`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.rx ?? 8}" fill="${fill}" stroke="${stroke}" stroke-width="${o.sw ?? 1.5}"${o.dash ? ` stroke-dasharray="${o.dash}"` : ''}/>`;
+	const arrow = (x1, y1, x2, y2, color, id, dash = '') =>
+		`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="2"${dash ? ` stroke-dasharray="${dash}"` : ''} marker-end="url(#${id})"/>`;
+	const node = (x, y, w, h, fill, stroke, name, sub, o = {}) =>
+		box(x, y, w, h, fill, stroke, o) +
+		text(x + w / 2, y + (sub ? 22 : 28), name, { size: 13, anchor: 'middle', fill: C.text, weight: 700 }) +
+		(sub ? text(x + w / 2, y + 40, sub, { size: 11.5, anchor: 'middle', fill: C.muted }) : '');
+	const dir = 'src/content/blog/team-harness-propagation/';
+
+	// 33. 두 길
+	{
+		const H = 400;
+		let b = `<defs>${marker('p-g', GREEN)}${marker('p-o', ORANGE)}</defs>`;
+		b += text(16, 30, '사본의 세 층과 두 길', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '위는 «무엇을 갖춰야 하나», 아래로 갈수록 «그 저장소의 값»', { size: 12, fill: C.subtle });
+		b += node(150, 74, 300, 56, '#f3f4f6', GRAY, '팀용 사본(틀)', '값을 걸러 내고 뼈대만 남김');
+		b += node(150, 176, 300, 56, '#e8f5ef', GREEN, '원본과 다른 팀의 구현', '사본의 항목을 채운 규칙 묶음', { sw: 2 });
+		b += node(150, 278, 300, 56, '#eaf2fc', BLUE, '저장소가 채운 값', '저장소마다 규칙 문서');
+		// 내려오는 길(실선)
+		b += arrow(250, 132, 250, 172, GREEN, 'p-g');
+		b += arrow(250, 234, 250, 274, GREEN, 'p-g');
+		b += text(240, 156, '새 버전 받기 · 한 번 돎', { size: 12, anchor: 'end', fill: GREEN, weight: 700 });
+		b += text(240, 258, '대조 후 머지', { size: 12, anchor: 'end', fill: GREEN, weight: 700 });
+		// 올라가는 길(점선)
+		b += arrow(350, 172, 350, 132, ORANGE, 'p-o', '5 4');
+		b += arrow(350, 274, 350, 234, ORANGE, 'p-o', '5 4');
+		b += text(360, 156, '개선 올리기 · 0 건', { size: 12, fill: ORANGE, weight: 700 });
+		b += text(360, 258, '받은 다른 팀 · 0 곳', { size: 12, fill: ORANGE, weight: 700 });
+		b += text(16, H - 36, '실선: 실제로 돈 길 / 점선: 길은 설계돼 있지만 아직 돈 적 없음', { size: 11.5, fill: C.muted });
+		b += text(16, H - 16, '받은 팀은 테스트(빈 폴더 설치 · 가상 팀 채택)로만 확인했다', { size: 11.5, fill: C.muted });
+		out(dir + 'two-paths.svg',
+			svg(W, H, '사본의 세 층과 두 길', '맨 위 팀용 사본(값을 걸러 내고 뼈대만 남긴 틀), 가운데 원본과 다른 팀의 구현(사본의 항목을 채운 규칙 묶음), 맨 아래 저장소가 채운 값(저장소마다 규칙 문서). 새 버전은 실선으로 아래로 내려가며 한 번 돌았다. 개선은 점선으로 위로 올라가며 아직 0 건이고, 사본을 실제로 받은 다른 팀도 0 곳이다.', b));
+	}
+
+	// 34. 두 사다리 맞물림
+	{
+		const rows = [
+			['S0 ~ S1', '저장소 재기 · 머지되는 길', 'H0 점검 · H1 규칙 채택 · H2 번호 등록처'],
+			['S2', '받는 창구(Supervisor)', 'H3 수신함 · 답장 보장'],
+			['S3', '지금 버전 한 번에 받기', 'H4 티켓은 증거로만 닫기'],
+			['S4', '규칙과 집행 수단 쌍', 'H1 (새 가드는 H5 도구 만들기)'],
+			['S5 ~ S8', 'Business Flow 완주 ~ Supervisor 운영', 'H6 Supervisor 연결'],
+			['S9', '운영 지표', 'H9 Flow 진단 지표'],
+			['상시 고리', '새 버전 받기', 'H8 규칙이 내려가는 길 (H7 담당 세션)'],
+		];
+		const H = 130 + rows.length * 50;
+		let b = `<defs>${marker('l-g', GREEN)}</defs>`;
+		b += text(16, 30, '두 사다리는 맞물려 오릅니다', { size: 18, fill: C.text, weight: 700 });
+		b += text(16, 50, '저장소가 한 단 오르려면 오른쪽 관리 쪽 단이 먼저 서 있어야 한다', { size: 12, fill: C.subtle });
+		b += text(32, 82, '레포 사다리', { size: 12, fill: BLUE, weight: 700 });
+		b += text(350, 82, '먼저 서 있어야 할 관리 쪽 사다리', { size: 12, fill: GREEN, weight: 700 });
+		rows.forEach(([id, name, h], i) => {
+			const y = 94 + i * 50;
+			b += box(16, y, 568, 42, i % 2 ? '#ffffff' : '#fafafa', C.grid, { sw: 1 });
+			b += text(30, y + 26, id, { size: 12.5, fill: BLUE, weight: 700 });
+			b += text(108, y + 26, name, { size: 12, fill: C.text });
+			b += arrow(318, y + 21, 340, y + 21, GREEN, 'l-g');
+			b += text(350, y + 26, h, { size: 12, fill: C.text });
+		});
+		b += text(16, H - 16, '사람이 하나뿐인 팀이 S5 까지 가는 데 필요한 관리 쪽 단: H0 · H1 · H2 · H3 · H4 · H6', { size: 11.5, fill: C.muted });
+		out(dir + 'two-ladders.svg',
+			svg(W, H, '두 사다리는 맞물려 오릅니다', '저장소 쪽 S0~S1(재기 · 머지되는 길)은 관리 쪽 H0 점검 · H1 규칙 채택 · H2 번호 등록처가, S2(받는 창구)는 H3 수신함과 답장 보장이, S3(지금 버전 받기)는 H4 티켓이, S4(규칙과 집행 수단 쌍)는 H1(새 가드는 H5)이, S5~S8(Business Flow 완주 ~ Supervisor 운영)은 H6 Supervisor 연결이, S9(운영 지표)는 H9가, 상시 고리(새 버전 받기)는 H8과 H7이 먼저 받쳐 준다. 사람이 하나뿐인 팀이 S5까지 가는 데 필요한 관리 쪽 단은 H0 H1 H2 H3 H4 H6.', b));
+	}
+}
