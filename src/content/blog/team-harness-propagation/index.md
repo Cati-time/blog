@@ -5,11 +5,11 @@ pubDate: 2026-11-25
 category: ax
 platform: harness
 tags: ['business-flow', 'harness', 'supervisor', 'ai-agent', 'workflow']
-draft: true
+draft: false
 ---
 
 > **함께 읽으면 좋은 글**
-> 우리 저장소에 이 규칙을 도입한 순서는 «Business Flow 를 내 저장소에» 에 있습니다. 이 글은 그 규칙을 **다른 팀이 받아 쓸 수 있게 만든 팀용 템플릿** 이 무엇이고, 어떻게 반영되고 배포되는지를 다룹니다. 앞 글을 읽지 않아도 이 글만으로 이해되게 썼습니다.
+> 우리 저장소에 이 규칙을 도입한 순서는 [Business Flow 를 내 저장소에](../business-flow-adoption-guide/) 에 있습니다. 이 글은 그 규칙을 **다른 팀이 받아 쓸 수 있게 만든 팀용 템플릿** 이 무엇이고, 어떻게 반영되고 배포되는지를 다룹니다. 앞 글을 읽지 않아도 이 글만으로 이해되게 썼습니다.
 
 ## 한 줄로
 
@@ -165,7 +165,7 @@ draft: true
 
 어디까지 왔는지는 `scripts/doctor.sh` 를 돌리면 알 수 있습니다. 읽기만 하는 스크립트이고, 처음 나오는 ✗ 가 다음 할 일입니다. 출력은 아래와 같은 꼴입니다(N 은 남은 자리표시 수).
 
-```
+```text
   ✓ 필수 스킬
   ✗ 전역 지침 ~/.claude/CLAUDE.md
 다음 할 일: templates/global/CLAUDE.md 를 채워 ~/.claude/CLAUDE.md 로 둔다(남은 자리표시 N)
