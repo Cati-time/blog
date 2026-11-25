@@ -1169,7 +1169,7 @@
 			"avoid": [
 				"장부"
 			],
-			"definition": "저장소 · 세션 · 버전을 적어 두는 관리 파일.",
+			"definition": "관리 도구가 쓰는 기록 파일. «장부» 로 쓰지 않는다.",
 			"kind": "style",
 			"decided": "user",
 			"status": "decided",
