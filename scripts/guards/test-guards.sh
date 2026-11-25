@@ -33,4 +33,12 @@ expect 0 bash scripts/guards/base-url.sh "$tmp/good-proto.astro"
 expect 1 env DOCS_GLOB='*.md' bash scripts/guards/docs-glob.sh docs/a.md src/content/blog/x/index.md
 expect 1 env DOCS_GLOB='*.md' bash scripts/guards/docs-glob.sh docs/a.md SRC/Content/blog/x/README.md
 expect 0 bash scripts/guards/docs-glob.sh docs/a.md README.md src/content/blog/x/index.md
+# 용어 결정 등록 가드 — 임시 저장소에 커밋을 지어 잰다(범위 = 바로 앞 커밋 하나)
+wd() { local d="$tmp/wd-$1"; git init -q "$d"; git -C "$d" -c user.name=t -c user.email=t@t commit -q --allow-empty -m base; mkdir -p "$d/src/data" "$d/src/content"; shift; while [ $# -gt 1 ]; do echo x >> "$d/$1"; git -C "$d" add -A; git -C "$d" -c user.name=t -c user.email=t@t commit -q -m "$2"; shift 2; done; echo "$d"; }
+d=$(wd bad src/content/a.md 'edit: a 사용자 짚음 — 말 바꿈'); expect 1 bash scripts/guards/wording-decision.sh HEAD~1..HEAD "$d"
+d=$(wd bad-trailer src/content/a.md $'edit: a\n\nWording-Decision: user 2026-11-25'); expect 1 bash scripts/guards/wording-decision.sh HEAD~1..HEAD "$d"
+d=$(wd good src/content/a.md 'edit: a 용어 결정 반영' src/data/glossary.json 'chore: 용어집 등록'); expect 0 bash scripts/guards/wording-decision.sh HEAD~2..HEAD "$d"
+d=$(wd skip src/content/a.md $'edit: a 용어 결정 — 이 글만\n\nGlossary-Skip: 이 글 한 곳만 그대로 두는 결정'); expect 0 bash scripts/guards/wording-decision.sh HEAD~1..HEAD "$d"
+d=$(wd plain src/content/a.md 'edit: a 오타'); expect 0 bash scripts/guards/wording-decision.sh HEAD~1..HEAD "$d"
+expect 2 bash scripts/guards/wording-decision.sh HEAD..HEAD "$d"
 exit $fail
