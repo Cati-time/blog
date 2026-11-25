@@ -41,4 +41,10 @@ d=$(wd good src/content/a.md 'edit: a 용어 결정 반영' src/data/glossary.js
 d=$(wd skip src/content/a.md $'edit: a 용어 결정 — 이 글만\n\nGlossary-Skip: 이 글 한 곳만 그대로 두는 결정'); expect 0 bash scripts/guards/wording-decision.sh HEAD~1..HEAD "$d"
 d=$(wd plain src/content/a.md 'edit: a 오타'); expect 0 bash scripts/guards/wording-decision.sh HEAD~1..HEAD "$d"
 expect 2 bash scripts/guards/wording-decision.sh HEAD..HEAD "$d"
+# 사이트 핵심 키워드 건너뜀 표지(R-BLOG-SEO · 법제처 T-003385) — 까닭 있음 = 건너뜀(0) · 까닭 빈 표지 = 경고 → --strict 실패(1)
+kw() { local d="$tmp/kw-$1"; mkdir -p "$d/src/content/blog/x"; printf -- "---\ntitle: '아키텍처 계층 이야기'\ndescription: '안드로이드 앱의 계층을 나눈 까닭과 그 결과를 실제 코드와 숫자로 정리한 글입니다.'\ntags: ['android']\n---\n%s\n\n## 한 줄로\n\n계층을 나눴다.\n" "$2" > "$d/src/content/blog/x/index.md"; echo "$d"; }
+root=$PWD
+seo_in() ( cd "$1" && node "$root/scripts/check-seo.mjs" x --strict )
+d=$(kw skip '<!-- site-keyword-skip: 주제가 안드로이드 계층이라 무관 -->'); expect 0 seo_in "$d"
+d=$(kw empty '<!-- site-keyword-skip: -->'); expect 1 seo_in "$d"
 exit $fail
