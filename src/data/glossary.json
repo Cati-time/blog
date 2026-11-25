@@ -456,13 +456,15 @@
 				"입력 칸",
 				"산출 칸",
 				"칸",
-				"빈칸"
+				"빈칸",
+				"칸의 상태",
+				"채울 칸"
 			],
 			"definition": "계약 · 표 · 단계 문서의 한 항목. «칸 · 빈칸 · 칸마다» 로 쓰지 않는다(사용자 결정 2026-11-25). «한 칸씩» 은 해당 없음.",
 			"kind": "style",
 			"decided": "user",
 			"status": "decided",
-			"evidence": "«계약 · 입력 · 산출 칸» 1 · 칸 전체 34 / 항목 238 · 필드 271 · 사용자 결정 2026-11-25(adoption-guide 5a3229e · «칸 → 항목» · 말뭉치 칸 36 / 항목 · 필드 509)"
+			"evidence": "«계약 · 입력 · 산출 칸» 1 · 칸 전체 34 / 항목 238 · 필드 271 · 사용자 결정 2026-11-25(adoption-guide 5a3229e · «칸 → 항목» · 말뭉치 칸 36 / 항목 · 필드 509) · 사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 칸 36 / 항목 · 필드 509"
 		},
 		{
 			"name": "위임",
@@ -703,6 +705,231 @@
 			"evidence": "사용자 결정 2026-11-24 · 명사로 쓴 «사람 손» 0(사람 손 5 는 모두 «손을 타다 · 손이 가다 · 손으로» 관용구) / 사람이 직접 25 · 수작업 · 수동 144"
 		},
 		{
+			"name": "구조 · 규칙 문서",
+			"aliases": [],
+			"avoid": [
+				"틀과 값",
+				"팀 전파용 틀",
+				"저장소의 값",
+				"자기 값으로",
+				"틀",
+				"채운 값",
+				"새는 값"
+			],
+			"definition": "«틀 · 값» 대신 쓰는 말. 공통 규칙이 정하는 것은 «구조», 저장소가 작성하는 것은 «내용 · 규칙 문서». 복사해 쓰는 파일이면 «템플릿». 저장소 · 팀이 채워 넣는 것은 «내용»(«값» 은 코드의 값에만).",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 틀(템플릿 뜻) 63 / 구조 · 템플릿 2,304"
+		},
+		{
+			"name": "도입 유형 · 머지 경로",
+			"aliases": [],
+			"avoid": [
+				"들어오는 길",
+				"머지되는 길",
+				"첫 일이 다릅니다",
+				"길(경로 뜻)"
+			],
+			"definition": "«길» 은 개발 글에서 쓰지 않는다. 시작 상황은 «도입 유형», 머지가 가는 곳은 «머지 경로».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 길 4 / 경로 · 방식 · 유형 · 흐름 3,227"
+		},
+		{
+			"name": "Supervisor 세션 · 담당 세션",
+			"aliases": [],
+			"avoid": [
+				"받는 창구",
+				"받는 창구를 연다"
+			],
+			"definition": "«창구» 대신 일을 받는 쪽을 실제 이름(Supervisor 세션 · 담당 세션)으로 쓴다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 창구 16 / 담당 · 수신 · 채널 778"
+		},
+		{
+			"name": "새 버전을 받는 절차",
+			"aliases": [],
+			"avoid": [
+				"상시 고리",
+				"받는 고리",
+				"새 버전을 받는 고리",
+				"고리"
+			],
+			"definition": "반복해서 도는 절차는 «고리» 가 아니라 «절차 · 사이클 · 루프».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 고리 9 / 사이클 · 루프 · 순환 · 주기 646"
+		},
+		{
+			"name": "완료 기준",
+			"aliases": [],
+			"avoid": [
+				"다 됐다는 신호"
+			],
+			"definition": "단계가 끝났는지 보는 기준은 «신호» 가 아니라 «완료 기준».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 신호(이 뜻) 드묾 / 완료 기준 · 지표 · 조건"
+		},
+		{
+			"name": "충족",
+			"aliases": [],
+			"avoid": [
+				"졸업"
+			],
+			"definition": "단계의 완료 기준을 채웠다는 뜻으로 «졸업» 을 쓰지 않는다 — «충족 · 완료».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 졸업 23 / 완료 · 통과 · 충족 683"
+		},
+		{
+			"name": "정리 문서",
+			"aliases": [],
+			"avoid": [
+				"문면"
+			],
+			"definition": "«문면» 은 쓰지 않는다 — «본문 · 내용 · 정리 문서».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 문면 0 / 본문 · 문서 · 내용 2,485"
+		},
+		{
+			"name": "실행 결과 기록",
+			"aliases": [],
+			"avoid": [
+				"실측 기록",
+				"실측표",
+				"S0 실측"
+			],
+			"definition": "빌드 · 테스트를 돌려 본 결과 기록은 «실측» 대신 «실행 결과 기록».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 실측 기록 0 / 실행 결과 · 조사 결과"
+		},
+		{
+			"name": "자동 검사",
+			"aliases": [],
+			"avoid": [
+				"집행 수단",
+				"집행할 수단"
+			],
+			"definition": "규칙을 어기면 자동으로 실패시키는 것(게이트 · 가드 · 판정 스크립트 · git hook)은 «집행 수단» 대신 «자동 검사». «검증 수단» 은 테스트 · 리뷰까지 넓어 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "확인 지점",
+			"aliases": [],
+			"avoid": [
+				"정지점"
+			],
+			"definition": "사람이 멈춰서 확인하는 곳은 «정지점» 대신 «확인 지점».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "배포 · 수신 · 요청",
+			"aliases": [],
+			"avoid": [
+				"0 공포",
+				"3 수령",
+				"2 위임",
+				"수령",
+				"공포하다"
+			],
+			"definition": "새 버전을 받는 절차의 단계 이름은 «공포 · 수령 · 위임» 이 아니라 «배포 · 수신 · 요청».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "주의할 점",
+			"aliases": [],
+			"avoid": [
+				"함정"
+			],
+			"definition": "«함정» 대신 «주의할 점».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "적용 결정 기록",
+			"aliases": [],
+			"avoid": [
+				"맞춤 결정 기록"
+			],
+			"definition": "현재 규칙에 맞춘 결정 기록은 «적용 결정 기록».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "운영 규칙 문장",
+			"aliases": [],
+			"avoid": [
+				"거버넌스 문장"
+			],
+			"definition": "«거버넌스 문장» 대신 «운영 규칙 문장».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "위반 검출 테스트",
+			"aliases": [],
+			"avoid": [
+				"짝 테스트"
+			],
+			"definition": "일부러 위반을 넣으면 실패하는 테스트는 «짝 테스트» 가 아니라 «위반 검출 테스트».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "완료",
+			"aliases": [],
+			"avoid": [
+				"완주",
+				"첫 바퀴"
+			],
+			"definition": "«완주 · 첫 바퀴» 는 잘 쓰지 않는다 — «완료».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "비용이 적다",
+			"aliases": [],
+			"avoid": [
+				"쌉니다"
+			],
+			"definition": "비용 뜻의 «싸다» 는 구어라 «비용이 적다».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
 			"name": "파악 · 분석",
 			"aliases": [],
 			"avoid": [
@@ -716,56 +943,6 @@
 			"decided": "user",
 			"status": "decided",
 			"evidence": "사용자 결정 2026-11-25(adoption-guide 3e48b88 · T-003251) · 말뭉치 «잰다 · 잽니다 · 쟀» 0 / 파악 561 · 분석 1337"
-		},
-		{
-			"name": "구조 · 템플릿",
-			"aliases": [],
-			"avoid": [
-				"틀"
-			],
-			"definition": "규칙 문서가 정해 둔 뼈대(무엇을 갖출지 · 어떤 순서인지). 그 뼈대에 저장소가 채우는 것은 «내용». 복사해 쓰는 파일이면 «템플릿».",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 틀 63 / 템플릿 · 구조 2304"
-		},
-		{
-			"name": "내용",
-			"aliases": [],
-			"avoid": [
-				"틀과 값",
-				"채운 값",
-				"새는 값"
-			],
-			"definition": "구조에 저장소 · 팀이 채워 넣는 것(저장소 이름 · 경로 · 명령). «값» 은 코드의 값(설정 값 · 반환 값)에만 쓴다.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · «틀·값 → 구조·내용»"
-		},
-		{
-			"name": "완료 기준",
-			"aliases": [],
-			"avoid": [
-				"다 됐다는 신호"
-			],
-			"definition": "그 단계가 끝났다고 보는 조건. «다 됐다는 신호» 로 쓰지 않는다. 기술 뜻의 «신호(signal)» 는 그대로 둔다.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 «됐다는 신호» 0"
-		},
-		{
-			"name": "절차",
-			"aliases": [],
-			"avoid": [
-				"고리"
-			],
-			"definition": "되풀이해 도는 순서(예: 새 버전을 받는 절차). «고리 · 상시 고리» 로 쓰지 않는다. «연결 고리» 관용구는 그대로 둔다.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 고리 9 / 사이클 · 루프 · 순환 · 주기 646"
 		},
 		{
 			"name": "비어 있음",
@@ -792,55 +969,6 @@
 			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 최소선 0 / 최소 기준 1"
 		},
 		{
-			"name": "경로 · 유형",
-			"aliases": [],
-			"avoid": [
-				"길(경로 뜻)"
-			],
-			"definition": "일이 지나가는 순서나 방식. 머지가 지나가는 «머지 경로», 저장소가 들어오는 방식은 «도입 유형». «길 · 두 길 · 올라가는 길 · 머지되는 길» 로 쓰지 않는다.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 길 4 / 경로 · 방식 · 유형 · 흐름 3227"
-		},
-		{
-			"name": "Supervisor 세션 · 담당 세션",
-			"aliases": [],
-			"avoid": [
-				"창구"
-			],
-			"definition": "요청을 받는 세션. «받는 창구 · 창구를 연다» 로 쓰지 않는다.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 창구 16 / 담당 · 수신 · 채널 778"
-		},
-		{
-			"name": "충족",
-			"aliases": [],
-			"avoid": [
-				"졸업"
-			],
-			"definition": "완료 기준을 채운 것(«완료 기준을 충족했다»).",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 졸업 23 / 완료 · 통과 · 충족 683"
-		},
-		{
-			"name": "정리 문서",
-			"aliases": [],
-			"avoid": [
-				"문면",
-				"한 장(문서 뜻)"
-			],
-			"definition": "바뀐 규칙을 묶어 정리한 문서. «문면 · 한 장 · 안내 한 장» 으로 쓰지 않는다. «문서 한 장» 은 그대로 둔다.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 문면 0 / 본문 · 문서 · 내용 2485"
-		},
-		{
 			"name": "추측",
 			"aliases": [],
 			"avoid": [
@@ -851,18 +979,6 @@
 			"decided": "user",
 			"status": "decided",
 			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 짐작 5 / 추측 30"
-		},
-		{
-			"name": "비용이 적다",
-			"aliases": [],
-			"avoid": [
-				"쌉니다"
-			],
-			"definition": "«~보다 쌉니다» 대신 «~보다 비용이 적습니다».",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 쌉니다 9 / 비용이 적 · 낮 · 들 17"
 		},
 		{
 			"name": "구성",
@@ -947,127 +1063,6 @@
 			"decided": "user",
 			"status": "decided",
 			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 남의 6 / 다른 1680"
-		},
-		{
-			"name": "실행 결과",
-			"aliases": [],
-			"avoid": [
-				"실측"
-			],
-			"definition": "명령 · 스크립트를 실제로 돌려 얻은 결과(«파악(실행 결과 기록)»).",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 369915f · T-003291) · 말뭉치 실측 3 / 실행 결과 42"
-		},
-		{
-			"name": "운영 규칙",
-			"aliases": [],
-			"avoid": [
-				"거버넌스"
-			],
-			"definition": "Supervisor · 티켓 · 브랜치를 어떻게 운영하는지 정한 규칙.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 369915f · T-003291) · 말뭉치 거버넌스 23 / 운영 규칙 3 — 사용자 결정 우선"
-		},
-		{
-			"name": "적용 결정 기록",
-			"aliases": [],
-			"avoid": [
-				"맞춤 결정"
-			],
-			"definition": "공통 규칙을 저장소에 어떻게 적용할지 정한 기록.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 369915f · T-003291)"
-		},
-		{
-			"name": "수신",
-			"aliases": [],
-			"avoid": [
-				"수령"
-			],
-			"definition": "새 버전을 받는 단계 이름.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 369915f · T-003291) · 말뭉치 수령 6 / 수신 112"
-		},
-		{
-			"name": "자동 검사",
-			"aliases": [],
-			"avoid": [
-				"집행 수단"
-			],
-			"definition": "규칙을 지켰는지 기계가 확인하는 것(게이트 · 가드 · 훅 · 테스트).",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 369915f · T-003291) · 말뭉치 집행 수단 0"
-		},
-		{
-			"name": "위반 검출 테스트",
-			"aliases": [],
-			"avoid": [
-				"짝 테스트"
-			],
-			"definition": "규칙을 어기면 실패하는지 보는 테스트.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 369915f · T-003291) · 말뭉치 짝 테스트 0"
-		},
-		{
-			"name": "확인 지점",
-			"aliases": [],
-			"avoid": [
-				"정지점"
-			],
-			"definition": "사람이 확인할 때까지 멈추는 지점(«확인 지점은 실행 직전 하나»).",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 369915f · T-003291) · 말뭉치 정지점 0"
-		},
-		{
-			"name": "완료",
-			"aliases": [],
-			"avoid": [
-				"완주",
-				"첫 바퀴"
-			],
-			"definition": "Business Flow 를 끝까지 돈 것(«Business Flow 1회 완료»).",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 369915f · T-003291) · 말뭉치 완주 4 / 완료 442"
-		},
-		{
-			"name": "배포(규칙 버전)",
-			"aliases": [],
-			"avoid": [
-				"공포하다"
-			],
-			"definition": "공통 규칙의 새 버전을 내보내는 것. «공포» 로 쓰지 않는다.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 369915f · T-003291) · 말뭉치 «공포하 · 했» 0 / 배포 1062"
-		},
-		{
-			"name": "주의할 점",
-			"aliases": [],
-			"avoid": [
-				"함정"
-			],
-			"definition": "걸리기 쉬운 곳.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(adoption-guide 369915f · T-003291) · 말뭉치 함정 43 / 주의할 점 22 — 사용자 결정 우선"
 		},
 		{
 			"name": "위치 · 담당 세션 · 개",

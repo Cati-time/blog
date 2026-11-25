@@ -69,7 +69,7 @@
 
 | 일 | 완료 기준 | 확인 수단 |
 | --- | --- | --- |
-| 글 초안(6 관문) | `npm run build` 초록 · `check:seo -- <slug> --strict` 0 · `check:wording --strict` 0 · 사실 확인 막음 0 · 공개 금지 훑기 | `scripts/localci.sh`(글 레인 덧) |
+| 글 초안(6 관문) | `npm run build` 초록 · `check:seo -- <slug> --strict` 0 · `check:wording --strict` 0 · 사실 확인 막음 0 · 공개 금지 훑기 · 사용자 용어 결정은 같은 묶음에서 용어집 등록(R-BLOG-WORDING) | `scripts/localci.sh`(글 레인 덧 · `wording-decision.sh`) |
 | 글 발행(7) | `npm run build` → `check:seo`(전체) 오류 0 · 들어오는 링크 n 편 또는 «없음 · 막힘 + 까닭» 이 발행 보고에 실림(R-BLOG-SEO) | `scripts/localci.sh` · 보고(리뷰) |
 | 코드 변경 | `npm run build` 초록 · `localci_guards` 초록 · 바뀐 화면 브라우저 확인 | `scripts/localci.sh` · V1 |
 | 헌법 개정 | 위 + 법제처 심사 적합 | `AMENDMENT.md` §3 |
@@ -177,7 +177,7 @@
 | 다시 세기 | 회신 숫자 | 원천을 읽기만 하는 명령 | 대조 표 | 어긋남 0 · 셈 명령 | 조사 메모 §대조 | 1b |
 | 그림 | 글 숫자 | `scripts/make-charts.mjs` 구간 | `*.svg` | 숫자 = 글 숫자 · 렌더 확인 | 커밋 | 4 SDD |
 | 사실 확인 회차 | 초안 · 주장 목록 | 원천에 R<n> 요청 | 판정 표 | 막음 0 | `../blog-notes/fact-checks/` | 5b |
-| 용어 손봄 | 초안 | blog-wording · `check:wording` | 고친 본문 | `--strict` 0 | 커밋 | 6 |
+| 용어 손봄 | 초안 · 사용자 용어 결정 | blog-wording(Skill 로 부름) · `check:wording` | 고친 본문 · 사용자 결정이면 `glossary.json` · `TERMS` 등록 diff(같은 묶음) | `--strict` 0 · `wording-decision.sh` 0 | 커밋(메시지에 «용어 결정») | 6 |
 | SEO · GEO | 초안 | blog-seo · `check:seo` | 고친 frontmatter · 본문 | `--strict` 0 | 커밋 | 6 |
 | 옮기기 | 받은 문서 | blog-write · `npm run import` | 글 | 대조 일치 | 커밋 | 4 |
 | 발행 확인 | push 된 sha | 공개 페이지 읽기 | 확인 기록 | 페이지 · llms · 사이트맵 | 티켓 | 8 |
@@ -204,7 +204,7 @@ canon `SUPERVISOR.md` 절마다 이 저장소의 값만 적는다. 몸통 문장
 | §2 구성요소 · 소유 | 감독 소유 = 원장 · 통합선 줄 순서 · `main` 에 올릴 모인 것 한 줄 · 사용자 결정 묶기 · 공포 팬아웃 / 레인 소유 = 글 · 그림 · 사실 확인 · 헌법 집필 · 로컬 CI 실행 |
 | §3 책임 · 범위 | 글 요청을 받아 레인으로 나눔 · 사실 확인 회차가 닫혔는지 대조 · 발행 결정은 사용자 |
 | §4-1 BF 생애 | 글 한 편: 착수(티켓) → 레인 열기 → 경계 보고 받기 → 정지점(«발행») 사용자 청 → 착지 확인 → 닫기 |
-| §4-2 매일 일곱 | ① 티켓 발행 · 반환 ② 라우팅(원천 세션 후보) ③ 레인 완료 확인(사실 확인 표 · 게이트 증거) ④ 사용자 결정 가려 올리기(분류 · 발행 · 사내 계획 공개) ⑤ 사람 시트 묶기(발행 대기 글 목록) ⑥ 공포 팬아웃(헌법 착지 sha) ⑦ harness 통보 |
+| §4-2 매일 일곱 | ① 티켓 발행 · 반환 ② 라우팅(원천 세션 후보) ③ 레인 완료 확인(사실 확인 표 · 게이트 증거 · 글 레인 done 의 «사람이 짚어서야 고친 것» 에 용어가 있으면 «용어 등록 커밋 sha» 칸 필수 · «스킬 호출» 칸 = `blog-wording` · `blog-humanize` 를 Skill 로 불렀는지 · 빈 칸이면 닫기 전에 되묻는다) ④ 사용자 결정 가려 올리기(분류 · 발행 · 사내 계획 공개) ⑤ 사람 시트 묶기(발행 대기 글 목록) ⑥ 공포 팬아웃(헌법 착지 sha) ⑦ harness 통보 |
 | §4-3 병렬 · 직렬 마감 | 글 레인은 병렬 · 통합선 착지는 한 줄 · 마감은 가벼운 확인(계획 메모 머리 · 미착지 커밋)으로 고르고 무거운 대조(빌드 · 사실 확인 재실행)는 그 레인에 시킴 |
 | §4-4 점호 보고 | canon 양식 그대로 |
 | §5 활용 의무 | canon 그대로 — 감독 없는 갈래를 두지 않는다 |

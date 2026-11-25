@@ -64,7 +64,7 @@ flowchart TB
 | data | `src/data/` | 1 | 용어집 | 대표 이름 · 피할 말 | — | `src/data/glossary.json` |
 | content | `src/content/{blog,team,projects}/` | 61 | 글 · 팀원 · 프로젝트 | 본문 · frontmatter | — | `src/content/blog/*/index.md` |
 | 설정 정본 | `src/consts.ts` · `src/content.config.ts` · `site.config.mjs` · `astro.config.mjs` | 4 | 분류 · 주소 · 스키마 · 빌드 설정 | 분류 목록 · 스키마 refine · 본문 글자 보존 설정 | — | `site.config.mjs` |
-| 도구 | `scripts/`(guards 포함) | 14 | 검사 · 글 생성 · 원본 대조 · 그림 · 게이트 | 검사 술어 | content · 설정 정본 · data · style | `scripts/check-tokens.mjs` |
+| 도구 | `scripts/`(guards 포함) | 15 | 검사 · 글 생성 · 원본 대조 · 그림 · 게이트 | 검사 술어 | content · 설정 정본 · data · style | `scripts/check-tokens.mjs` |
 | 정적 파일 | `public/` | 3 | 아이콘 · 이미지 | — | — | `public/` |
 | 층 밖 — 헌법 · 안내 | `docs/` · `README.md` · `WRITING_GUIDE.md` · `AGENTS.md`(= `CLAUDE.md`) · `LICENSE` | — | 규칙 · 안내 · 지침 | — | — | 까닭: 코드가 아님 |
 | 층 밖 — 에이전트 절차 | `.claude/skills/` · `.claude/launch.json` | — | 스킬 넷 · 미리보기 | — | — | 까닭: 절차 · MUST 는 헌법이 가짐 |
@@ -162,8 +162,9 @@ flowchart TB
 
 ### R-BLOG-WORDING — 개발자가 쓰는 말
 - **뜻**: 글은 한국 개발자가 실제로 쓰는 말로 쓰고, 용어는 용어집(`src/data/glossary.json`)의 대표 이름을 쓴다. AI 티(세어서 끝나는 문장 · 세는 말 · 분류어 되풀이 · 같은 종결 연속 · AI 관용구)를 남기지 않는다 — 잡는 목록은 `check-wording.mjs` 의 `AI_TELL` · `AI_DENSE`(정본)이고, «경계의 형태는 아래와 같습니다» 꼴은 사용자 결정(2026-11-23)이다. 사람이 한 말의 인용은 원문 그대로 둔다(`<!-- wording-ok -->`).
-- **집행**: `scripts/check-wording.mjs` — 글 레인 게이트는 `--strict`(경고 있으면 실패).
-- **어긋나면**: 글 레인 게이트 빨강.
+- **사용자 용어 결정의 등록**: 절차는 스킬 `blog-wording` «용어집 고치기»(`decided: 'user'` · `evidence` · 정규식이면 `TERMS`)다 — 이 조항은 새 규칙이 아니라 그 걸음을 **같은 묶음에서** 하라는 집행이다. 결정을 본문에 반영한 커밋 메시지에 «용어 결정»(또는 «사용자 짚음» · 꼬리 줄 `Wording-Decision:`)을 적고, 같은 착지 묶음에서 `src/data/glossary.json` · `check-wording.mjs` 를 고친다. «다음 개정 때 · 사전 후보» 로 미루지 않는다. 등록하지 않을 까닭(이 글 한 곳만의 예외 등)이 있으면 꼬리 줄 `Glossary-Skip: <까닭>`(ADR-0005).
+- **집행**: `scripts/check-wording.mjs` — 글 레인 게이트는 `--strict`(경고 있으면 실패) · 가드 `scripts/guards/wording-decision.sh`(`localci_ci` · `localci_guards` — 머지가 들인 커밋에 용어 결정이 있는데 용어집 · `TERMS` 변경 0 이면 실패 · 짝 시험 `test-guards.sh`) · 감독 대조(§감독 §4-2 ③ — 레인 완료 보고의 «용어 등록 커밋» · «스킬 호출» 칸).
+- **어긋나면**: 글 레인 게이트 빨강 · 용어 결정 등록 0 이면 착지 막힘.
 
 ### R-BLOG-FACTS — 숫자는 실측으로
 - **뜻**: 글의 숫자는 실측 값만 쓴다. 원천 세션 값은 블로그 세션이 따로 다시 세어 맞추고, 원천 주장이 언제 잰 값인지 확인한다. 실측 없는 효과는 «판단 + 단서» 로만 쓰고, 달력 기간을 작업 시간처럼 쓰지 않는다.
@@ -195,7 +196,7 @@ flowchart TB
 
 ### 9-1. 가드 진입점 (M4)
 
-- `scripts/localci.sh` 하나 — `localci_ci`(`npm ci --no-audit --no-fund` → `npm run build` — PR `check.yml` 과 같은 명령) · `localci_guards`(check-tokens · check-posts · R-BLOG-LAYER · R-BLOG-BASE-URL 가드 · 가드 짝 시험 `test-guards.sh` · 문서만 회차 짝 가드 `docs-glob.sh` — WORKFLOW 칸 13-1) · 글 레인 덧(바뀐 글마다 `check:seo -- <slug> --strict` · `check:wording --strict`).
+- `scripts/localci.sh` 하나 — `localci_ci`(`npm ci --no-audit --no-fund` → `npm run build` — PR `check.yml` 과 같은 명령) · `localci_guards`(check-tokens · check-posts · R-BLOG-LAYER · R-BLOG-BASE-URL 가드 · 가드 짝 시험 `test-guards.sh` · 문서만 회차 짝 가드 `docs-glob.sh` — WORKFLOW 칸 13-1 · 용어 결정 등록 가드 `wording-decision.sh` — R-BLOG-WORDING · 빌드 길에도 듦) · 글 레인 덧(바뀐 글마다 `check:seo -- <slug> --strict` · `check:wording --strict`).
 
 ### 9-2. 섹터 맵 (M5)
 
