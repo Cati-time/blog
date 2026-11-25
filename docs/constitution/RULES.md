@@ -157,8 +157,9 @@ flowchart TB
 ### R-BLOG-SEO — 검색 · AI 전달
 - **뜻**: 초안은 `check:seo -- <slug>` 오류 0 · 경고 0, 발행은 빌드 뒤 `check:seo` 오류 0.
 - **뜻(들어오는 링크)**: 새 글을 발행할 때, 관련 발행 글 1 ~ 2 편에서 새 글로 가는 한 줄을 같은 발행 묶음에 넣는다. 관련 글은 같은 시리즈 · 새 글이 가리키는 글 · 같은 platform 이나 태그에서 고른다. 문장은 사용자가 정지점에서 본다(WORKFLOW 칸 2-1). 관련 글이 없으면 «없음 + 까닭» 을 적는다. 그 옛 글이 `check:seo -- <옛 slug> --strict` 에서 이미 막히면 넣지 않고 «막힘 · 까닭» 을 적는다. 잇는 줄만 넣을 때는 `updatedDate` 를 올리지 않는다.
-- **집행**: `scripts/check-seo.mjs` — 초안 게이트는 `--strict`(경고도 실패). 들어오는 링크는 리뷰다 — 6 관문 보고 · 발행 보고에 «들어오는 n 편 · 잇는 문장» 을 싣는다. 셈: `grep -l "](../<slug>/)" src/content/blog/*/index.md | xargs grep -L '^draft: true' | wc -l` — 출처 초안을 빼고 발행 글만 센다(법제처 T-002888 정정 · 양성 대조 business-flow-story 6 · 음성 대조 hello-world 0). 기준선 2026-11-24 `main-cicd`＠1ffa3ca = 발행 17 편 중 들어오는 0 인 글 2 편(hello-world · why-architecture-in-ai-era).
-- **어긋나면**: 글 레인 게이트 빨강. 들어오는 링크 칸이 빠진 보고는 감독이 되묻는다.
+- **뜻(사이트 핵심 키워드)**: 사이트 핵심 키워드는 **하네스 · AI 에이전트 · 자동화**다(사용자 결정 2026-11-25). 정본 = `site.config.mjs` `SITE_KEYWORDS`(대표 말 · 영어 이름 · 글에서 드러났다고 칠 한글 꼴 — 한글 «하네스 · 에이전트 · 자동화»). 글마다 그중 하나 이상이 ① 제목 또는 `description` 에, ② «## 한 줄로» 절 또는 첫 단락에 드러난다. 글 주제와 맞는 말을 자연스러운 한 문장으로만 넣는다 — **키워드 채우기 금지**(같은 말 되풀이 · 글과 무관한 삽입 · `description` 에 세 번 넘게 · 제목에 같은 말 두 번). 숫자 · 사실 · 사람이 한 말의 인용은 키워드 때문에 바꾸지 않는다. 사이트는 머리 `meta keywords`(글은 그 글에 드러난 키워드 + 태그 · 다른 페이지는 키워드 전체) · 홈 JSON-LD `keywords` · `about` · 글 JSON-LD(그 글에 드러난 키워드만 `keywords` · `about`) · `llms.txt` 머리 «핵심 주제» 줄로 같은 목록을 싣는다. 용어집 첫 등장 꼴은 키워드를 따른다(예: «공통 규칙 쪽(하네스 · harness)»). 키워드를 바꾸는 것은 사용자 결정 · `SITE_KEYWORDS` 한 곳만 고친다(ADR-0006).
+- **집행**: `scripts/check-seo.mjs` — 초안 게이트는 `--strict`(경고도 실패). 사이트 핵심 키워드 — 글마다 ① · ② 가 빠지거나 채우기면 경고(글 레인 `--strict` 에서 실패 · 발행 전체 점검에서는 경고) · 빌드 결과의 홈 `meta keywords` · 홈 JSON-LD `about` · `llms.txt` 핵심 주제 줄 · 키워드가 드러난 글의 JSON-LD `about` 이 없으면 오류(`localci_ci` 가 회차마다 발행 전체 점검을 돈다). 기준선 2026-11-25 `main-cicd`＠2ca83a1 = 발행 19 편 중 키워드 기준 실패 17 편 · 초안 4 편 중 3 편(목록 ADR-0006) — 글 본문 맞춤은 다음 글 레인 몫. 들어오는 링크는 리뷰다 — 6 관문 보고 · 발행 보고에 «들어오는 n 편 · 잇는 문장» 을 싣는다. 셈: `grep -l "](../<slug>/)" src/content/blog/*/index.md | xargs grep -L '^draft: true' | wc -l` — 출처 초안을 빼고 발행 글만 센다(법제처 T-002888 정정 · 양성 대조 business-flow-story 6 · 음성 대조 hello-world 0). 기준선 2026-11-24 `main-cicd`＠1ffa3ca = 발행 17 편 중 들어오는 0 인 글 2 편(hello-world · why-architecture-in-ai-era).
+- **어긋나면**: 글 레인 게이트 빨강(바뀐 글이 키워드 기준에 못 미치면 착지 막힘). 사이트 머리 · JSON-LD · llms 의 키워드 오류는 모든 회차 빨강. 들어오는 링크 칸이 빠진 보고는 감독이 되묻는다.
 
 ### R-BLOG-WORDING — 개발자가 쓰는 말
 - **뜻**: 글은 한국 개발자가 실제로 쓰는 말로 쓰고, 용어는 용어집(`src/data/glossary.json`)의 대표 이름을 쓴다. AI 티(세어서 끝나는 문장 · 세는 말 · 분류어 되풀이 · 같은 종결 연속 · AI 관용구)를 남기지 않는다 — 잡는 목록은 `check-wording.mjs` 의 `AI_TELL` · `AI_DENSE`(정본)이고, «경계의 형태는 아래와 같습니다» 꼴은 사용자 결정(2026-11-23)이다. 사람이 한 말의 인용은 원문 그대로 둔다(`<!-- wording-ok -->`).
@@ -196,7 +197,7 @@ flowchart TB
 
 ### 9-1. 가드 진입점 (M4)
 
-- `scripts/localci.sh` 하나 — `localci_ci`(`npm ci --no-audit --no-fund` → `npm run build` — PR `check.yml` 과 같은 명령) · `localci_guards`(check-tokens · check-posts · R-BLOG-LAYER · R-BLOG-BASE-URL 가드 · 가드 짝 시험 `test-guards.sh` · 문서만 회차 짝 가드 `docs-glob.sh` — WORKFLOW 칸 13-1 · 용어 결정 등록 가드 `wording-decision.sh` — R-BLOG-WORDING · 빌드 길에도 듦) · 글 레인 덧(바뀐 글마다 `check:seo -- <slug> --strict` · `check:wording --strict`).
+- `scripts/localci.sh` 하나 — `localci_ci`(`npm ci --no-audit --no-fund` → `npm run build` — PR `check.yml` 과 같은 명령) · `localci_guards`(check-tokens · check-posts · R-BLOG-LAYER · R-BLOG-BASE-URL 가드 · 가드 짝 시험 `test-guards.sh` · 문서만 회차 짝 가드 `docs-glob.sh` — WORKFLOW 칸 13-1 · 용어 결정 등록 가드 `wording-decision.sh` — R-BLOG-WORDING · 빌드 길에도 듦) · 글 레인 덧(바뀐 글마다 `check:seo -- <slug> --strict` · `check:wording --strict`) · 발행 기준 `check:seo`(전체 · 오류만 · 회차마다 — 사이트 핵심 키워드 머리 · JSON-LD · llms 포함 · ADR-0006).
 
 ### 9-2. 섹터 맵 (M5)
 

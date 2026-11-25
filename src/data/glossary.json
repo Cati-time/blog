@@ -1094,11 +1094,11 @@
 			"avoid": [
 				"관리 쪽"
 			],
-			"definition": "규칙을 모으고 고치고 각 저장소로 배포하는 저장소와 세션(harness). 글마다 첫 등장은 «공통 규칙 쪽(harness)».",
+			"definition": "규칙을 모으고 고치고 각 저장소로 배포하는 저장소와 세션(하네스 · harness). 글마다 첫 등장은 «공통 규칙 쪽(하네스 · harness)» — 한글 «하네스» 는 사이트 핵심 키워드(site.config.mjs SITE_KEYWORDS)라 드러나게 쓴다.",
 			"kind": "style",
 			"decided": "user",
 			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 앞 글 adoption-guide 가 같은 것을 «공통 규칙 쪽» 으로 씀"
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 앞 글 adoption-guide 가 같은 것을 «공통 규칙 쪽» 으로 씀 · 첫 등장 괄호에 «하네스» — 사용자 결정 2026-11-25(사이트 핵심 키워드 하네스 · 에이전트 · 자동화 · T-003381)"
 		},
 		{
 			"name": "도입 단계 · 구축 단계",

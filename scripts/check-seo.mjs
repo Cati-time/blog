@@ -3,10 +3,12 @@
  * 검색 · AI 전달 점검 — npm run check:seo (먼저 npm run build)
  * 발행된 글마다: 제목 · 설명 길이, 태그, 글 사이 링크, 빌드 결과(HTML 메타 · JSON-LD · 사이트맵 · 원문 .md · llms.txt)를 본다.
  * 오류는 exit 1, 권고는 경고만. 기준은 .claude/skills/blog-seo/SKILL.md.
- * 초안 점검: npm run check:seo -- <slug> — 빌드 없이 원문만 본다(제목 · 설명 · 태그 · 요약 절 · 글 링크 · 그림 alt).
+ * 초안 점검: npm run check:seo -- <slug> — 빌드 없이 원문만 본다(제목 · 설명 · 태그 · 요약 절 · 글 링크 · 그림 alt · 사이트 핵심 키워드).
+ * 사이트 핵심 키워드의 정본은 site.config.mjs SITE_KEYWORDS(R-BLOG-SEO).
  */
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { SITE_KEYWORDS } from '../site.config.mjs';
 
 const ROOT = process.cwd();
 const BLOG = join(ROOT, 'src/content/blog');
@@ -22,6 +24,19 @@ const fm = (src) => {
 	return { title: get('title'), description: get('description'), draft: get('draft') === 'true', tags: get('tags') };
 };
 
+// 사이트 핵심 키워드(R-BLOG-SEO) — 글에 드러난 키워드 · 한 덩이 글에서 몇 번 나오나
+const kwNames = SITE_KEYWORDS.map((k) => k.name).join(' · ');
+const kwHits = (text) => SITE_KEYWORDS.filter((k) => k.match.some((m) => text.includes(m)));
+const kwCount = (text) => SITE_KEYWORDS.reduce((n, k) => n + k.match.reduce((a, m) => a + text.split(m).length - 1, 0), 0);
+const body = (src) => src.replace(/^---\n[\s\S]*?\n---\n/, '').replace(/^```[\s\S]*?^```/gm, '').replace(/<!--[\s\S]*?-->/g, '');
+// «## 한 줄로» 절 본문 + 첫 단락(제목 · import · 그림 · 표 · 인용 줄이 아닌 첫 글 줄 묶음)
+const lead = (src) => {
+	const b = body(src);
+	const sum = b.match(/^## 한 줄로\n([\s\S]*?)(?=^## |$(?![\s\S]))/m)?.[1] ?? '';
+	const first = b.split(/\n\s*\n/).map((p) => p.trim()).find((p) => p && !/^(#|import |!\[|\||>|<)/.test(p)) ?? '';
+	return `${sum}\n${first}`;
+};
+
 const only = process.argv.slice(2).filter((a) => !a.startsWith('-'));
 // 원문만 보는 점검 — 발행 글과 초안이 같이 쓴다
 const checkSource = (slug, src, f) => {
@@ -32,6 +47,11 @@ const checkSource = (slug, src, f) => {
 	if (!/\[\s*'/.test(f.tags)) warn(slug, '태그 없음');
 	// 2. 첫 문단 — AI 요약이 앞부분을 많이 쓴다
 	if (!/^## 한 줄로/m.test(src)) warn(slug, '«## 한 줄로» 요약 절 없음(AI · 검색 요약이 앞부분을 씀)');
+	// 2-1. 사이트 핵심 키워드 — 제목 · 설명 하나 이상 + 요약 절 · 첫 단락 하나 이상(R-BLOG-SEO). 채우기는 경고
+	if (!kwHits(`${f.title}\n${f.description}`).length) warn(slug, `사이트 핵심 키워드(${kwNames}) 가 제목 · 설명에 없음 — 글 주제에 맞는 말 하나를 자연스럽게`);
+	if (!kwHits(lead(src)).length) warn(slug, `사이트 핵심 키워드(${kwNames}) 가 «## 한 줄로» · 첫 단락에 없음`);
+	if (kwCount(f.description) > 3) warn(slug, `설명에 사이트 핵심 키워드 ${kwCount(f.description)}번 — 키워드 채우기(3번 넘음)`);
+	for (const k of SITE_KEYWORDS) if (k.match.reduce((a, m) => a + f.title.split(m).length - 1, 0) > 1) warn(slug, `제목에 «${k.name}» 되풀이 — 키워드 채우기`);
 	// 3. 글 사이 링크 — 없는 글 · 초안으로 가는 링크는 발행하면 깨진다
 	for (const m of src.matchAll(/\]\(\.\.\/([a-z0-9-]+)\/\)/g)) {
 		const target = join(BLOG, m[1], 'index.md');
@@ -79,6 +99,7 @@ for (const slug of slugs) {
 	if (!html.includes('rel="canonical"')) err(slug, 'canonical 없음');
 	if (/name="robots" content="noindex/.test(html)) err(slug, 'noindex 가 붙음');
 	if (!html.includes('"BlogPosting"')) err(slug, 'JSON-LD BlogPosting 없음');
+	if (kwHits(`${f.title}\n${f.description}\n${body(src)}`).length && !html.includes('"about":[')) err(slug, 'JSON-LD about(사이트 핵심 키워드) 없음');
 	if (!html.includes('og:description')) err(slug, 'og:description 없음');
 	if (!html.includes('type="text/markdown"')) err(slug, '원문 마크다운 링크(rel=alternate) 없음');
 	if (!existsSync(join(DIST, 'posts', `${slug}.md`))) err(slug, '원문 .md 없음');
@@ -90,6 +111,13 @@ const sitemap = readdirSync(DIST).filter((f) => /^sitemap-\d+\.xml$/.test(f)).ma
 const llms = existsSync(join(DIST, 'llms.txt')) ? readFileSync(join(DIST, 'llms.txt'), 'utf8') : '';
 if (!llms) err('site', 'llms.txt 없음');
 if (!existsSync(join(DIST, 'llms-full.txt'))) err('site', 'llms-full.txt 없음');
+// 사이트 핵심 키워드 — 홈 meta · JSON-LD · llms.txt 머리
+const home = existsSync(join(DIST, 'index.html')) ? readFileSync(join(DIST, 'index.html'), 'utf8') : '';
+for (const k of SITE_KEYWORDS) {
+	if (!new RegExp(`<meta name="keywords" content="[^"]*${k.name}`).test(home)) err('site', `홈 meta keywords 에 «${k.name}» 없음`);
+	if (!llms.includes(`${k.name}(${k.en})`)) err('site', `llms.txt 핵심 주제에 «${k.name}» 없음`);
+}
+if (!home.includes('"about":[')) err('site', '홈 JSON-LD about 없음');
 for (const slug of published) {
 	if (!sitemap.includes(`/posts/${slug}/`)) err(slug, '사이트맵에 없음');
 	if (!llms.includes(`/posts/${slug}.md`)) err(slug, 'llms.txt 목차에 없음');

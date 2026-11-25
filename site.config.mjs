@@ -35,6 +35,17 @@ export const SEO = {
 };
 
 /**
+ * 사이트 핵심 키워드 (SEO · GEO) — 정본(R-BLOG-SEO «사이트 핵심 키워드» · 사용자 결정 2026-11-25).
+ * name = 검색에 잡힐 한글 대표 말 · en = 영어 이름(JSON-LD about · meta 에 함께) · match = 글에서 «드러났다» 로 칠 한글 꼴.
+ * 사이트 머리 meta keywords · 홈 JSON-LD · llms.txt 머리 · 글 JSON-LD(그 글에 드러난 것만) · check:seo 가 이 목록을 읽는다.
+ */
+export const SITE_KEYWORDS = [
+	{ name: '하네스', en: 'harness', match: ['하네스'] },
+	{ name: 'AI 에이전트', en: 'AI agent', match: ['에이전트'] },
+	{ name: '자동화', en: 'automation', match: ['자동화'] },
+];
+
+/**
  * 방문 통계 — Google Analytics 4. 측정 ID(G-…)는 페이지 소스에 공개되는 값이라 비밀값이 아니다.
  * 배포 빌드에만 들어가고 dev 서버에는 안 들어간다(로컬 확인 방문은 집계 안 됨). 비우면 GA 를 끈다.
  * 절차: docs/claude-management.md «방문 통계».

@@ -3,7 +3,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import PostList from '../components/PostList.astro';
-import { SITE } from '../consts';
+import { SITE, SITE_KEYWORDS } from '../consts';
 import { CATEGORIES, categoryUrl, filterPosts, getPosts, platformsOf } from '../lib/posts';
 
 const posts = await getPosts();
@@ -17,6 +17,8 @@ const jsonLd = {
 	description: SITE.description,
 	url: homeUrl,
 	inLanguage: SITE.lang,
+	keywords: SITE_KEYWORDS.map((k) => k.name).join(', '),
+	about: SITE_KEYWORDS.map((k) => ({ '@type': 'Thing', name: k.name, alternateName: k.en })),
 	publisher: { '@type': 'Organization', name: SITE.author, url: homeUrl },
 };
 ---
