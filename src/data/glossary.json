@@ -1075,6 +1075,190 @@
 			"decided": "user",
 			"status": "decided",
 			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · 369915f · T-003251 · T-003291)"
+		},
+		{
+			"name": "팀용 템플릿",
+			"aliases": [],
+			"avoid": [
+				"팀용 사본"
+			],
+			"definition": "다른 팀이 받아 쓰도록 우리 규칙에서 우리 팀 고유 내용(저장소 · 세션 이름 · 티켓 번호 · 경로)을 뺀 템플릿. 우리 팀이 실제로 쓰는 쪽은 «원본». «사본» 으로 쓰지 않는다(상태 복사 뜻의 «사본 금지» 는 그대로).",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 사본 23 · 복사본 15 / 템플릿 164"
+		},
+		{
+			"name": "공통 규칙 쪽",
+			"aliases": [],
+			"avoid": [
+				"관리 쪽"
+			],
+			"definition": "규칙을 모으고 고치고 각 저장소로 배포하는 저장소와 세션(harness). 글마다 첫 등장은 «공통 규칙 쪽(harness)».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 앞 글 adoption-guide 가 같은 것을 «공통 규칙 쪽» 으로 씀"
+		},
+		{
+			"name": "도입 단계 · 구축 단계",
+			"aliases": [],
+			"avoid": [
+				"사다리",
+				"관리 쪽 단"
+			],
+			"definition": "저장소가 밟는 «도입 단계»(S0 ~ S9)와 공통 규칙 쪽이 밟는 «구축 단계»(H0 ~ H9). «사다리 · 단» 으로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 사다리 6 / 구축 631 · 단계 1249"
+		},
+		{
+			"name": "빼다 · 필터링",
+			"aliases": [],
+			"avoid": [
+				"걸러 내다",
+				"거르기"
+			],
+			"definition": "템플릿으로 옮길 때 우리 팀 고유 내용을 빼는 것.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 걸러 22 / 필터링 145"
+		},
+		{
+			"name": "반영",
+			"aliases": [],
+			"avoid": [
+				"승격"
+			],
+			"definition": "원본 · 다른 팀에서 나아진 것을 템플릿에 넣는 것(«템플릿 반영 경로»).",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 승격 6 / 반영 376"
+		},
+		{
+			"name": "요청 수신 · 응답 보장",
+			"aliases": [],
+			"avoid": [
+				"수신함",
+				"답장 보장"
+			],
+			"definition": "요청을 받는 곳과, 받은 요청에 응답이 오도록 지키는 장치.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 수신함 0 · 답장 7 / 수신 112 · 응답 989"
+		},
+		{
+			"name": "개정 번호 발급",
+			"aliases": [],
+			"avoid": [
+				"번호 등록처"
+			],
+			"definition": "규칙 개정 번호를 받는 곳.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 등록처 0 / 번호 발급 3 · 채번 6"
+		},
+		{
+			"name": "기록(레지스트리)",
+			"aliases": [],
+			"avoid": [
+				"장부"
+			],
+			"definition": "저장소 · 세션 · 버전을 적어 두는 관리 파일.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 장부 10 / 레지스트리 42"
+		},
+		{
+			"name": "lock 파일",
+			"aliases": [],
+			"avoid": [
+				"잠금 파일"
+			],
+			"definition": "파일마다 해시를 적어 받은 규칙이 바뀌지 않았는지 보는 파일.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 잠금 파일 1 / lock 파일 3"
+		},
+		{
+			"name": "표시 · 태그",
+			"aliases": [],
+			"avoid": [
+				"꼬리표",
+				"표지"
+			],
+			"definition": "줄 · 항목에 붙이는 표시.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 꼬리표 0 · 표지 5 / 태그 233 · 라벨 80"
+		},
+		{
+			"name": "통과 · 실패",
+			"aliases": [],
+			"avoid": [
+				"빨강"
+			],
+			"definition": "테스트 · 게이트 결과. «빨강 · 빨간불» 로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 사용자 «빨간불 → 실패»"
+		},
+		{
+			"name": "만들다 · 구성하다",
+			"aliases": [],
+			"avoid": [
+				"세우다"
+			],
+			"definition": "규칙 · 테스트 · 순서 · 경로를 갖추는 것. «세우다 · 세웠다» 로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 5a3229e 에서 세 번 바뀐 것을 결정으로 확인 · 말뭉치 세우 85 / 만들 2889 · 구성 1463"
+		},
+		{
+			"name": "맡다",
+			"aliases": [],
+			"avoid": [
+				"역할을 앉다"
+			],
+			"definition": "역할을 맡는 것.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 «역할을 맡» 9"
+		},
+		{
+			"name": "처음 하는 일",
+			"aliases": [],
+			"avoid": [
+				"첫날"
+			],
+			"definition": "받는 팀이 처음 하는 일.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 앞 글 «처음 하는»"
+		},
+		{
+			"name": "일부러 값을 넣어 실패하는지 보는 테스트",
+			"aliases": [],
+			"avoid": [
+				"변이 테스트"
+			],
+			"definition": "«변이 테스트» 로 줄여 쓰지 않고 풀어 쓴다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 변이 테스트 · 뮤테이션 0"
 		}
 	]
 }

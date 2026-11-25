@@ -89,6 +89,12 @@ export const TERMS = [
 	{ id: 'finish', avoid: /완주|(첫|한) ?바퀴/g, glossary: '완료' },
 	{ id: 'promulgate', avoid: /공포(하|했|한|된|합)|\d ?공포|수령|\d ?위임/g, glossary: '배포 · 수신 · 요청' },
 	{ id: 'seat', avoid: /(\d+|열|한|두|세|네|다섯) 자리(?=[(\s])|(어느|들어갈|반영할|담당|관리 쪽|세션) 자리/g, glossary: '위치 · 담당 세션 · 개' },
+	// 사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314)
+	{ id: 'copy', avoid: /팀용 사본|원본[^.]{0,30}사본|사본[^.]{0,30}원본/g, glossary: '팀용 템플릿' }, // 상태 복사 뜻의 «사본»(아키텍처 글)은 잡지 않는다 — 원본과 짝일 때만
+	{ id: 'ladder', avoid: /사다리|관리 쪽 단|(?<![가-힣])단(?=을|이 |마다| 하나)|한 단(?![가-힣])/g, glossary: '도입 단계 · 구축 단계' },
+	{ id: 'filter-out', avoid: /걸러 ?(내|낸|냈|낼)|거르기|(?<![가-힣])거른/g, glossary: '빼다 · 필터링' },
+	{ id: 'build-up', avoid: /(?<![가-힣])(세우|세운|세웠|세워(?!진|져)|세울)/g, glossary: '만들다 · 구성하다' },
+	{ id: 'sit-role', avoid: /역할을 앉/g, glossary: '맡다' },
 ];
 
 
