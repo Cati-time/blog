@@ -454,13 +454,17 @@
 			"avoid": [
 				"계약 칸",
 				"입력 칸",
-				"산출 칸"
+				"산출 칸",
+				"칸",
+				"빈칸",
+				"칸의 상태",
+				"채울 칸"
 			],
-			"definition": "계약 · 표의 한 항목. 표의 칸 · «한 칸씩» 은 해당 없음.",
+			"definition": "계약 · 표 · 단계 문서의 한 항목. «칸 · 빈칸 · 칸마다» 로 쓰지 않는다(사용자 결정 2026-11-25). «한 칸씩» 은 해당 없음.",
 			"kind": "style",
-			"decided": "evidence",
+			"decided": "user",
 			"status": "decided",
-			"evidence": "«계약 · 입력 · 산출 칸» 1 · 칸 전체 34 / 항목 238 · 필드 271"
+			"evidence": "«계약 · 입력 · 산출 칸» 1 · 칸 전체 34 / 항목 238 · 필드 271 · 사용자 결정 2026-11-25(adoption-guide 5a3229e · «칸 → 항목» · 말뭉치 칸 36 / 항목 · 필드 509) · 사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 칸 36 / 항목 · 필드 509"
 		},
 		{
 			"name": "위임",
@@ -707,27 +711,16 @@
 				"틀과 값",
 				"팀 전파용 틀",
 				"저장소의 값",
-				"자기 값으로"
+				"자기 값으로",
+				"틀",
+				"채운 값",
+				"새는 값"
 			],
-			"definition": "«틀 · 값» 대신 쓰는 말. 공통 규칙이 정하는 것은 «구조», 저장소가 작성하는 것은 «내용 · 규칙 문서».",
+			"definition": "«틀 · 값» 대신 쓰는 말. 공통 규칙이 정하는 것은 «구조», 저장소가 작성하는 것은 «내용 · 규칙 문서». 복사해 쓰는 파일이면 «템플릿». 저장소 · 팀이 채워 넣는 것은 «내용»(«값» 은 코드의 값에만).",
 			"kind": "style",
 			"decided": "user",
 			"status": "decided",
 			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 틀(템플릿 뜻) 63 / 구조 · 템플릿 2,304"
-		},
-		{
-			"name": "항목",
-			"aliases": [],
-			"avoid": [
-				"칸의 상태",
-				"채울 칸",
-				"빈칸"
-			],
-			"definition": "규칙 문서에서 갖춰야 하는 하나하나를 «칸» 이 아니라 «항목» 이라 쓴다.",
-			"kind": "style",
-			"decided": "user",
-			"status": "decided",
-			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) 칸 36 / 항목 · 필드 509"
 		},
 		{
 			"name": "도입 유형 · 머지 경로",
@@ -735,7 +728,8 @@
 			"avoid": [
 				"들어오는 길",
 				"머지되는 길",
-				"첫 일이 다릅니다"
+				"첫 일이 다릅니다",
+				"길(경로 뜻)"
 			],
 			"definition": "«길» 은 개발 글에서 쓰지 않는다. 시작 상황은 «도입 유형», 머지가 가는 곳은 «머지 경로».",
 			"kind": "style",
@@ -762,7 +756,8 @@
 			"avoid": [
 				"상시 고리",
 				"받는 고리",
-				"새 버전을 받는 고리"
+				"새 버전을 받는 고리",
+				"고리"
 			],
 			"definition": "반복해서 도는 절차는 «고리» 가 아니라 «절차 · 사이클 · 루프».",
 			"kind": "style",
@@ -851,7 +846,9 @@
 			"avoid": [
 				"0 공포",
 				"3 수령",
-				"2 위임"
+				"2 위임",
+				"수령",
+				"공포하다"
 			],
 			"definition": "새 버전을 받는 절차의 단계 이름은 «공포 · 수령 · 위임» 이 아니라 «배포 · 수신 · 요청».",
 			"kind": "style",
@@ -931,6 +928,337 @@
 			"decided": "user",
 			"status": "decided",
 			"evidence": "사용자 결정 2026-11-25 · adoption-guide 읽기 쉬운 말로(R4) · 말뭉치 396만 자(토스 · 우아한 · 카카오 · 라인 · d2 · 외부) "
+		},
+		{
+			"name": "파악 · 분석",
+			"aliases": [],
+			"avoid": [
+				"재기",
+				"잰다",
+				"잰",
+				"쟀"
+			],
+			"definition": "저장소의 현재 상태를 알아보는 것은 «파악», 코드를 읽어 따지는 것은 «분석», 한 번 더 보는 것은 «다시 확인». «재다 · 재기 · 잰다 · 잽니다 · 쟀다» 로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(adoption-guide 3e48b88 · T-003251) · 말뭉치 «잰다 · 잽니다 · 쟀» 0 / 파악 561 · 분석 1337"
+		},
+		{
+			"name": "비어 있음",
+			"aliases": [],
+			"avoid": [
+				"공란"
+			],
+			"definition": "아직 채우지 않은 항목. «공란» 으로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 공란 0 / 비어 있 21"
+		},
+		{
+			"name": "최소 기준",
+			"aliases": [],
+			"avoid": [
+				"최소선"
+			],
+			"definition": "저장소가 적어도 갖춰야 하는 것.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 최소선 0 / 최소 기준 1"
+		},
+		{
+			"name": "추측",
+			"aliases": [],
+			"avoid": [
+				"짐작"
+			],
+			"definition": "근거 없이 미루어 생각한 것.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 짐작 5 / 추측 30"
+		},
+		{
+			"name": "구성",
+			"aliases": [],
+			"avoid": [
+				"배선"
+			],
+			"definition": "도구 · 설정을 이어 갖춘 것(«머지 경로를 구성한다»). «배선» 으로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 배선 1 / 구성 1463"
+		},
+		{
+			"name": "필요가 생길 때",
+			"aliases": [],
+			"avoid": [
+				"계기가 있을 때"
+			],
+			"definition": "«계기가 있을 때만 연다» 대신 «필요가 생겼을 때 연다». 까닭 뜻의 «계기»(이 규칙에는 계기가 있다)는 그대로 둔다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 «계기가 있을 · 생기» 0 / «필요가 생» 4"
+		},
+		{
+			"name": "실패하다",
+			"aliases": [],
+			"avoid": [
+				"빨간불"
+			],
+			"definition": "게이트 · 테스트가 떨어지는 것. «빨간불이 난다» 로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 빨간불 0 / 실패하 92"
+		},
+		{
+			"name": "안정된",
+			"aliases": [],
+			"avoid": [
+				"굳은"
+			],
+			"definition": "바뀌지 않고 자리 잡은 것(«안정된 것»). «굳은 · 굳어진» 으로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 굳은 · 굳어 8 / 안정 591"
+		},
+		{
+			"name": "보완하다",
+			"aliases": [],
+			"avoid": [
+				"메웠"
+			],
+			"definition": "모자란 곳을 채우는 것. «메우다 · 메웠다» 로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 메우 · 메웠 11 / 보완 109"
+		},
+		{
+			"name": "개선하다",
+			"aliases": [],
+			"avoid": [
+				"다듬"
+			],
+			"definition": "더 낫게 고치는 것. «다듬다 · 다듬는» 으로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 다듬 78 / 개선 1472 — 사용자 결정 우선"
+		},
+		{
+			"name": "다른 팀의 · 다른",
+			"aliases": [],
+			"avoid": [
+				"남의"
+			],
+			"definition": "«남의 사정 · 남의 저장소» 대신 «다른 팀의 사정 · 다른 저장소».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · T-003251) · 말뭉치 남의 6 / 다른 1680"
+		},
+		{
+			"name": "위치 · 담당 세션 · 개",
+			"aliases": [],
+			"avoid": [
+				"어느 자리"
+			],
+			"definition": "«반영할 자리 · 담당 자리 · 열 자리(저장소)» 대신 «반영할 위치 · 담당 세션 · 열 개». 장소 뜻이 아닌 «자리» 가운데 이 꼴만 잡는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(adoption-guide 5a3229e · 369915f · T-003251 · T-003291)"
+		},
+		{
+			"name": "팀용 템플릿",
+			"aliases": [],
+			"avoid": [
+				"팀용 사본"
+			],
+			"definition": "다른 팀이 받아 쓰도록 우리 규칙에서 우리 팀 고유 내용(저장소 · 세션 이름 · 티켓 번호 · 경로)을 뺀 템플릿. 우리 팀이 실제로 쓰는 쪽은 «원본». «사본» 으로 쓰지 않는다(상태 복사 뜻의 «사본 금지» 는 그대로).",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 사본 23 · 복사본 15 / 템플릿 164"
+		},
+		{
+			"name": "공통 규칙 쪽",
+			"aliases": [],
+			"avoid": [
+				"관리 쪽"
+			],
+			"definition": "규칙을 모으고 고치고 각 저장소로 배포하는 저장소와 세션(harness). 글마다 첫 등장은 «공통 규칙 쪽(harness)».",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 앞 글 adoption-guide 가 같은 것을 «공통 규칙 쪽» 으로 씀"
+		},
+		{
+			"name": "도입 단계 · 구축 단계",
+			"aliases": [],
+			"avoid": [
+				"사다리",
+				"관리 쪽 단"
+			],
+			"definition": "저장소가 밟는 «도입 단계»(S0 ~ S9)와 공통 규칙 쪽이 밟는 «구축 단계»(H0 ~ H9). «사다리 · 단» 으로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 사다리 6 / 구축 631 · 단계 1249"
+		},
+		{
+			"name": "빼다 · 필터링",
+			"aliases": [],
+			"avoid": [
+				"걸러 내다",
+				"거르기"
+			],
+			"definition": "템플릿으로 옮길 때 우리 팀 고유 내용을 빼는 것.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 걸러 22 / 필터링 145"
+		},
+		{
+			"name": "반영",
+			"aliases": [],
+			"avoid": [
+				"승격"
+			],
+			"definition": "원본 · 다른 팀에서 나아진 것을 템플릿에 넣는 것(«템플릿 반영 경로»).",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 승격 6 / 반영 376"
+		},
+		{
+			"name": "요청 수신 · 응답 보장",
+			"aliases": [],
+			"avoid": [
+				"수신함",
+				"답장 보장"
+			],
+			"definition": "요청을 받는 곳과, 받은 요청에 응답이 오도록 지키는 장치.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 수신함 0 · 답장 7 / 수신 112 · 응답 989"
+		},
+		{
+			"name": "개정 번호 발급",
+			"aliases": [],
+			"avoid": [
+				"번호 등록처"
+			],
+			"definition": "규칙 개정 번호를 받는 곳.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 등록처 0 / 번호 발급 3 · 채번 6"
+		},
+		{
+			"name": "기록(레지스트리)",
+			"aliases": [],
+			"avoid": [
+				"장부"
+			],
+			"definition": "관리 도구가 쓰는 기록 파일. «장부» 로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 장부 10 / 레지스트리 42"
+		},
+		{
+			"name": "lock 파일",
+			"aliases": [],
+			"avoid": [
+				"잠금 파일"
+			],
+			"definition": "파일마다 해시를 적어 받은 규칙이 바뀌지 않았는지 보는 파일.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 잠금 파일 1 / lock 파일 3"
+		},
+		{
+			"name": "표시 · 태그",
+			"aliases": [],
+			"avoid": [
+				"꼬리표",
+				"표지"
+			],
+			"definition": "줄 · 항목에 붙이는 표시.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 꼬리표 0 · 표지 5 / 태그 233 · 라벨 80"
+		},
+		{
+			"name": "통과 · 실패",
+			"aliases": [],
+			"avoid": [
+				"빨강"
+			],
+			"definition": "테스트 · 게이트 결과. «빨강 · 빨간불» 로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 사용자 «빨간불 → 실패»"
+		},
+		{
+			"name": "만들다 · 구성하다",
+			"aliases": [],
+			"avoid": [
+				"세우다"
+			],
+			"definition": "규칙 · 테스트 · 순서 · 경로를 갖추는 것. «세우다 · 세웠다» 로 쓰지 않는다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 5a3229e 에서 세 번 바뀐 것을 결정으로 확인 · 말뭉치 세우 85 / 만들 2889 · 구성 1463"
+		},
+		{
+			"name": "맡다",
+			"aliases": [],
+			"avoid": [
+				"역할을 앉다"
+			],
+			"definition": "역할을 맡는 것.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 «역할을 맡» 9"
+		},
+		{
+			"name": "처음 하는 일",
+			"aliases": [],
+			"avoid": [
+				"첫날"
+			],
+			"definition": "받는 팀이 처음 하는 일.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 앞 글 «처음 하는»"
+		},
+		{
+			"name": "일부러 값을 넣어 실패하는지 보는 테스트",
+			"aliases": [],
+			"avoid": [
+				"변이 테스트"
+			],
+			"definition": "«변이 테스트» 로 줄여 쓰지 않고 풀어 쓴다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314) · 말뭉치 변이 테스트 · 뮤테이션 0"
 		}
 	]
 }
