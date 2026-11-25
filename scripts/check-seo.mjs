@@ -25,6 +25,9 @@ const fm = (src) => {
 };
 
 // 사이트 핵심 키워드(R-BLOG-SEO) — 글에 드러난 키워드 · 한 덩이 글에서 몇 번 나오나
+// 건너뜀 표지(R-BLOG-SEO · 법제처 T-003385) — 글 주제와 무관해 키워드를 넣으면 무관 삽입이 되는 글: <!-- site-keyword-skip: <까닭> -->
+const skipped = [];
+const skipMark = (src) => src.match(/<!--\s*site-keyword-skip:([^]*?)-->/)?.[1].trim();
 const kwNames = SITE_KEYWORDS.map((k) => k.name).join(' · ');
 const kwHits = (text) => SITE_KEYWORDS.filter((k) => k.match.some((m) => text.includes(m)));
 const kwCount = (text) => SITE_KEYWORDS.reduce((n, k) => n + k.match.reduce((a, m) => a + text.split(m).length - 1, 0), 0);
@@ -48,8 +51,13 @@ const checkSource = (slug, src, f) => {
 	// 2. 첫 문단 — AI 요약이 앞부분을 많이 쓴다
 	if (!/^## 한 줄로/m.test(src)) warn(slug, '«## 한 줄로» 요약 절 없음(AI · 검색 요약이 앞부분을 씀)');
 	// 2-1. 사이트 핵심 키워드 — 제목 · 설명 하나 이상 + 요약 절 · 첫 단락 하나 이상(R-BLOG-SEO). 채우기는 경고
-	if (!kwHits(`${f.title}\n${f.description}`).length) warn(slug, `사이트 핵심 키워드(${kwNames}) 가 제목 · 설명에 없음 — 글 주제에 맞는 말 하나를 자연스럽게`);
-	if (!kwHits(lead(src)).length) warn(slug, `사이트 핵심 키워드(${kwNames}) 가 «## 한 줄로» · 첫 단락에 없음`);
+	const skip = skipMark(src);
+	if (skip === '') warn(slug, '사이트 핵심 키워드 건너뜀 표지에 까닭 없음 — <!-- site-keyword-skip: <까닭> -->');
+	if (skip) skipped.push(`${slug}: ${skip}`);
+	else {
+		if (!kwHits(`${f.title}\n${f.description}`).length) warn(slug, `사이트 핵심 키워드(${kwNames}) 가 제목 · 설명에 없음 — 글 주제에 맞는 말 하나를 자연스럽게(무관하면 건너뜀 표지 + 까닭)`);
+		if (!kwHits(lead(src)).length) warn(slug, `사이트 핵심 키워드(${kwNames}) 가 «## 한 줄로» · 첫 단락에 없음`);
+	}
 	if (kwCount(f.description) > 3) warn(slug, `설명에 사이트 핵심 키워드 ${kwCount(f.description)}번 — 키워드 채우기(3번 넘음)`);
 	for (const k of SITE_KEYWORDS) if (k.match.reduce((a, m) => a + f.title.split(m).length - 1, 0) > 1) warn(slug, `제목에 «${k.name}» 되풀이 — 키워드 채우기`);
 	// 3. 글 사이 링크 — 없는 글 · 초안으로 가는 링크는 발행하면 깨진다
@@ -71,9 +79,10 @@ if (only.length) {
 		const prose = src.replace(/^```[\s\S]*?^```/gm, '');
 		for (const m of prose.matchAll(/!\[([^\]]*)\]\(/g)) if (m[1].trim().length < 5) warn(slug, '짧거나 빈 이미지 alt');
 	}
+	for (const s of skipped) console.log('  건너뜀 ' + s);
 	for (const w of warns) console.log('  경고 ' + w);
 	for (const e of errors) console.log('  오류 ' + e);
-	console.log(`check-seo: 지정한 글 ${only.length}편 · 오류 ${errors.length} · 경고 ${warns.length}`);
+	console.log(`check-seo: 지정한 글 ${only.length}편 · 오류 ${errors.length} · 경고 ${warns.length} · 키워드 건너뜀 ${skipped.length}`);
 	// --strict: 초안 게이트(R-BLOG-SEO) — 경고도 실패
 	const strict = process.argv.includes('--strict');
 	process.exit(errors.length || (strict && warns.length) ? 1 : 0);
@@ -124,7 +133,9 @@ for (const slug of published) {
 }
 for (const d of readdirSync(join(DIST, 'posts'))) if (d.endsWith('.md') && !published.includes(d.slice(0, -3))) err(d, '초안이 원문 .md 로 나감');
 
+for (const s of skipped) console.log('  건너뜀 ' + s);
+
 for (const w of warns) console.log('  경고 ' + w);
 for (const e of errors) console.log('  오류 ' + e);
-console.log(`check-seo: 발행 글 ${published.length}편 · 오류 ${errors.length} · 경고 ${warns.length}`);
+console.log(`check-seo: 발행 글 ${published.length}편 · 오류 ${errors.length} · 경고 ${warns.length} · 키워드 건너뜀 ${skipped.length}`);
 process.exit(errors.length ? 1 : 0);
