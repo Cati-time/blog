@@ -1,6 +1,6 @@
 ---
 title: 'Subflow 해설 ① — Subflow 란 무엇인가'
-description: 'AI 작업 흐름의 가장 작은 단위 Subflow 를, 팀 공통 규칙을 기준으로 정의부터 설명합니다. 세 계층(Subflow · Business Flow · Supervisor), 계약으로만 잇는 이유, 그리고 공통 규칙보다 저장소가 먼저였던 순서까지.'
+description: 'AI 에이전트 작업 흐름의 가장 작은 단위 Subflow 를, 팀 공통 규칙을 기준으로 정의부터 설명합니다. 세 계층(Subflow · Business Flow · Supervisor), 계약으로만 잇는 이유, 그리고 공통 규칙보다 저장소가 먼저였던 순서까지.'
 pubDate: 2026-10-30
 category: ax
 platform: harness

@@ -1127,7 +1127,7 @@ const W = 600;
 		const R = 310;
 		b += text(R + 140, 84, '후', { size: 14, anchor: 'middle', fill: C.text, weight: 700 });
 		b += node(R, 100, 120, 44, tint.feature, BLUE, '쓰는 화면', '요청만 보냄');
-		b += node(R + 150, 100, 120, 44, '#e8f5ef', GREEN, '코치마크', 'dispatch 한 길');
+		b += node(R + 150, 100, 120, 44, '#e8f5ef', GREEN, '코치마크', 'dispatch 하나');
 		b += arrow(R + 122, 122, R + 146, 122, GREEN, 'c-g');
 		b += text(R + 60, 168, 'dispatch(Request)', { size: 11, anchor: 'middle', fill: GREEN, weight: 700 });
 		b += node(R + 150, 196, 120, 44, '#e8f5ef', GREEN, 'module', '보일지 판정');
@@ -1138,7 +1138,7 @@ const W = 600;
 		b += `<line x1="300" x2="300" y1="74" y2="320" stroke="${C.grid}"/>`;
 		b += text(16, H - 14, '마이그레이션용 메서드 1개는 홈 화면 조각까지 남긴다 · 골든마스터 테스트 단언은 그대로', { size: 11.5, fill: C.muted });
 		out(dir + 'coachmark-before-after.svg',
-			svg(W, H, '코치마크 — 전과 후', '전: 쓰는 화면 다섯 곳이 코치마크의 show · dismiss · consume 같은 명령형 메서드를 10곳에서 부르고, 컴포넌트가 노출 판정을 다시 하고, Render(kind) 가 ViewModel 을 쥐고 직접 그렸다. 후: 쓰는 화면은 dispatch(Request) 한 길로 요청만 보내고, 보일지는 module 이 판정하며, 그림은 쓰는 화면 안 앵커 Slot 에서 상태 없는 CoachmarkView 가 그린다. 마이그레이션용 메서드 1개는 홈 화면 조각까지 남는다.', b));
+			svg(W, H, '코치마크 — 전과 후', '전: 쓰는 화면 다섯 곳이 코치마크의 show · dismiss · consume 같은 명령형 메서드를 10곳에서 부르고, 컴포넌트가 노출 판정을 다시 하고, Render(kind) 가 ViewModel 을 쥐고 직접 그렸다. 후: 쓰는 화면은 dispatch(Request) 하나로 요청만 보내고, 보일지는 module 이 판정하며, 그림은 쓰는 화면 안 앵커 Slot 에서 상태 없는 CoachmarkView 가 그린다. 마이그레이션용 메서드 1개는 홈 화면 조각까지 남는다.', b));
 	}
 
 	// 22. 제공 함수 하나
@@ -1224,9 +1224,9 @@ const W = 600;
 		const no = (y, s) => xmark(25, y - 4) + text(42, y, s, { size: 12, fill: C.text });
 		b += no(ny + 6, '위로 가는 의존 — domain → service, client → controller 등');
 		b += no(ny + 30, 'controller 가 repository · domain 을 바로 쓰기');
-		b += text(16, ny + 56, '설정 · 보안 · 로깅(102)은 계층 밖 — 가드가 재지 않고 리뷰로 본다', { size: 11.5, fill: C.muted });
+		b += text(16, ny + 56, '설정 · 보안 · 로깅(102)은 계층 밖 — 가드가 분석하지 않고 리뷰로 본다', { size: 11.5, fill: C.muted });
 		out(dir1 + 'layers.svg',
-			svg(W, H, '어드민 서버의 계층', '자바 파일 1,321개 기준. controller(412) → service(476, usecase 포함) → repository(82) → domain(127) 순서로 아래로만 의존한다. client(63)는 다른 서비스로 가는 어댑터로 service 와 같은 높이에 있고, exception 잎(59)은 오류 코드 · 예외로 모든 계층이 쓸 수 있지만 다른 계층을 부르지 않는다. 위로 가는 의존과 controller 가 repository · domain 을 바로 쓰는 것은 금지다. 설정 · 보안 · 로깅 102개는 계층 밖이라 가드가 재지 않는다.', b));
+			svg(W, H, '어드민 서버의 계층', '자바 파일 1,321개 기준. controller(412) → service(476, usecase 포함) → repository(82) → domain(127) 순서로 아래로만 의존한다. client(63)는 다른 서비스로 가는 어댑터로 service 와 같은 높이에 있고, exception 잎(59)은 오류 코드 · 예외로 모든 계층이 쓸 수 있지만 다른 계층을 부르지 않는다. 위로 가는 의존과 controller 가 repository · domain 을 바로 쓰는 것은 금지다. 설정 · 보안 · 로깅 102개는 계층 밖이라 가드가 분석하지 않는다.', b));
 	}
 
 	// 24. 거꾸로 가던 의존 19건
