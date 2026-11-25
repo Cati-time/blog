@@ -1558,3 +1558,79 @@ const W = 600;
 			svg(W, H, '도입 단계와 구축 단계는 맞물려 갑니다', '저장소의 도입 단계 S0~S1(저장소 파악 · 머지 경로)은 공통 규칙 쪽 구축 단계 H0 점검 · H1 규칙 채택 · H2 개정 번호 발급이, S2(Supervisor 세션)는 H3 요청 수신과 응답 보장이, S3(현재 버전 받기)는 H4 티켓이, S4(규칙과 자동 검사)는 H1(새 가드는 H5)이, S5~S8(Business Flow 완료 ~ Supervisor 운영)은 H6 Supervisor 연결이, S9(운영 지표)는 H9가, 상시 절차(새 버전 받기)는 H8과 H7이 먼저 받쳐 준다. 사람이 한 명뿐인 팀이 S5까지 가는 데 필요한 구축 단계는 H0 H1 H2 H3 H4 H6.', b));
 	}
 }
+
+// ── 35~37. 에이전트를 늘리면 무엇이 먼저 막히나 — 대기 시간 · 티켓 시스템 · 로컬 CI ─────────────
+// 원천: 로컬 CI 결과 기록(2026-11-18 18시 ~ 25일 18시 · 빌드·테스트를 실행한 요청 241건) · 구조는 도구 조사 회신(2026-11-25).
+{
+	const BLUE = C.s2, GREEN = C.s1, ORANGE = C.s3, GRAY = '#9ca3af';
+	const marker = (id, color) =>
+		`<marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${color}"/></marker>`;
+	const arrow = (x1, y1, x2, y2, color, id, dash = '') =>
+		`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="2"${dash ? ` stroke-dasharray="${dash}"` : ''} marker-end="url(#${id})"/>`;
+	const node = (x, y, w, h, fill, stroke, name, sub) =>
+		`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>` +
+		text(x + w / 2, y + 23, name, { size: 13, anchor: 'middle', fill: C.text, weight: 700 }) +
+		text(x + w / 2, y + 42, sub, { size: 12, anchor: 'middle', fill: C.muted });
+	const dir = 'src/content/blog/agent-bottlenecks/';
+
+	// 35. 대기 시간
+	{
+		const rows = [
+			['제출 → 첫 빌드 · 테스트 시작', 37, 2968],
+			['첫 빌드 · 테스트 실행', 79, 351],
+		];
+		const H = 270, L = 16, max = 2968, w = (v) => Math.max(2, (v / max) * 440);
+		let b = text(L, 30, '절반은 37초 안에 시작하고, 약 30%는 10분 이상 기다렸습니다', { size: 17, fill: C.text, weight: 700 });
+		b += text(L, 50, '2026년 11월 18일 18시 ~ 25일 18시 · 요청 241건 · 단위 초', { size: 12, fill: C.subtle });
+		rows.forEach(([name, med, p90], i) => {
+			const y = 84 + i * 90;
+			b += text(L, y, name, { size: 13, fill: C.text, weight: 700 });
+			b += `<rect x="${L}" y="${y + 10}" width="${w(med)}" height="18" fill="${C.s1}"/>`;
+			b += text(L + w(med) + 8, y + 24, `중앙값 ${med.toLocaleString('en-US')}초`, { size: 12 });
+			b += `<rect x="${L}" y="${y + 34}" width="${w(p90)}" height="18" fill="${C.s3}"/>`;
+			b += text(L + w(p90) + 8, y + 48, `p90 ${p90.toLocaleString('en-US')}초`, { size: 12 });
+		});
+		b += text(L, H - 12, '대기에는 앞 요청 · 빌드 차례 · 머지 시간과, 사람이 멈춰 둔 시간이 들어갈 수 있다', { size: 12, fill: C.muted });
+		out(dir + 'wait-time.svg', svg(W, H, '로컬 CI 대기 시간', '빌드 · 테스트를 실행한 요청 241건. 제출부터 첫 빌드 · 테스트 시작까지 중앙값 37초, p90 2,968초. 첫 빌드 · 테스트 실행은 중앙값 79초, p90 351초.', b));
+	}
+
+	// 36. 티켓 시스템
+	{
+		const H = 340;
+		let b = `<defs>${marker('t-b', BLUE)}${marker('t-g', GREEN)}${marker('t-x', GRAY)}</defs>`;
+		b += text(16, 30, '티켓 시스템 — 요청은 기록하고, 받는 세션을 깨웁니다', { size: 17, fill: C.text, weight: 700 });
+		b += node(16, 70, 150, 58, '#eaf2fc', BLUE, '세션 A', '티켓 열기 · 완료');
+		b += node(225, 70, 150, 58, '#e8f5ef', GREEN, '쓰는 프로세스 하나', '명령을 차례로 처리');
+		b += node(434, 70, 150, 58, '#eaf2fc', BLUE, '세션 B', '백그라운드로 구독');
+		b += node(120, 210, 165, 58, '#f3f4f6', GRAY, '사건 기록', '순번대로 쌓임');
+		b += node(315, 210, 165, 58, '#f3f4f6', GRAY, '세션 명부', '누가 받을지 확인');
+		b += arrow(166, 99, 223, 99, BLUE, 't-b') + text(195, 88, '명령', { size: 12, anchor: 'middle', fill: BLUE });
+		b += arrow(375, 99, 432, 99, GREEN, 't-g') + text(404, 88, '깨움', { size: 12, anchor: 'middle', fill: GREEN });
+		b += arrow(265, 128, 215, 208, GRAY, 't-x');
+		b += arrow(335, 128, 385, 208, GRAY, 't-x');
+		b += text(16, H - 36, '구독 명령은 사건을 받으면 끝나고, 명령이 끝났다는 알림이 세션을 깨운다', { size: 12 });
+		b += text(16, H - 16, '꺼진 세션의 사건은 쌓여 있다가 다시 구독할 때 전달된다', { size: 12 });
+		out(dir + 'ticket-system.svg', svg(W, H, '티켓 시스템 구조', '세션 A 의 명령을 쓰기를 맡은 프로세스 하나가 차례로 처리해 사건 기록에 쌓고, 세션 명부에서 받는 세션을 찾아 구독 중인 세션 B 를 깨운다. 꺼진 세션의 사건은 쌓여 있다가 다시 구독할 때 전달된다.', b));
+	}
+
+	// 37. 로컬 CI
+	{
+		const H = 400;
+		let b = `<defs>${marker('c-g', GREEN)}${marker('c-o', ORANGE)}${marker('c-b', BLUE)}</defs>`;
+		b += text(16, 30, '로컬 CI — 머지와 빌드를 차례로 처리합니다', { size: 17, fill: C.text, weight: 700 });
+		b += node(16, 64, 165, 58, '#eaf2fc', BLUE, '작업 세션', '브랜치를 제출');
+		b += node(217, 64, 165, 58, '#f3f4f6', GRAY, '큐', '차례로 꺼냄');
+		b += node(418, 64, 166, 58, '#f3f4f6', GRAY, '임시 머지', '통합 브랜치 위에서');
+		b += node(418, 190, 166, 58, '#e8f5ef', GREEN, '빌드 · 테스트 · 검사', '동시에 기본 2개까지');
+		b += node(217, 190, 165, 58, '#e8f5ef', GREEN, '통합 브랜치에 반영', '통과했을 때만');
+		b += node(16, 190, 165, 58, '#e8f5ef', GREEN, '실행 · 설치', '개발 서버 · 기기');
+		b += node(318, 305, 266, 58, '#fdf0e8', ORANGE, '요청한 세션에 알림', '통합 브랜치는 그대로 둠');
+		b += arrow(181, 93, 215, 93, BLUE, 'c-b') + arrow(382, 93, 416, 93, BLUE, 'c-b');
+		b += arrow(501, 122, 501, 188, BLUE, 'c-b');
+		b += arrow(418, 219, 384, 219, GREEN, 'c-g') + arrow(217, 219, 183, 219, GREEN, 'c-g');
+		b += text(401, 182, '통과', { size: 12, anchor: 'middle', fill: GREEN });
+		b += arrow(501, 248, 501, 303, ORANGE, 'c-o') + text(510, 280, '실패', { size: 12, fill: ORANGE });
+		b += text(16, H - 12, '임시 머지에서 충돌한 요청도 빼서 알리고, 나머지는 계속 진행한다', { size: 12 });
+		out(dir + 'local-ci.svg', svg(W, H, '로컬 CI 구조', '작업 세션이 브랜치를 제출하면 큐에 쌓이고, 통합 브랜치 위에 임시로 머지해 빌드 · 테스트 · 규칙 검사를 한다(컴퓨터 전체에서 동시에 기본 2개까지). 통과하면 통합 브랜치에 반영하고 개발 서버나 기기에 올린다. 실패하거나 충돌하면 통합 브랜치는 그대로 두고 요청한 세션에 알린다.', b));
+	}
+}
