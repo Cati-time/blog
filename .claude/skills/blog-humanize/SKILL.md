@@ -29,14 +29,14 @@ description: >-
 
 1. **가지** — 레인 가지 하나(`edit/<slug>` · 여러 글이면 `edit/ai-tell-<날짜>`)를 통합선 착지분에서 딴다. 서브에이전트는 이 가지에서 일하고 가지를 바꾸지 않는다.
 2. **대상 고르기** — 글마다 `node scripts/check-wording.mjs <slug>` 를 돌려 걸린 글 · 건수를 표로 만든다. 발행한 글을 고칠지는 사용자에게 한 번 묻는다(사용자가 이미 말했으면 그대로).
-3. **묶기** — 글 2 ~ 5 편씩 묶음 하나 = 서브에이전트 하나. 시리즈는 한 묶음에(같은 낱말을 맞추게). 묶음은 서로 다른 파일만 만지므로 나란히 돌린다(동시 넷 안팎).
+3. **묶기** — 글 2 ~ 5 편씩 묶음 하나 = 서브에이전트 하나. 시리즈는 한 묶음에(같은 낱말을 맞추게). 묶음은 서로 다른 파일만 만지므로 나란히 돌린다(동시 넷 안팎). **한 글 안에서는 차례로** — 문장 검수 세 회차(WORKFLOW 칸 2-1)에서는 그 회차의 용어 커밋 뒤에 시작하고, 회차마다 앞 회차 지적을 모르는 새 서브에이전트에 맡긴다(앞 회차에 SendMessage 로 잇지 않는다 · 같은 회차 안에서 돌려보낼 때만 잇는다). 새 눈은 걸린 줄만이 아니라 글 전체를 처음부터 읽고 §사람이 읽어 보는 것까지 본다.
 4. **맡기기** — 아래 «지시서» 를 묶음마다 보낸다(백그라운드).
 5. **판정(본체)** — 회신이 오면:
    - `git diff --stat` 으로 맡긴 파일만 바뀌었나.
    - 글마다 `node scripts/check-wording.mjs <slug> --strict` rc 0 · `node scripts/check-seo.mjs <slug>`(초안은 `--strict`) 새 오류 0.
    - 숫자 · 인용 보존 대조: `git diff -U0 -- <파일> | grep -E '^[-+]' | grep -oE '[0-9][0-9,.]*' | sort | uniq -c` 로 지운 줄 · 넣은 줄의 숫자 수가 같은지 · «…» 안이 같은지.
    - 바뀐 줄을 읽고 뜻이 바뀐 줄 · 새 내용 · 유보가 단정이 된 줄은 그 묶음에 돌려보낸다(SendMessage).
-6. **착지** — `npm run build` → 커밋(`edit:` · 메시지에 «글 n 편 · 바뀐 문장 n · 검사 전 → 후» 집계) → 로컬 CI → 통합선. 사용자에게는 글마다 «전 → 후» 표본 몇 줄을 보여 준다. 발행한 글은 push 하면 바로 바뀌므로 사용자가 본 뒤 main 머지 · push.
+6. **착지** — `npm run build` → 커밋(`edit:` · 메시지에 «글 n 편 · 바뀐 문장 n · 검사 전 → 후» 집계 · 문장 검수 회차면 제목에 «<slug> 검수 <n>/3 사람답게 — 고친 문장 <수>» · 0 이면 `--allow-empty`) → 로컬 CI → 통합선. 사용자에게는 글마다 «전 → 후» 표본 몇 줄을 보여 준다. 발행한 글은 push 하면 바로 바뀌므로 사용자가 본 뒤 main 머지 · push.
 
 ### 지시서 (묶음마다 · 빈칸만 바꿔 쓴다)
 
@@ -44,7 +44,7 @@ description: >-
 Reply in Korean. You are an execution-tier editor for a Korean tech blog.
 Repo: /Users/catius_macbook_air/Documents/0.dev/2.blog, branch <가지> (already checked out — do NOT switch branches, do NOT commit, do NOT touch any file except the posts assigned to you).
 Your posts: <파일 목록> (<초안 · 발행 표시>)
-Why: the owner says the posts feel AI-written. His decisions: (1) sentences that end by counting («경계의 형태는 둘입니다») → «~는 아래와 같습니다» + list, or drop the count word; «다음과/아래와 같습니다» is fine. (2) repeating counting/category words in one post («두 가지 · 둘 · 세 단계 · 첫째 · 형태 · 종류 · 유형») causes fatigue — let tables/lists show counts; use count words once or twice per post; replace «형태» with the real name, «꼴», «방식», or drop it. (3) in sections that tell what we went through, a prescriptive ending («~하면 됩니다») becomes reason → result («~어려워, ~하게 되었습니다»); how-to sections may keep it. <새 사용자 결정이 있으면 여기에>
+Why: the owner says the posts feel AI-written. His decisions: (1) sentences that end by counting («경계의 형태는 둘입니다») → «~는 아래와 같습니다» + list, or drop the count word; «다음과/아래와 같습니다» is fine. (2) repeating counting/category words in one post («두 가지 · 둘 · 세 단계 · 첫째 · 형태 · 종류 · 유형») causes fatigue — let tables/lists show counts; use count words once or twice per post; replace «형태» with the real name, «꼴», «방식», or drop it. (3) in sections that tell what we went through, a prescriptive ending («~하면 됩니다») becomes reason → result («~어려워, ~하게 되었습니다»); how-to sections may keep it. <새 사용자 결정이 있으면 여기에> <문장 검수 회차면: read the whole post from the top with fresh eyes and also fix what «사람이 읽어 보는 것» lists, within the same rules — 앞 회차 지적은 넣지 않는다>
 Read first: .claude/skills/blog-wording/SKILL.md (§AI 티 · 사람이 읽어 보는 것) and docs/constitution/RULES.md R-BLOG-WORDING · R-BLOG-FACTS · R-BLOG-QUOTES.
 Steps per post: 1) run `node scripts/check-wording.mjs <slug>`, note every flagged line. 2) rewrite only those sentences (plus nearby sentences repeating the same count/category word); keep 합니다체; change form only — never change numbers, facts, names, links, code, frontmatter, table data, text inside «…», lines with <!-- wording-ok -->, lines starting with '>'; keep hedging exactly as strong; no new claims or content; don't delete facts. 3) re-run `node scripts/check-wording.mjs <slug> --strict` until rc 0; check-seo must not get new errors. 4) don't run npm run build.
 Report (under 60 lines): per post flagged count before → after, and «줄 | 전 | 후» for every changed sentence. Mention what you chose not to change and why.

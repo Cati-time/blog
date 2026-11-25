@@ -33,6 +33,7 @@ localci_ci() {
     npm ci --no-audit --no-fund || exit 10
     npm run build || exit 11
     bash scripts/guards/wording-decision.sh HEAD^1..HEAD || exit 15
+    node scripts/guards/review-rounds.mjs HEAD^1..HEAD || exit 16   # 문장 검수 세 회차(WORKFLOW 칸 2-1 · ADR-0007) — 글은 문서만 회차에 안 들어 빌드 길에만 건다
     local slugs
     slugs=$(git -c core.quotepath=false diff --name-only HEAD^1 HEAD 2>/dev/null \
       | sed -n 's#^src/content/blog/\([^/]*\)/.*#\1#p' | sort -u | while read -r s; do [ -f "src/content/blog/$s/index.md" ] && echo "$s"; done)
