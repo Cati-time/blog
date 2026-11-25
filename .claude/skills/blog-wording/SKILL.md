@@ -94,7 +94,7 @@ description: >-
 
 ## blog-compose 와의 연결
 
-blog-compose 의 ⑤ 초안 마무리에서 이 스킬을 돈다. 순서: **문장 검수 세 회차(용어 = 이 스킬 → 사람답게 = blog-humanize 를 차례로 세 번 · WORKFLOW 칸 2-1) → 처음 읽기 → SEO · GEO(blog-seo) → 초안으로 올리기**. 회차의 용어 커밋 제목은 «<slug> 검수 <n>/3 용어 — 고친 문장 <수>»(0 이면 `--allow-empty`)이고, 이 커밋이 끝난 뒤에 blog-humanize 를 부른다.
+blog-compose 의 ⑤ 초안 마무리에서 이 스킬을 돈다. 순서: **문장 검수 세 회차(용어 = 이 스킬 → 사람답게 = blog-humanize 를 차례로 세 번 · WORKFLOW 칸 2-1) → 처음 읽기 → SEO · GEO(blog-seo) → 초안으로 올리기**. 회차의 용어 커밋 제목은 «<slug> 검수 <n>/3 용어 — 고친 문장 <수>»(0 이면 `--allow-empty`)이고, 이 커밋이 끝난 뒤에 blog-humanize 를 부른다. 회차의 용어 걸음은 검사 출력만으로 닫지 않는다 — 앞 걸음의 지적을 모르는 새 서브에이전트가 글 전체를 처음부터 읽고 어색한 말을 찾는다. 커밋 본문에 `Review-Read: <slug> <읽은 blob> <서브에이전트 id>` 를 단다.
 
 ### 초안에서
 
