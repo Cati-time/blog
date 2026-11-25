@@ -1,6 +1,6 @@
 ---
 title: '어드민 서버 아키텍처 ② — 어긋난 의존과 고친 것'
-description: '규칙이 없을 때 AI 에이전트가 코드를 많이 쓰는 어드민 서버에 쌓인 것을 사례로 봅니다. 거꾸로 가던 의존 19건, controller 가 domain 을 바로 쓰던 49곳, 화면과 바깥 계약을 한 클래스로 묶은 DTO 재사용, 엔티티가 부분 수정을 몰라 이미지가 지워지던 버그.'
+description: 'AI 에이전트와 일하는 어드민 서버에 규칙이 없을 때 쌓인 것을 사례로 봅니다. 거꾸로 가던 의존 19건, controller 가 domain 을 바로 쓰던 49곳, 화면과 바깥 계약을 한 클래스로 묶은 DTO 재사용, 엔티티가 부분 수정을 몰라 이미지가 지워지던 버그.'
 pubDate: 2026-11-08
 category: architecture
 platform: backend
