@@ -1,10 +1,10 @@
 ---
 title: '표준 하나가 판단을 바꾼다 — feature 사이의 경계에만 표준을 두기'
-description: '규칙상 «완료» 로 닫은 작업이 끝나지 않았던 일에서 시작해, 화면끼리 다른 형태를 세어 보고, 이미 있던 좋은 예에서 표준을 골라, feature 사이의 경계를 두 가지 형태로 정하기까지. 기준이 생기자 «다르다» 가 «무엇을 고칠지» 로 바뀐 이야기입니다.'
+description: 'AI 에이전트와 한 작업이 규칙상 «완료» 로 닫혔는데 끝나지 않았던 일에서 시작해, 화면끼리 다른 형태를 세어 보고, 이미 있던 좋은 예에서 표준을 골라, feature 사이의 경계를 두 가지 형태로 정하기까지. 기준이 생기자 «다르다» 가 «무엇을 고칠지» 로 바뀐 이야기입니다.'
 pubDate: 2026-11-05
 category: architecture
 platform: android
-tags: ['android', 'compose', 'architecture', 'interface', 'refactoring']
+tags: ['android', 'compose', 'architecture', 'interface', 'refactoring', 'ai-agent']
 draft: true
 ---
 
@@ -12,7 +12,7 @@ draft: true
 
 ## 한 줄로
 
-**표준이 없으면 «다르다» 는 말할 수 있어도 «틀렸다» 는 말할 수 없습니다.** feature 사이의 경계를 삽입형과 호출형으로 정하자, 어긋난 곳마다 «무엇을, 어느 형태로 고칠지» 가 바로 나왔습니다. 판단이 기준과 대조하는 일로 줄었습니다.
+**표준이 없으면 «다르다» 는 말할 수 있어도 «틀렸다» 는 말할 수 없습니다.** feature 사이의 경계를 삽입형과 호출형으로 정하자, 어긋난 곳마다 «무엇을, 어느 형태로 고칠지» 가 바로 나왔습니다. 판단이 기준과 대조하는 일로 줄었습니다. AI 에이전트와 일하는 방식인 Business Flow 로 코치마크 작업을 닫은 뒤에 알게 된 일입니다.
 
 ## 닫았는데 끝나지 않았다
 
@@ -107,7 +107,7 @@ interface XxxComponent {
 
 | 무엇 | 전 | 후 |
 | --- | --- | --- |
-| 명령형 메서드 | `show` · `dismiss` · `consume` · `setFullScreenSurfaceUp` 4개 | `dispatch(CoachmarkRequest)` 한 길 (마이그레이션용 1개만 남김 — 아래) |
+| 명령형 메서드 | `show` · `dismiss` · `consume` · `setFullScreenSurfaceUp` 4개 | `dispatch(CoachmarkRequest)` 한 경로 (마이그레이션용 1개만 남김 — 아래) |
 | 다른 화면이 부르던 명령형 호출 | 10곳 | 0 — 모두 `dispatch` 로 |
 | 그리기 | 컴포넌트의 `Render(kind, modifier)` | 앵커 자리에 삽입하는 Slot `CoachmarkAnchorRouteEntry` |
 | 연결부와 View | 한 함수가 ViewModel 을 쥐고 직접 그림 | ViewModel 을 얻는 연결부(Route) → 상태 없는 `CoachmarkView` |

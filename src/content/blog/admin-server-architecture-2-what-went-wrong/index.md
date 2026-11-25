@@ -1,10 +1,10 @@
 ---
 title: '어드민 서버 아키텍처 ② — 어긋난 의존과 고친 것'
-description: '규칙이 없을 때 어드민 서버에 쌓인 것을 사례로 봅니다. 거꾸로 가던 의존 19건, controller 가 domain 을 바로 쓰던 49곳, 화면과 바깥 계약을 한 클래스로 묶은 DTO 재사용, 엔티티가 부분 수정을 몰라 이미지가 지워지던 버그.'
+description: 'AI 에이전트와 일하는 어드민 서버에 규칙이 없을 때 쌓인 것을 사례로 봅니다. 거꾸로 가던 의존 19건, controller 가 domain 을 바로 쓰던 49곳, 화면과 바깥 계약을 한 클래스로 묶은 DTO 재사용, 엔티티가 부분 수정을 몰라 이미지가 지워지던 버그.'
 pubDate: 2026-11-08
 category: architecture
 platform: backend
-tags: ['backend', 'spring', 'architecture', 'layered-architecture', 'refactoring']
+tags: ['backend', 'spring', 'architecture', 'layered-architecture', 'refactoring', 'ai-agent']
 draft: true
 ---
 
@@ -13,7 +13,7 @@ draft: true
 
 ## 한 줄로
 
-**규칙이 없던 때 어드민 서버에는 거꾸로 가는 의존 19건과, controller 가 domain 을 바로 쓰는 곳 49곳이 있었습니다.** 둘 다 같은 날 정리했고, 지금 가드 위반은 0건입니다. 그 과정에서 «안 지켜서 생긴 비용» 이 무엇인지 숫자로 남았습니다.
+**규칙이 없던 때 어드민 서버에는 거꾸로 가는 의존 19건과, controller 가 domain 을 바로 쓰는 곳 49곳이 있었습니다.** 둘 다 같은 날 정리했고, 지금 가드 위반은 0건입니다. 그 과정에서 «안 지켜서 생긴 비용» 이 무엇인지 숫자로 남았습니다. 이 저장소는 AI 에이전트가 코드를 많이 쓰는 곳이라, 지금은 규칙으로 막아 둡니다.
 
 [①편](../admin-server-architecture-1-one-way/) 에서 본 규칙(의존은 아래로만, DTO 변환은 controller 쪽)은 처음부터 있던 것이 아닙니다. 아래 사례를 정리하면서 생겼습니다.
 

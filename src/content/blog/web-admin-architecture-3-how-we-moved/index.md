@@ -1,10 +1,10 @@
 ---
 title: '웹 어드민 아키텍처 ③ — 어떻게 옮겨 왔나'
-description: '1년 전 웹 어드민 코드와 지금 코드를 같은 기준으로 세어 비교합니다. 기능 하나씩 조각으로 나눠 옮긴 방식, 되돌린 시도 다섯, 그리고 줄지 않은 것과 아직 남은 것.'
+description: '1년 전 웹 어드민 코드와 지금 코드를 같은 기준으로 세어 비교합니다. 기능 하나씩 AI 에이전트와 조각으로 나눠 옮긴 방식, 되돌린 시도 다섯, 그리고 줄지 않은 것과 아직 남은 것.'
 pubDate: 2026-10-30
 category: architecture
 platform: web
-tags: ['web', 'react', 'refactoring', 'architecture', 'migration']
+tags: ['web', 'react', 'refactoring', 'architecture', 'migration', 'ai-agent']
 draft: false
 ---
 
@@ -13,7 +13,7 @@ draft: false
 
 ## 한 줄로
 
-**한 번에 갈아엎지 않고, 기능 하나를 Business Flow 하나로 잡아 조각 단위로 옮겼습니다.** 지금도 옮기는 중이고, 줄지 않은 것도 있습니다.
+**한 번에 갈아엎지 않고, 기능 하나를 AI 에이전트가 실행하는 Business Flow 하나로 잡아 조각 단위로 옮겼습니다.** 지금도 옮기는 중이고, 줄지 않은 것도 있습니다.
 
 ## 1년 전 — 로직은 `component/` 에 몰려 있었다
 

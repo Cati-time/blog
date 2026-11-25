@@ -1,10 +1,10 @@
 ---
 title: '어드민 서버 아키텍처 ① — 의존은 아래로만'
-description: '사내 운영 도구 뒤의 어드민 서버가 지금 어떤 구조인지 설명합니다. controller → service → repository → domain 한 방향 계층, DTO 를 controller 에서 바꾸는 이유, usecase 와 service 가 섞인 지금, DDD 를 어디까지 쓰는지.'
+description: 'AI 에이전트가 코드를 많이 쓰는 어드민 서버의 지금 구조입니다. controller → service → repository → domain 한 방향 계층, DTO 를 controller 에서 바꾸는 이유, usecase 와 service 가 섞인 지금, DDD 를 어디까지 쓰는지.'
 pubDate: 2026-11-08
 category: architecture
 platform: backend
-tags: ['backend', 'spring', 'architecture', 'layered-architecture', 'ddd']
+tags: ['backend', 'spring', 'architecture', 'layered-architecture', 'ddd', 'ai-agent']
 draft: true
 ---
 
@@ -15,7 +15,7 @@ draft: true
 
 ## 한 줄로
 
-**어드민 서버는 controller → service → repository → domain 네 계층으로 나뉘고, 의존은 아래로만 흐릅니다.** 이 한 방향은 규칙 문서에 적혀 있고, 빌드보다 먼저 도는 가드가 지킵니다. 지금 위반은 0건입니다.
+**어드민 서버는 controller → service → repository → domain 네 계층으로 나뉘고, 의존은 아래로만 흐릅니다.** 에이전트가 코드를 많이 쓰는 만큼, 이 한 방향을 규칙 문서에 적고 빌드보다 먼저 도는 가드로 지킵니다. 지금 위반은 0건입니다.
 
 어드민 서버는 [웹 어드민](../web-admin-architecture-1-structure/)(운영자 · CS · 콘텐츠 담당자가 쓰는 사내 운영 도구)이 부르는 관리 API 서버입니다. Spring Boot 와 JPA 로 만들었고, 자바 파일이 1,321개입니다. 시리즈는 세 편입니다. 이 글은 지금의 구조와 그 이유를, [②편](../admin-server-architecture-2-what-went-wrong/) 은 거꾸로 가던 의존과 그것을 고친 사례를, [③편](../admin-server-architecture-3-how-we-moved/) 은 규칙 문서에 규칙이 하나도 없던 때부터 가드가 생기기까지를 다룹니다.
 
@@ -34,7 +34,7 @@ draft: true
 
 - **client**(63): 다른 내부 서비스를 부르는 어댑터입니다. service 와 같은 높이에 있고, service 가 부릅니다.
 - **exception 잎**(59): 오류 코드와 예외 타입입니다. 모든 계층이 쓸 수 있지만, 이 잎은 어떤 계층도 부르지 않습니다. 잎을 따로 둔 이유는 [②편](../admin-server-architecture-2-what-went-wrong/) 에 있습니다.
-- **계층 밖**(102): 설정, 보안, 로깅입니다. 가드가 방향을 재지 않고 리뷰로 봅니다.
+- **계층 밖**(102): 설정, 보안, 로깅입니다. 가드가 방향을 분석하지 않고 리뷰로 봅니다.
 
 규칙은 한 문장입니다. **계층 의존은 아래로만 갑니다.** 위로 가는 것, 한 계층을 건너뛰는 것(controller → repository, controller → domain)은 금지입니다.
 
@@ -60,13 +60,13 @@ deviceManagementService.activateDevice(request.toDeviceActivationDTO());
 
 service 계층 안에는 usecase 가 있습니다. 인터페이스 27개와 구현 25개가 9개 도메인에 있습니다. 계층으로 치면 usecase 는 service 의 하위 패키지이고, 가드도 service 로 읽습니다.
 
-문제는 길이 두 개라는 점입니다. 서비스 구현 70개 중 35개가 repository 를 직접 부릅니다. 그래서 «service → repository» 길과 «service → usecase → repository» 길이 함께 있습니다. 언제 usecase 를 만들고 언제 service 에서 바로 부르는지는 **아직 정하지 않았습니다.** 규칙 문서에도 «정하려면 사용자 결정을 받는다 — 빈칸이지 지어 쓰지 않는다» 라고만 적혀 있습니다.
+문제는 길이 두 개라는 점입니다. 서비스 구현 70개 중 35개가 repository 를 직접 부릅니다. 그래서 «service → repository» 길과 «service → usecase → repository» 길이 함께 있습니다. 언제 usecase 를 만들고 언제 service 에서 바로 부르는지는 **아직 정하지 않았습니다.** 규칙 문서에도 «정하려면 사용자 결정을 받는다 — 빈 항목이지 지어 쓰지 않는다» 라고만 적혀 있습니다.
 
-이 빈칸은 지금 위에서 채워지는 중입니다. 팀 공통 규칙에서 «usecase 는 Entity · 값 객체(VO)만 다루고, 저장소 · 트랜잭션 · 바깥 호출은 응용 계층(service)이 맡는다» 로 정의를 좁히는 개정이 진행 중입니다. 다른 서비스가 먼저 반영하고, 어드민 서버는 그다음 차례입니다. 이 이야기는 [③편](../admin-server-architecture-3-how-we-moved/) 끝에서 다시 봅니다.
+이 항목은 지금 위에서 채워지는 중입니다. 팀 공통 규칙에서 «usecase 는 Entity · 값 객체(VO)만 다루고, 저장소 · 트랜잭션 · 바깥 호출은 응용 계층(service)이 맡는다» 로 정의를 좁히는 개정이 진행 중입니다. 다른 서비스가 먼저 반영하고, 어드민 서버는 그다음 차례입니다. 이 이야기는 [③편](../admin-server-architecture-3-how-we-moved/) 끝에서 다시 봅니다.
 
 ## DDD 는 어디까지
 
-이 서버는 DDD 를 바탕으로 계층을 나눕니다. 그런데 규칙 문서에는 애그리거트 · 값 객체 · 도메인 서비스에 대한 규칙이 없습니다. 쓰지 않기로 정한 것이 아니라, **아직 정하지 않은 빈칸** 입니다. 근거가 되는 결정 기록이 없어서 규칙 문서에 지어 넣지 않았습니다.
+이 서버는 DDD 를 바탕으로 계층을 나눕니다. 그런데 규칙 문서에는 애그리거트 · 값 객체 · 도메인 서비스에 대한 규칙이 없습니다. 쓰지 않기로 정한 것이 아니라, **아직 정하지 않은 항목** 입니다. 근거가 되는 결정 기록이 없어서 규칙 문서에 지어 넣지 않았습니다.
 
 저는 DDD 의 생각을 믿습니다. 다만 도메인을 충분히 알기 전에 애그리거트와 컨텍스트 경계를 먼저 그으면, 모르는 채로 그은 선이 나중에 발목을 잡는다고 봅니다. 그래서 저는 계층과 방향부터 지키고, 도메인 규칙은 알게 된 만큼만 엔티티로 옮기는 쪽이 맞다고 봅니다.
 
@@ -76,7 +76,7 @@ service 계층 안에는 usecase 가 있습니다. 인터페이스 27개와 구�
 
 - 계층은 controller → service → repository → domain 넷이고, **의존은 아래로만** 갑니다. client 는 service 옆, 오류 코드는 아무도 부르지 않는 잎에 둡니다.
 - 요청 → 서비스 DTO 변환은 **controller 쪽** 이 합니다. 서비스 DTO 가 요청 타입을 받으면 거꾸로 가는 의존이 됩니다.
-- usecase 와 service 의 경계, 애그리거트 · 값 객체 규칙은 **아직 빈칸** 입니다. 모르는 것을 지어 쓰지 않습니다.
+- usecase 와 service 의 경계, 애그리거트 · 값 객체 규칙은 **아직 비어 있는 항목** 입니다. 모르는 것을 지어 쓰지 않습니다.
 
 다음 편에서는 이 규칙이 생기기 전에 거꾸로 가던 의존 19건과, 엔티티가 «부분 수정» 을 몰라서 생긴 버그를 봅니다.
 

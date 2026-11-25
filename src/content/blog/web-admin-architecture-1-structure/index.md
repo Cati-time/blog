@@ -1,10 +1,10 @@
 ---
 title: '웹 어드민 아키텍처 ① — 계층마다 모르는 것'
-description: '사내 운영 도구인 웹 어드민의 지금 구조를 설명합니다. app → feature → module → data 네 계층, 상태를 세 단계로 나눠 두는 이유, 화면 하나를 끝까지 따라가 보기, 그리고 권한 · 서버 상태처럼 웹이라서 내린 결정.'
+description: 'AI 에이전트가 코드를 많이 쓰는 사내 운영 도구, 웹 어드민의 지금 구조를 설명합니다. app → feature → module → data 네 계층, 상태를 세 단계로 나눠 두는 이유, 화면 하나를 끝까지 따라가 보기, 그리고 권한 · 서버 상태처럼 웹이라서 내린 결정.'
 pubDate: 2026-10-30
 category: architecture
 platform: web
-tags: ['web', 'react', 'recoil', 'architecture', 'state-management']
+tags: ['web', 'react', 'recoil', 'architecture', 'state-management', 'ai-agent']
 draft: false
 ---
 
@@ -15,7 +15,7 @@ draft: false
 
 ## 한 줄로
 
-**웹 어드민은 네 계층(app → feature → module → data)으로 나뉘고, 각 계층이 무엇을 모르는지를 규칙으로 정해 둡니다.** 상태는 «화면이 없어도 존재하는가» 를 기준으로 세 단계에 나눠 둡니다.
+**웹 어드민은 네 계층(app → feature → module → data)으로 나뉘고, 각 계층이 무엇을 모르는지를 규칙으로 정해 둡니다.** 상태는 «화면이 없어도 존재하는가» 를 기준으로 세 단계에 나눠 둡니다. 에이전트가 코드를 많이 쓰니 «알아서 조심하겠지» 대신 규칙으로 막아 둡니다.
 
 웹 어드민은 운영자 · CS · 콘텐츠 담당자가 쓰는 사내 운영 도구입니다. React · TypeScript · Recoil 로 만들었고, 화면이 수십 개입니다. 시리즈는 세 편입니다. 이 글은 지금의 구조와 그 이유를, [②편](../web-admin-architecture-2-build-and-fix/) 은 이 구조로 실제 기능을 만들고 고친 사례를, [③편](../web-admin-architecture-3-how-we-moved/) 은 1년 전 구조에서 여기까지 옮겨 온 경로를 다룹니다.
 

@@ -1,6 +1,6 @@
 ---
 title: '안드로이드 아키텍처 ③ — 어떻게 옮겨 왔나'
-description: 'UseCase 를 직접 부르던 화면에서 module Store 가 SSOT 를 관리하는 구조까지, 한 화면 · 한 도메인씩 Business Flow 와 Subflow 로 옮긴 과정과 규칙이 검사가 되기까지를 저장소의 숫자와 커밋으로 봅니다.'
+description: 'UseCase 를 직접 부르던 화면에서 module Store 가 SSOT 를 관리하는 구조까지, 한 화면 · 한 도메인씩 AI 에이전트와 Business Flow · Subflow 로 옮긴 과정과 규칙이 검사가 되기까지를 저장소의 숫자와 커밋으로 봅니다.'
 pubDate: 2026-10-13
 category: architecture
 platform: android
@@ -13,7 +13,7 @@ draft: false
 
 ## 한 줄로
 
-**동작이 바뀌는 일은 한 화면 · 한 도메인씩, 이름만 바뀌는 일은 한 번에 바꿨습니다.** 다른 곳이 많이 읽는 SSOT 부터 module 로 분리했고, 그동안에도 앱은 계속 출시했습니다. 규칙은 문서만으로는 재발했고, 검사가 되어야 지켜졌습니다.
+**동작이 바뀌는 일은 한 화면 · 한 도메인씩, 이름만 바뀌는 일은 한 번에 바꿨습니다.** 다른 곳이 많이 읽는 SSOT 부터 module 로 분리했고, 그동안에도 앱은 계속 출시했습니다. 규칙은 문서만으로는 재발했고, 검사가 되어야 지켜졌습니다. AI 에이전트가 «층을 건너뛰는 곳 0» 이라고 보고한 일도 독립 검수가 범위를 바로잡아 다시 확인했습니다.
 
 [①편](../android-architecture-1-one-truth/) 에서 지금의 구조를, [②편](../android-architecture-2-build-and-fix/) 에서 그 구조로 무엇이 쉬워졌는지를 봤습니다. 마지막 편은 어떻게 여기까지 왔는지입니다.
 
