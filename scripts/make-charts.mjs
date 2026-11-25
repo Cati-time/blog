@@ -1127,7 +1127,7 @@ const W = 600;
 		const R = 310;
 		b += text(R + 140, 84, '후', { size: 14, anchor: 'middle', fill: C.text, weight: 700 });
 		b += node(R, 100, 120, 44, tint.feature, BLUE, '쓰는 화면', '요청만 보냄');
-		b += node(R + 150, 100, 120, 44, '#e8f5ef', GREEN, '코치마크', 'dispatch 하나');
+		b += node(R + 150, 100, 120, 44, '#e8f5ef', GREEN, '코치마크', 'dispatch 한 경로');
 		b += arrow(R + 122, 122, R + 146, 122, GREEN, 'c-g');
 		b += text(R + 60, 168, 'dispatch(Request)', { size: 11, anchor: 'middle', fill: GREEN, weight: 700 });
 		b += node(R + 150, 196, 120, 44, '#e8f5ef', GREEN, 'module', '보일지 판정');
@@ -1138,7 +1138,7 @@ const W = 600;
 		b += `<line x1="300" x2="300" y1="74" y2="320" stroke="${C.grid}"/>`;
 		b += text(16, H - 14, '마이그레이션용 메서드 1개는 홈 화면 조각까지 남긴다 · 골든마스터 테스트 단언은 그대로', { size: 11.5, fill: C.muted });
 		out(dir + 'coachmark-before-after.svg',
-			svg(W, H, '코치마크 — 전과 후', '전: 쓰는 화면 다섯 곳이 코치마크의 show · dismiss · consume 같은 명령형 메서드를 10곳에서 부르고, 컴포넌트가 노출 판정을 다시 하고, Render(kind) 가 ViewModel 을 쥐고 직접 그렸다. 후: 쓰는 화면은 dispatch(Request) 하나로 요청만 보내고, 보일지는 module 이 판정하며, 그림은 쓰는 화면 안 앵커 Slot 에서 상태 없는 CoachmarkView 가 그린다. 마이그레이션용 메서드 1개는 홈 화면 조각까지 남는다.', b));
+			svg(W, H, '코치마크 — 전과 후', '전: 쓰는 화면 다섯 곳이 코치마크의 show · dismiss · consume 같은 명령형 메서드를 10곳에서 부르고, 컴포넌트가 노출 판정을 다시 하고, Render(kind) 가 ViewModel 을 쥐고 직접 그렸다. 후: 쓰는 화면은 dispatch(Request) 한 경로로 요청만 보내고, 보일지는 module 이 판정하며, 그림은 쓰는 화면 안 앵커 Slot 에서 상태 없는 CoachmarkView 가 그린다. 마이그레이션용 메서드 1개는 홈 화면 조각까지 남는다.', b));
 	}
 
 	// 22. 제공 함수 하나

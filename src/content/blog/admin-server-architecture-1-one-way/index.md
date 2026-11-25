@@ -15,7 +15,7 @@ draft: true
 
 ## 한 줄로
 
-**어드민 서버는 controller → service → repository → domain 네 계층으로 나뉘고, 의존은 아래로만 흐릅니다.** AI 에이전트가 코드를 많이 쓰는 저장소라, 이 한 방향을 규칙 문서에 적고 빌드보다 먼저 도는 가드로 지킵니다. 지금 위반은 0건입니다.
+**어드민 서버는 controller → service → repository → domain 네 계층으로 나뉘고, 의존은 아래로만 흐릅니다.** 에이전트가 코드를 많이 쓰는 만큼, 이 한 방향을 규칙 문서에 적고 빌드보다 먼저 도는 가드로 지킵니다. 지금 위반은 0건입니다.
 
 어드민 서버는 [웹 어드민](../web-admin-architecture-1-structure/)(운영자 · CS · 콘텐츠 담당자가 쓰는 사내 운영 도구)이 부르는 관리 API 서버입니다. Spring Boot 와 JPA 로 만들었고, 자바 파일이 1,321개입니다. 시리즈는 세 편입니다. 이 글은 지금의 구조와 그 이유를, [②편](../admin-server-architecture-2-what-went-wrong/) 은 거꾸로 가던 의존과 그것을 고친 사례를, [③편](../admin-server-architecture-3-how-we-moved/) 은 규칙 문서에 규칙이 하나도 없던 때부터 가드가 생기기까지를 다룹니다.
 
