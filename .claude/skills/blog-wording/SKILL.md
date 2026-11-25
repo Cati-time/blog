@@ -94,7 +94,7 @@ description: >-
 
 ## blog-compose 와의 연결
 
-blog-compose 의 ⑤ 초안 마무리에서 이 스킬을 돈다. 순서: **용어(이 스킬) → 윤문(humanize-korean, 선택) → SEO · GEO(blog-seo) → 초안으로 올리기**.
+blog-compose 의 ⑤ 초안 마무리에서 이 스킬을 돈다. 순서: **문장 검수 세 회차(용어 = 이 스킬 → 사람답게 = blog-humanize 를 차례로 세 번 · WORKFLOW 칸 2-1) → 처음 읽기 → SEO · GEO(blog-seo) → 초안으로 올리기**. 회차의 용어 커밋 제목은 «<slug> 검수 <n>/3 용어 — 고친 문장 <수>»(0 이면 `--allow-empty`)이고, 이 커밋이 끝난 뒤에 blog-humanize 를 부른다.
 
 ### 초안에서
 

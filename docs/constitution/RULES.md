@@ -64,7 +64,7 @@ flowchart TB
 | data | `src/data/` | 1 | 용어집 | 대표 이름 · 피할 말 | — | `src/data/glossary.json` |
 | content | `src/content/{blog,team,projects}/` | 61 | 글 · 팀원 · 프로젝트 | 본문 · frontmatter | — | `src/content/blog/*/index.md` |
 | 설정 정본 | `src/consts.ts` · `src/content.config.ts` · `site.config.mjs` · `astro.config.mjs` | 4 | 분류 · 주소 · 스키마 · 빌드 설정 | 분류 목록 · 스키마 refine · 본문 글자 보존 설정 | — | `site.config.mjs` |
-| 도구 | `scripts/`(guards 포함) | 15 | 검사 · 글 생성 · 원본 대조 · 그림 · 게이트 | 검사 술어 | content · 설정 정본 · data · style | `scripts/check-tokens.mjs` |
+| 도구 | `scripts/`(guards 포함) | 16 | 검사 · 글 생성 · 원본 대조 · 그림 · 게이트 | 검사 술어 | content · 설정 정본 · data · style | `scripts/check-tokens.mjs` |
 | 정적 파일 | `public/` | 3 | 아이콘 · 이미지 | — | — | `public/` |
 | 층 밖 — 헌법 · 안내 | `docs/` · `README.md` · `WRITING_GUIDE.md` · `AGENTS.md`(= `CLAUDE.md`) · `LICENSE` | — | 규칙 · 안내 · 지침 | — | — | 까닭: 코드가 아님 |
 | 층 밖 — 에이전트 절차 | `.claude/skills/` · `.claude/launch.json` | — | 스킬 넷 · 미리보기 | — | — | 까닭: 절차 · MUST 는 헌법이 가짐 |
@@ -197,7 +197,7 @@ flowchart TB
 
 ### 9-1. 가드 진입점 (M4)
 
-- `scripts/localci.sh` 하나 — `localci_ci`(`npm ci --no-audit --no-fund` → `npm run build` — PR `check.yml` 과 같은 명령) · `localci_guards`(check-tokens · check-posts · R-BLOG-LAYER · R-BLOG-BASE-URL 가드 · 가드 짝 시험 `test-guards.sh` · 문서만 회차 짝 가드 `docs-glob.sh` — WORKFLOW 칸 13-1 · 용어 결정 등록 가드 `wording-decision.sh` — R-BLOG-WORDING · 빌드 길에도 듦) · 글 레인 덧(바뀐 글마다 `check:seo -- <slug> --strict` · `check:wording --strict`) · 발행 기준 `check:seo`(전체 · 오류만 · 회차마다 — 사이트 핵심 키워드 머리 · JSON-LD · llms 포함 · ADR-0006).
+- `scripts/localci.sh` 하나 — `localci_ci`(`npm ci --no-audit --no-fund` → `npm run build` — PR `check.yml` 과 같은 명령) · `localci_guards`(check-tokens · check-posts · R-BLOG-LAYER · R-BLOG-BASE-URL 가드 · 가드 짝 시험 `test-guards.sh` · 문서만 회차 짝 가드 `docs-glob.sh` — WORKFLOW 칸 13-1 · 용어 결정 등록 가드 `wording-decision.sh` — R-BLOG-WORDING · 빌드 길에도 듦) · 문장 검수 세 회차 가드 `review-rounds.mjs`(빌드 길 · WORKFLOW 칸 2-1) · 글 레인 덧(바뀐 글마다 `check:seo -- <slug> --strict` · `check:wording --strict`) · 발행 기준 `check:seo`(전체 · 오류만 · 회차마다 — 사이트 핵심 키워드 머리 · JSON-LD · llms 포함 · ADR-0006).
 
 ### 9-2. 섹터 맵 (M5)
 

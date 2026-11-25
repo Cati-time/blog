@@ -47,4 +47,23 @@ root=$PWD
 seo_in() ( cd "$1" && node "$root/scripts/check-seo.mjs" x --strict )
 d=$(kw skip '<!-- site-keyword-skip: 주제가 안드로이드 계층이라 무관 -->'); expect 0 seo_in "$d"
 d=$(kw empty '<!-- site-keyword-skip: -->'); expect 1 seo_in "$d"
+# 문장 검수 세 회차 가드(WORKFLOW 칸 2-1 · ADR-0007) — 임시 저장소에 글 x 와 커밋을 지어 잰다. 인자 = 커밋 제목들(시각은 하나씩 늘어남)
+rr_c() { local t="2026-01-01T00:00:$(printf %02d "$n") +0000"; GIT_AUTHOR_DATE="$t" GIT_COMMITTER_DATE="$t" git -C "$d" -c user.name=t -c user.email=t@t commit -q --allow-empty -m "$1"; }
+rr_w() { mkdir -p "$d/src/content/blog/x"; printf -- "---\ntitle: 'x'\ndraft: %s\n---\n%b" "$1" "$2" > "$d/src/content/blog/x/index.md"; git -C "$d" add -A; }
+rr() { d="$tmp/rr-$1"; shift; n=0; git init -q "$d"; rr_c base; rr_w true '첫 줄\n'; for m in "$@"; do n=$((n+1)); rr_c "$m"; done; b=$(git -C "$d" rev-list --max-parents=0 HEAD); }
+r1a='edit: x 검수 1/3 용어 — 고친 문장 3'; r1b='edit: x 검수 1/3 사람답게 — 고친 문장 2'; r2a='edit: x 검수 2/3 용어 — 고친 문장 0'; r2b='edit: x 검수 2/3 사람답게 — 고친 문장 1'; r3a='edit: x 검수 3/3 용어 — 고친 문장 0'; r3b='edit: x 검수 3/3 사람답게 — 고친 문장 0'
+g=scripts/guards/review-rounds.mjs
+rr none 'post: x 초안'; expect 1 node $g "$b..HEAD" "$d"
+rr full 'post: x 초안' "$r1a" "$r1b" "$r2a" "$r2b" "$r3a" "$r3b"; expect 0 node $g "$b..HEAD" "$d"
+p=$(git -C "$d" rev-parse HEAD); n=20; rr_w false '첫 줄\n'; rr_c 'post: x 발행'; expect 0 node $g "$p..HEAD" "$d"   # 발행 — 앞 착지의 표지를 이력에서 찾는다
+rr alias 'post: x 초안' "$r1a" 'edit: x 검수 1/3 문장' "$r2a" "$r2b" "$r3a" "$r3b"; expect 0 node $g "$b..HEAD" "$d"
+rr five 'post: x 초안' "$r1a" "$r1b" "$r2a" "$r2b" "$r3a"; expect 1 node $g "$b..HEAD" "$d"
+rr swap 'post: x 초안' "$r1a" "$r2a" "$r3a" "$r1b" "$r2b" "$r3b"; expect 1 node $g "$b..HEAD" "$d"
+rr other 'post: x 초안' "${r1a/x /x-2 }" "${r1b/x /x-2 }" "${r2a/x /x-2 }" "${r2b/x /x-2 }" "${r3a/x /x-2 }" "${r3b/x /x-2 }"; expect 1 node $g "$b..HEAD" "$d"
+rr skip $'post: x 작성 중\n\nReview-Skip: x 6 관문 전 작성 중'; expect 0 node $g "$b..HEAD" "$d"
+p=$(git -C "$d" rev-parse HEAD); n=20; rr_w false '첫 줄\n'; rr_c 'post: x 발행'; expect 1 node $g "$p..HEAD" "$d"   # 작성 중 건너뜀은 발행을 면하지 않는다
+rr skip-empty $'post: x\n\nReview-Skip: x '; expect 1 node $g "$b..HEAD" "$d"
+rr drop "$r1a"; p=$(git -C "$d" rev-parse HEAD); n=20; rr_w true ''; rr_c 'edit: x 사실 뺌'; expect 0 node $g "$p..HEAD" "$d"
+rr same-time 'post: x 초안'; for m in "$r1a" "$r1b" "$r2a" "$r2b" "$r3a" "$r3b"; do rr_c "$m"; done; expect 1 node $g "$b..HEAD" "$d"
+expect 2 node $g HEAD..HEAD "$d"
 exit $fail
