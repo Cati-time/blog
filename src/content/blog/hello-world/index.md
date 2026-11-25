@@ -8,7 +8,7 @@ tags: ['blog', 'astro']
 draft: false
 ---
 
-<!-- site-keyword-skip: 문법 테스트용 글 · 주제 무관 (사용자 결정 2026-11-25 «권고대로») -->
+<!-- site-keyword-skip: 문법 테스트용 글 -->
 
 ## 한 줄로
 
