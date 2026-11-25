@@ -52,7 +52,7 @@ export const TERMS = [
 	{ id: 'adopt', avoid: /[을를] ?들이(며|고|면|는|기|려)|[을를] ?들였/g, glossary: '도입하다' },
 	{ id: 'layer', avoid: /(?<![가-힣])겹(?![치쳐친칠쳤])/g, glossary: '계층 · 레이어' },
 	{ id: 'granularity', avoid: /입자/g, glossary: '단위' },
-	{ id: 'field', avoid: /(입력|산출|반출|통과 ?체크|계약)[의 ]* ?칸|(?<![가-힣]|한 )칸(?=[이은을의도에]|마다|\s|$|[)»,.])|빈칸/g, glossary: '항목 · 필드' },
+	{ id: 'field', avoid: /(입력|산출|반출|통과 ?체크|계약)[의 ]* ?칸|(?<![가-힣]|한 )칸(?! ?\d)(?=[이은을의도에]|마다|\s|$|[)»,.])|빈칸/g, glossary: '항목 · 필드' },
 	{ id: 'hand-down', avoid: /넘김/g, glossary: '위임' },
 	{ id: 'tally', avoid: /셈의|셈 ?축|셈[을를]/g, glossary: '집계 기준 · 집계 축' },
 	{ id: 'blind', avoid: /못 ?보는/g, glossary: '검증할 수 없는 · 사각지대' },
@@ -77,7 +77,7 @@ export const TERMS = [
 	{ id: 'done-signal', avoid: /됐다는 신호/g, glossary: '완료 기준' },
 	{ id: 'loop', avoid: /(?<!연결 ?)(?<![가-힣])고리/g, glossary: '새 버전을 받는 절차' },
 	{ id: 'path', avoid: /(되는|오는|가는|퍼지는|받는|두|새|같은|다른|그|한|틀린) 길(?![가-힣])|(?<![가-힣])길(마다|은|을|로|에서|도)(?![가-힣])|첫 일이 다릅니다/g, glossary: '도입 유형 · 머지 경로' },
-	{ id: 'sheet', avoid: /문면|(?<!문서 )(?<![가-힣])한 장(?![가-힣])/g, glossary: '정리 문서' },
+	{ id: 'sheet', avoid: /문면|(?<!(문서|구조) )(?<![가-힣])한 장(?![가-힣])/g, glossary: '정리 문서' },
 	{ id: 'cheap', avoid: /(?<!비)쌉니다|(?<![가-힣])싸(다|고|게|서)(?![가-힣])/g, glossary: '비용이 적다' },
 	{ id: 'wiring', avoid: /배선(?! ?시험)/g, glossary: '구성' },
 	{ id: 'occasion', avoid: /계기가 (있을|있으면|생기|생길|생겼)/g, glossary: '필요가 생길 때' },
@@ -86,14 +86,14 @@ export const TERMS = [
 	{ id: 'others', avoid: /(?<![가-힣])남의/g, glossary: '다른 팀의 · 다른' },
 	{ id: 'enforce', avoid: /집행 ?수단|집행할 수단/g, glossary: '자동 검사' },
 	{ id: 'pair-test', avoid: /짝 ?테스트/g, glossary: '위반 검출 테스트' },
-	{ id: 'finish', avoid: /완주|(첫|한) ?바퀴/g, glossary: '완료' },
+	{ id: 'finish', avoid: /완주|첫 ?바퀴/g, glossary: '완료' },
 	{ id: 'promulgate', avoid: /공포(하|했|한|된|합)|\d ?공포|수령|\d ?위임/g, glossary: '배포 · 수신 · 요청' },
 	{ id: 'seat', avoid: /(\d+|열|한|두|세|네|다섯) 자리(?=[(\s])|(어느|들어갈|반영할|담당|관리 쪽|세션) 자리/g, glossary: '위치 · 담당 세션 · 개' },
 	// 사용자 결정 2026-11-25(team-harness-propagation 바꿀 말 표 · T-003314)
 	{ id: 'copy', avoid: /팀용 사본|원본[^.]{0,30}사본|사본[^.]{0,30}원본/g, glossary: '팀용 템플릿' }, // 상태 복사 뜻의 «사본»(아키텍처 글)은 잡지 않는다 — 원본과 짝일 때만
 	{ id: 'ladder', avoid: /사다리|관리 쪽 단|(?<![가-힣])단(?=을|이 |마다| 하나)|한 단(?![가-힣])/g, glossary: '도입 단계 · 구축 단계' },
-	{ id: 'filter-out', avoid: /걸러 ?(내|낸|냈|낼)|거르기|(?<![가-힣])거른/g, glossary: '빼다 · 필터링' },
-	{ id: 'build-up', avoid: /(?<![가-힣])(세우|세운|세웠|세워(?!진|져)|세울)/g, glossary: '만들다 · 구성하다' },
+	{ id: 'filter-out', avoid: /(값|내용|원본)[을를에서 ]{0,4}걸러 ?(내|낸|냈|낼)|걸러 ?낸 (사본|템플릿)|거르기|(?<![가-힣])거른/g, glossary: '빼다 · 필터링' },
+	{ id: 'build-up', avoid: /(?<!줄 ?)(?<![가-힣])(세우|세운|세웠|세워(?!진|져)|세울)/g, glossary: '만들다 · 구성하다' },
 	{ id: 'sit-role', avoid: /역할을 앉/g, glossary: '맡다' },
 ];
 
