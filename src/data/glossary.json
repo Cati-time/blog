@@ -1477,6 +1477,19 @@
 			"decided": "user",
 			"status": "decided",
 			"evidence": "사용자 결정 2026-11-25 «권고대로»(agent-bottlenecks 바꿀 말 표 · T-003602) · 말뭉치 그림 안 두 이름(검사 · 규칙 검사)"
+		},
+		{
+			"name": "작업을 계속하다",
+			"aliases": [],
+			"avoid": [
+				"다른 일을 이어 갑",
+				"읽고 이어 갈 수"
+			],
+			"definition": "하던 작업을 계속하다 · 결과를 기다리지 않고 다른 작업을 계속하다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-26 «다른 일을 이어 갑니다. 이런 말안써»(agent-bottlenecks) · 말뭉치 «다른 일을 이어» 0 · «이어 갑니다» 0 · «계속 진행» 13 · «기다리지 않고» 10"
 		}
 	]
 }
