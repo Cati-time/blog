@@ -1,11 +1,11 @@
 ---
 title: '에이전트를 늘리면 무엇이 먼저 막히나 — 토큰 한도와 개인 지급된 노트북 각 한 대'
 description: 'AI 에이전트 세션을 여러 개로 늘리면 토큰 한도와 개인 지급된 노트북 각 한 대에서 먼저 막힙니다. 우리 노트북에서 직접 확인한 부하 · 메모리 · 빌드 대기 시간, 그리고 요청은 티켓 시스템에 기록해 주고받고 머지와 빌드는 로컬 CI 로 처리하는 방법을 적었습니다.'
-pubDate: 2026-11-25
+pubDate: 2026-11-26
 category: ax
 platform: harness
 tags: ['ai-agent', 'harness', 'supervisor', 'workflow']
-draft: true
+draft: false
 ---
 
 > **함께 읽으면 좋은 글**
