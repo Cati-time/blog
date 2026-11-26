@@ -1490,6 +1490,18 @@
 			"decided": "user",
 			"status": "decided",
 			"evidence": "사용자 결정 2026-11-26 «다른 일을 이어 갑니다. 이런 말안써»(agent-bottlenecks) · 말뭉치 «다른 일을 이어» 0 · «이어 갑니다» 0 · «계속 진행» 13 · «기다리지 않고» 10"
+		},
+		{
+			"name": "로컬 서버",
+			"aliases": [],
+			"avoid": [
+				"개발 서버"
+			],
+			"definition": "개발자 노트북에서 띄우는 서버. 팀이 함께 쓰는 개발계 서버와 헷갈리지 않게 «개발 서버» 대신 쓴다.",
+			"kind": "style",
+			"decided": "user",
+			"status": "decided",
+			"evidence": "사용자 결정 2026-11-26 «개발 서버 말고, 다른 용어여야하는데» · «로컬 서버로»(agent-bottlenecks · T-003859)"
 		}
 	]
 }
